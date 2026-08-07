@@ -44,15 +44,27 @@ Main supported documents:
 
 ## Results
 
-The implemented system demonstrates:
+The system was evaluated on a manually curated 50-question benchmark with ground-truth answers and legal citations. The benchmark covers three query types: factual lookup, penalty lookup, and scenario-based reasoning.
 
-- end-to-end Vietnamese road-law QA;
-- hybrid retrieval with legal-source citation tracking;
-- Streamlit chat interface for question answering;
-- topic-based multiple-choice quiz generation;
-- command-line scripts for retrieval testing, QA, and quiz generation.
+Retrieval evaluation at `k=5`:
 
-Formal benchmark results are not included yet. Current evaluation is based on functional testing, manual QA checks, and course demo usage.
+| Method | Recall@5 | MRR@5 | nDCG@5 | HitRate@5 |
+| --- | ---: | ---: | ---: | ---: |
+| BM25-only | 0.707 | 0.538 | 0.598 | 0.780 |
+| Dense-only | 0.762 | 0.760 | 0.791 | 0.880 |
+| Hybrid | 0.817 | 0.752 | 0.789 | 0.900 |
+| Hybrid + `BAAI/bge-reranker-v2-m3` | 0.817 | 0.796 | 0.827 | 0.920 |
+
+End-to-end answer generation evaluation:
+
+| Question type | Questions | Legal Accuracy | Legal Citation | Relevance |
+| --- | ---: | ---: | ---: | ---: |
+| Factual lookup | 15 | 0.97 | 0.87 | 0.93 |
+| Penalty lookup | 15 | 0.87 | 0.80 | 0.87 |
+| Scenario-based reasoning | 20 | 0.70 | 0.68 | 0.80 |
+| Overall | 50 | 0.83 | 0.77 | 0.86 |
+
+Quiz generation was also evaluated for legal answer correctness, topic alignment, and JSON format compliance on generated multiple-choice questions.
 
 ## Repository Structure
 
