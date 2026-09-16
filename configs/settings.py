@@ -5,7 +5,7 @@ Does not require GEMINI_API_KEY at import time.
 """
 import os
 from pathlib import Path
-from typing import Optional
+from typing import ClassVar, Dict, Optional
 from pydantic import BaseModel, Field
 from dotenv import dotenv_values
 
@@ -24,27 +24,39 @@ class AppSettings(BaseModel):
     api_port: int = 8000
 
 
-class Settings(AppSettings):
-    """Resource settings validated only when explicitly instantiated.
+class LLMSettings(AppSettings):
+    """LLM configuration without validation of unrelated retrieval settings.
 
     Read the project .env without mutating the process environment. Explicit
     arguments override environment variables, which override .env values.
     """
 
+    _env_fields: ClassVar[Dict[str, str]] = {
+        "gemini_api_key": "GEMINI_API_KEY",
+        "gemini_model_name": "GEMINI_MODEL_NAME",
+    }
+    gemini_api_key: Optional[str] = None
+    gemini_model_name: str = "gemini-2.5-flash"
+
     def __init__(self, **values):
         file_values = dotenv_values(PROJECT_ROOT / ".env")
-        env_fields = {
-            "weaviate_host": "WEAVIATE_HOST",
-            "weaviate_port": "WEAVIATE_PORT",
-            "weaviate_grpc_port": "WEAVIATE_GRPC_PORT",
-            "gemini_api_key": "GEMINI_API_KEY",
-        }
         defaults = {
             field: os.environ.get(env_key, file_values.get(env_key))
-            for field, env_key in env_fields.items()
+            for field, env_key in self._env_fields.items()
             if env_key in os.environ or file_values.get(env_key) is not None
         }
         super().__init__(**{**defaults, **values})
+
+
+class Settings(LLMSettings):
+    """Full resource settings validated only when explicitly instantiated."""
+
+    _env_fields: ClassVar[Dict[str, str]] = {
+        **LLMSettings._env_fields,
+        "weaviate_host": "WEAVIATE_HOST",
+        "weaviate_port": "WEAVIATE_PORT",
+        "weaviate_grpc_port": "WEAVIATE_GRPC_PORT",
+    }
 
     # Paths
     project_root: Path = PROJECT_ROOT
@@ -56,10 +68,6 @@ class Settings(AppSettings):
     weaviate_port: int = Field(default=8080, ge=1, le=65535)
     weaviate_grpc_port: int = Field(default=50051, ge=1, le=65535)
     weaviate_collection: str = "LawChunks"
-
-    # No API key is required for the foundation.
-    gemini_api_key: Optional[str] = None
-    gemini_model_name: str = "gemini-2.5-flash"
 
     # Retrieval Models
     embedding_model: str = "Alibaba-NLP/gte-multilingual-base"

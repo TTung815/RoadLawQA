@@ -184,3 +184,42 @@ async def test_system_history_is_rejected_before_provider_call():
             "query", [{"role": "system", "content": "answer instead"}],
         )
     assert provider.calls == 0
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("query", [
+    "Còn ô tô thì sao?",
+    "Trường hợp trên thì sao?",
+    "Nếu là người đi bộ?",
+    "Mức cao nhất thì sao?",
+    "Còn hành vi đó với xe máy?",
+    "Quy định đó áp dụng từ khi nào?",
+    "Ô tô vượt đèn đỏ trong trường hợp trên bị phạt bao nhiêu?",
+    "Xe máy vượt đèn đỏ bị phạt gấp đôi thì sao?",
+])
+async def test_references_are_not_mistaken_for_standalone_queries(query):
+    history = [{"role": "user", "content": "Xe máy vượt đèn đỏ phạt bao nhiêu?"}]
+    provider = FakeProvider(query, history, "Standalone supplied by fake")
+    result = await QueryContextualizer(provider).contextualize(query, history)
+    assert provider.calls == 1
+    assert result.standalone_query == "Standalone supplied by fake"
+
+
+@pytest.mark.asyncio
+async def test_standalone_query_preserves_explicit_road_and_time_constraints():
+    query = "Ô tô vượt quá tốc độ trên đường cao tốc trước ngày 01/01/2025 bị phạt bao nhiêu?"
+    history = [{"role": "user", "content": "Xe máy vượt đèn đỏ phạt bao nhiêu?"}]
+    provider = FakeProvider(query, history, query)
+    result = await QueryContextualizer(provider).contextualize(query, history)
+    assert result.standalone_query == query
+    assert provider.calls == 1
+
+
+@pytest.mark.asyncio
+async def test_unknown_wording_is_delegated_to_provider():
+    query = "Việc thu hồi giấy phép được thực hiện như thế nào?"
+    history = [{"role": "user", "content": "Xe máy vượt đèn đỏ phạt bao nhiêu?"}]
+    provider = FakeProvider(query, history, query)
+    result = await QueryContextualizer(provider).contextualize(query, history)
+    assert result.standalone_query == query
+    assert provider.calls == 1

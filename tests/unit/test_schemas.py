@@ -107,3 +107,14 @@ def test_invalid_resource_settings_validate_only_on_instantiation(monkeypatch):
     monkeypatch.setenv("WEAVIATE_PORT", "invalid")
     with pytest.raises(ValidationError):
         Settings()
+
+
+def test_llm_settings_ignore_invalid_retrieval_config(monkeypatch):
+    from configs.settings import LLMSettings
+
+    monkeypatch.setenv("WEAVIATE_PORT", "invalid")
+    monkeypatch.setenv("WEAVIATE_GRPC_PORT", "invalid")
+    monkeypatch.setenv("GEMINI_MODEL_NAME", "chosen-model")
+    settings = LLMSettings(gemini_api_key=None)
+    assert settings.gemini_api_key is None
+    assert settings.gemini_model_name == "chosen-model"
