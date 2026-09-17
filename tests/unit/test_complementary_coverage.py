@@ -26,7 +26,7 @@ def assessment(chunks, *, question_quote='từ 20 đến 35 km/h', unit='km/h',
                         'range_quote': chunk.text.removeprefix('Điều khiển xe chạy quá tốc độ quy định ').rstrip(';'),
                         'compatible': (compatible or {}).get(chunk.id, True)} for chunk in chunks],
         },
-        'coverage': [{'aspect': aspect, 'covered': covered} for aspect, covered in values.items()],
+        'coverage': [{'aspect': aspect, 'covered': covered, 'support_state': 'positive_support' if covered else 'unknown'} for aspect, covered in values.items()],
         'anchor_chunk_ids': [chunks[-1].id] if chunks else [],
         'sufficient': sufficient,
         'reason': 'Missing complete range and license consequence evidence.',
@@ -244,7 +244,7 @@ def test_irrelevant_facets_cannot_make_an_empty_grade_sufficient():
 
     with pytest.raises(ValidationError, match='explicit coverage'):
         EvidenceGrade(sufficient=True, reason='No required coverage.', coverage=[
-            {'aspect': 'condition_exception', 'required': False, 'covered': True},
+            {'aspect': 'condition_exception', 'required': False, 'covered': True, 'support_state': 'positive_support'},
         ])
 
 

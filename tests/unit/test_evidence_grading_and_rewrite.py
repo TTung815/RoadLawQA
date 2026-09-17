@@ -52,13 +52,13 @@ async def test_rewriter_receives_gap_and_stable_question_as_structured_data():
 
 @pytest.mark.parametrize("values", [
     {"sufficient": False},
-    {"sufficient": True, "reason": "   ", "coverage": [{"aspect": "additional_sanction", "covered": True}]},
+    {"sufficient": True, "reason": "   ", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]},
     {"sufficient": "true", "reason": "Ambiguous boolean"},
     {"sufficient": 1, "reason": "Not a boolean"},
 ])
 def test_grade_requires_real_boolean_and_nonempty_reason(values):
     with pytest.raises(ValidationError):
-        EvidenceGrade(**({"coverage": [{"aspect": "subject_violation", "covered": True}]} | values))
+        EvidenceGrade(**({"coverage": [{"aspect": "subject_violation", "covered": True, "support_state": "positive_support"}]} | values))
 
 
 @pytest.mark.asyncio
@@ -78,7 +78,7 @@ async def test_invalid_grade_fails_before_routing():
 @pytest.mark.parametrize('coverage', [
     [],
     [{'aspect': 'license_points', 'covered': 'true'}],
-    [{'aspect': 'license_points', 'covered': True}, {'aspect': 'license_points', 'covered': False}],
+    [{'aspect': 'license_points', 'covered': True, 'support_state': 'positive_support'}, {'aspect': 'license_points', 'covered': False}],
 ])
 def test_sufficient_grade_requires_nonempty_unique_and_strict_coverage(coverage):
     with pytest.raises(ValidationError):
@@ -99,10 +99,10 @@ async def test_broad_speed_sanction_grade_cannot_override_missing_license_covera
         'sufficient': True,  # Reproduce an optimistic provider flag despite a gap.
         'reason': 'Monetary penalty available; license point consequence unsupported.',
         'coverage': [
-            {'aspect': 'monetary_penalty', 'covered': True},
+            {'aspect': 'monetary_penalty', 'covered': True, 'support_state': 'positive_support'},
             {'aspect': 'license_points', 'covered': False},
-            {'aspect': 'subject_violation', 'covered': True},
-            {'aspect': 'threshold_range', 'covered': True},
+            {'aspect': 'subject_violation', 'covered': True, 'support_state': 'positive_support'},
+            {'aspect': 'threshold_range', 'covered': True, 'support_state': 'positive_support'},
         ],
     })])
     grade = await EvidenceGrader(provider).grade(question, [chunk('monetary')])
@@ -120,7 +120,7 @@ async def test_broad_speed_sanction_grade_cannot_override_missing_license_covera
 async def test_explicit_sanction_intents_use_their_required_coverage(question, aspect, covered):
     provider = ScriptedProvider([(EvidenceGrade, {
         'sufficient': covered, 'reason': 'Explicit requested consequence assessed.',
-        'coverage': [{'aspect': aspect, 'covered': covered}],
+        'coverage': [{'aspect': aspect, 'covered': covered, 'support_state': 'positive_support' if covered else 'unknown'}],
     })])
     grade = await EvidenceGrader(provider).grade(question, [chunk('monetary')])
     assert grade.sufficient is covered

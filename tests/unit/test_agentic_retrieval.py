@@ -86,7 +86,7 @@ def make_service(script, batches, max_attempts=2):
 async def test_first_attempt_sufficient_returns_without_rewrite():
     evidence = [chunk("first")]
     service, provider, retriever, events = make_service([
-        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ], [evidence])
     result = await service.retrieve(QUESTION, top_k=3)
     assert retriever.calls == [(QUESTION, 3)]
@@ -108,7 +108,7 @@ async def test_weak_then_successful_retry_grades_original_need_both_times():
     service, provider, retriever, events = make_service([
         (EvidenceGrade, {"sufficient": False, "reason": GAP, "coverage": [{"aspect": "additional_sanction", "covered": False}]}),
         (RewrittenQuery, {"rewritten_query": REWRITTEN}),
-        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ], [first, second])
     result = await service.retrieve(QUESTION, top_k=4)
     assert retriever.calls == [(QUESTION, 4), (REWRITTEN, 4)]
@@ -149,7 +149,7 @@ async def test_empty_first_attempt_is_deterministically_weak_then_retries():
     second = [chunk("second")]
     service, provider, retriever, events = make_service([
         (RewrittenQuery, {"rewritten_query": REWRITTEN}),
-        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ], [[], second])
     result = await service.retrieve(QUESTION)
     assert len(retriever.calls) == 2
@@ -230,7 +230,7 @@ async def test_history_is_contextualized_once_and_intent_survives_retry():
         (ContextualizedQuery, {"standalone_query": QUESTION}),
         (EvidenceGrade, {"sufficient": False, "reason": GAP, "coverage": [{"aspect": "additional_sanction", "covered": False}]}),
         (RewrittenQuery, {"rewritten_query": REWRITTEN}),
-        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ], [[chunk("first")], [chunk("second")]])
     result = await service.retrieve(current, history)
     assert events[0] == "ContextualizedQuery"
@@ -250,7 +250,7 @@ async def test_numeric_constraints_are_passed_to_rewrite_and_second_retrieval():
     service, provider, retriever, _ = make_service([
         (EvidenceGrade, {"sufficient": False, "reason": gap, "coverage": [{"aspect": "additional_sanction", "covered": False}]}),
         (RewrittenQuery, {"rewritten_query": rewritten}),
-        (EvidenceGrade, {"sufficient": True, "reason": "Requested range is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Requested range is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ], [[chunk("first")], [chunk("second")]])
     result = await service.retrieve(question)
     assert provider.calls[1]["payload"]["question"] == question
@@ -267,7 +267,7 @@ async def test_infrastructure_failures_propagate_without_additional_attempts(sta
     script = [
         (EvidenceGrade, {"sufficient": False, "reason": GAP, "coverage": [{"aspect": "additional_sanction", "covered": False}]}),
         (RewrittenQuery, {"rewritten_query": REWRITTEN}),
-        (EvidenceGrade, {"sufficient": True, "reason": "Sufficient.", "coverage": [{"aspect": "additional_sanction", "covered": True}]}),
+        (EvidenceGrade, {"sufficient": True, "reason": "Sufficient.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]}),
     ]
     history = []
     expected_retrievals = 1
@@ -317,7 +317,7 @@ from ai.agent.query_rewriter import RewrittenQuery
 service, provider, retriever, events = make_service([
     (EvidenceGrade, {'sufficient': False, 'reason': GAP, 'coverage': [{'aspect': 'additional_sanction', 'covered': False}]}),
     (RewrittenQuery, {'rewritten_query': REWRITTEN}),
-    (EvidenceGrade, {'sufficient': True, 'reason': 'Sufficient.', 'coverage': [{'aspect': 'additional_sanction', 'covered': True}]}),
+    (EvidenceGrade, {'sufficient': True, 'reason': 'Sufficient.', 'coverage': [{'aspect': 'additional_sanction', 'covered': True, 'support_state': 'positive_support'}]}),
 ], [[chunk('first')], [chunk('second')]])
 result = asyncio.run(service.retrieve(QUESTION))
 assert result.retrieval_attempts == 2
@@ -339,13 +339,13 @@ async def test_complementary_speed_evidence_is_graded_and_returned_together():
     rewritten = 'Ô tô vượt quá tốc độ từ 20 đến 35 km/h bị trừ điểm giấy phép lái xe và xử phạt bổ sung thế nào?'
     monetary, license = chunk('monetary'), chunk('license')
     coverage = [
-        {'aspect': 'monetary_penalty', 'covered': True},
+        {'aspect': 'monetary_penalty', 'covered': True, 'support_state': 'positive_support'},
         {'aspect': 'license_points', 'covered': False},
         {'aspect': 'additional_sanction', 'covered': False},
-        {'aspect': 'subject_violation', 'covered': True},
-        {'aspect': 'threshold_range', 'covered': True},
+        {'aspect': 'subject_violation', 'covered': True, 'support_state': 'positive_support'},
+        {'aspect': 'threshold_range', 'covered': True, 'support_state': 'positive_support'},
     ]
-    complete = [dict(item, covered=True) for item in coverage]
+    complete = [dict(item, covered=True, support_state="positive_support") for item in coverage]
     service, provider, retriever, _ = make_service([
         (EvidenceGrade, {'sufficient': True, 'reason': 'Missing license consequences.', 'coverage': coverage}),
         (RewrittenQuery, {'rewritten_query': rewritten}),
@@ -375,7 +375,7 @@ async def test_dedup_preserves_first_occurrence_and_distinct_chunks_with_same_ci
     service, provider, _, _ = make_service([
         (EvidenceGrade, {'sufficient': False, 'reason': GAP, 'coverage': [{'aspect': 'additional_sanction', 'covered': False}]}),
         (RewrittenQuery, {'rewritten_query': REWRITTEN}),
-        (EvidenceGrade, {'sufficient': True, 'reason': 'Combined evidence.', 'coverage': [{'aspect': 'additional_sanction', 'covered': True}]}),
+        (EvidenceGrade, {'sufficient': True, 'reason': 'Combined evidence.', 'coverage': [{'aspect': 'additional_sanction', 'covered': True, 'support_state': 'positive_support'}]}),
     ], [[first, duplicate], [duplicate, second, second]])
     result = await service.retrieve(QUESTION)
     assert result.chunks == [first, second]

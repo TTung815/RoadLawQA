@@ -9,6 +9,7 @@ from ai.llm.base import LLMMessage, LLMProvider
 from ai.prompts.evidence_grading import EVIDENCE_GRADING_PROMPT
 from ai.retrieval.base import RetrievedChunk
 from ai.agent.range_coverage import RangeCoverage, range_anchors, range_candidates
+from ai.agent.support import SupportState, publishable_support
 
 
 class AspectCoverage(BaseModel):
@@ -20,6 +21,14 @@ class AspectCoverage(BaseModel):
     ]
     covered: StrictBool
     required: StrictBool = True
+    support_state: SupportState = "unknown"
+
+    @model_validator(mode="after")
+    def check_support(self):
+        if not self.covered or not publishable_support(self.support_state):
+            self.covered = False
+            self.support_state = "unknown"
+        return self
 
 
 class EvidenceGrade(BaseModel):
@@ -103,8 +112,12 @@ class EvidenceGrader:
             repaired = proven and values.get('threshold_range') is False
             values['threshold_range'] = proven
             grade = grade.model_copy(deep=True)
-            grade.coverage = [AspectCoverage(aspect=aspect, covered=covered)
-                              for aspect, covered in values.items()]
+            states = {item.aspect: item.support_state for item in grade.coverage}
+            grade.coverage = [AspectCoverage(
+                aspect=aspect, covered=covered,
+                support_state=("positive_support" if aspect == "threshold_range" and proven
+                               else states.get(aspect, "unknown")),
+            ) for aspect, covered in values.items()]
             grade.anchor_chunk_ids = anchors if proven else []
             grade.sufficient = (grade.sufficient or repaired) and all(values.values())
             if repaired or not proven:

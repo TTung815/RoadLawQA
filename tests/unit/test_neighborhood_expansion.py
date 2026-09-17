@@ -31,7 +31,7 @@ def assessment(sufficient, anchors=('fine',), aspect='license_points', **coverag
     values = {'monetary_penalty': True, 'subject_violation': True, 'threshold_range': True,
               aspect: sufficient, **coverage}
     return {'sufficient': sufficient, 'reason': 'Complete coverage.' if sufficient else 'Missing consequence evidence.',
-            'coverage': [{'aspect': key, 'covered': value} for key, value in values.items()],
+            'coverage': [{'aspect': key, 'covered': value, 'support_state': 'positive_support' if value else 'unknown'} for key, value in values.items()],
             'anchor_chunk_ids': list(anchors)}
 
 

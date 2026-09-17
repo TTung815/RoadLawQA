@@ -25,7 +25,7 @@ async def test_api_with_history_contextualizes_grades_rewrites_and_returns_trace
         {"standalone_query": QUESTION},
         {"sufficient": False, "reason": GAP, "coverage": [{"aspect": "additional_sanction", "covered": False}]},
         {"rewritten_query": REWRITTEN},
-        {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True}]},
+        {"sufficient": True, "reason": "Requested sanction is supported.", "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "positive_support"}]},
     ]
 
     def handler(request):

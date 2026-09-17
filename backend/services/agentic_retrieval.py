@@ -39,6 +39,15 @@ class StructuralExpansionTrace(BaseModel):
     added_characters: int
 
 
+class RetrievalTimings(BaseModel):
+    contextualization_ms: float = 0.0
+    retrieval_ms: float = 0.0
+    grading_ms: float = 0.0
+    rewrite_ms: float = 0.0
+    structural_lookup_ms: float = 0.0
+    total_ms: float = 0.0
+
+
 class AgenticRetrievalResult(RetrievalResult):
     retrieval_queries: List[str]
     retrieval_attempts: int
@@ -48,6 +57,7 @@ class AgenticRetrievalResult(RetrievalResult):
     attempts: List[RetrievalAttempt]
     structural_expansion_enabled: bool = False
     structural_expansions: List[StructuralExpansionTrace] = Field(default_factory=list)
+    timings: RetrievalTimings = Field(default_factory=RetrievalTimings)
 
 
 class AgenticRetrievalService(HistoryAwareRetrievalService):
@@ -77,7 +87,11 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
     ) -> AgenticRetrievalResult:
         if top_k < 1:
             raise ValueError("top_k must be positive")
+        total_started = time.perf_counter()
+        timings = RetrievalTimings()
+        started = time.perf_counter()
         contextualized = await self._contextualizer.contextualize(current_query, chat_history)
+        timings.contextualization_ms = (time.perf_counter() - started) * 1000
         standalone = contextualized.standalone_query
         state: AgentState = {
             "user_query": current_query,
@@ -96,7 +110,9 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
         expansion_used = False
 
         for number in range(1, self._max_attempts + 1):
+            started = time.perf_counter()
             chunks = await self._retriever.search(query, top_k=top_k)
+            timings.retrieval_ms += (time.perf_counter() - started) * 1000
             # Preserve first occurrence and order; never compare cross-query scores.
             evidence_by_id = {chunk.id: chunk for chunk in state["retrieved_chunks"]}
             previous_size = len(evidence_by_id)
@@ -106,7 +122,9 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
             # Always grade the combined context against the original legal need.
             # No new evidence means no new basis for a different LLM judgment.
             if selected_grade is None or len(evidence) > previous_size:
+                started = time.perf_counter()
                 selected_grade = await self._grader.grade(standalone, evidence)
+                timings.grading_ms += (time.perf_counter() - started) * 1000
                 selected_attempt = number
             elif not evidence:
                 selected_attempt = number
@@ -131,6 +149,7 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
                 anchor_ids = set(grade.anchor_chunk_ids) if reliable else set()
                 anchors = [chunk for chunk in evidence if chunk.id in anchor_ids]
                 selection = await self._structural_expander.expand(anchors, grade.missing_aspects, evidence)
+                timings.structural_lookup_ms += selection.lookup_ms
                 expansion_used = selection.triggered
                 before = grade
                 for chunk in selection.chunks:
@@ -141,6 +160,7 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
                     started = time.perf_counter()
                     grade = await self._grader.grade(standalone, state["retrieved_chunks"])
                     regrade_ms = round((time.perf_counter() - started) * 1000, 2)
+                    timings.grading_ms += regrade_ms
                     selected_grade, selected_attempt = grade, number
                     state["evidence_sufficient"] = grade.sufficient
                     state["evidence_reason"] = grade.reason
@@ -157,12 +177,15 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
             if grade.sufficient:
                 break
             if number < self._max_attempts:
+                started = time.perf_counter()
                 rewritten = await self._rewriter.rewrite(standalone, query, grade)
+                timings.rewrite_ms += (time.perf_counter() - started) * 1000
                 query = rewritten.rewritten_query
                 state["rewritten_query"] = query
 
         # The validated positive attempt bound guarantees a selected grade.
         assert selected_grade is not None
+        timings.total_ms = (time.perf_counter() - total_started) * 1000
         return AgenticRetrievalResult(
             original_query=state["user_query"], standalone_query=standalone,
             chunks=state["retrieved_chunks"],
@@ -172,4 +195,5 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
             selected_attempt=selected_attempt, attempts=attempts,
             structural_expansion_enabled=self._structural_expander is not None,
             structural_expansions=expansions,
+            timings=timings,
         )
