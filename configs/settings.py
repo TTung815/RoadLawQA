@@ -34,9 +34,11 @@ class LLMSettings(AppSettings):
     _env_fields: ClassVar[Dict[str, str]] = {
         "gemini_api_key": "GEMINI_API_KEY",
         "gemini_model_name": "GEMINI_MODEL_NAME",
+        "max_retrieval_attempts": "MAX_RETRIEVAL_ATTEMPTS",
     }
     gemini_api_key: Optional[str] = None
     gemini_model_name: str = "gemini-2.5-flash"
+    max_retrieval_attempts: int = Field(default=2, ge=1, le=2)
 
     def __init__(self, **values):
         file_values = dotenv_values(PROJECT_ROOT / ".env")

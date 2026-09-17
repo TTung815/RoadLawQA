@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Agent State Specification for Future LangGraph Workflow
+Shared Agent Workflow State
 Defines the state contract for conversational legal RAG orchestration.
 """
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Dict, List, Optional, TypedDict
 from ai.retrieval.base import RetrievedChunk
 
 
 class AgentState(TypedDict, total=False):
     """
-    Typed dictionary representing the shared state across LangGraph nodes.
+    Typed dictionary for service orchestration and future workflow nodes.
 
     Workflow representation:
     user + history -> contextualize -> retrieve -> grade -> rewrite if needed -> generate -> citation verify -> final answer
@@ -22,7 +22,7 @@ class AgentState(TypedDict, total=False):
     evidence_reason: Optional[str]
     rewritten_query: Optional[str]
     retrieval_attempts: int
+    retrieval_queries: List[str]
     draft_answer: Optional[str]
     citation_valid: Optional[bool]
     final_answer: Optional[str]
-

@@ -17,6 +17,7 @@ def test_agent_state_annotations_contract():
         "evidence_reason",
         "rewritten_query",
         "retrieval_attempts",
+        "retrieval_queries",
         "draft_answer",
         "citation_valid",
         "final_answer",
@@ -53,4 +54,3 @@ def test_agent_state_instantiation_contract():
     assert len(state["retrieved_chunks"]) == 1
     assert state["evidence_sufficient"] is True
     assert state["retrieval_attempts"] == 1
-

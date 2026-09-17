@@ -28,7 +28,7 @@ class GeminiProvider(LLMProvider):
         response_schema: Optional[Type[T]] = None,
     ) -> LLMResponse:
         if not self._api_key or not self._api_key.strip():
-            raise ValueError("GEMINI_API_KEY is required for contextualization")
+            raise ValueError("GEMINI_API_KEY is required for LLM generation")
         if not self._model_name.strip():
             raise ValueError("Gemini model_name must not be empty")
 

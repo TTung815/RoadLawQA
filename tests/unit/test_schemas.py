@@ -118,3 +118,19 @@ def test_llm_settings_ignore_invalid_retrieval_config(monkeypatch):
     settings = LLMSettings(gemini_api_key=None)
     assert settings.gemini_api_key is None
     assert settings.gemini_model_name == "chosen-model"
+
+
+@pytest.mark.parametrize("value", ["0", "3", "invalid"])
+def test_agentic_attempt_limit_config_is_bounded(monkeypatch, value):
+    from configs.settings import LLMSettings
+
+    monkeypatch.setenv("MAX_RETRIEVAL_ATTEMPTS", value)
+    with pytest.raises(ValidationError):
+        LLMSettings()
+
+
+def test_agentic_attempt_limit_can_disable_retry(monkeypatch):
+    from configs.settings import LLMSettings
+
+    monkeypatch.setenv("MAX_RETRIEVAL_ATTEMPTS", "1")
+    assert LLMSettings().max_retrieval_attempts == 1
