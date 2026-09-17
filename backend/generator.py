@@ -23,6 +23,13 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
+    raw_keys = os.getenv("GEMINI_API_KEYS")
+    if raw_keys:
+        api_key = raw_keys.split(",")[0].strip()
+elif "," in api_key:
+    api_key = api_key.split(",")[0].strip()
+
+if not api_key:
     raise ValueError("GEMINI_API_KEY không được thiết lập. Hãy export GEMINI_API_KEY=your_api_key")
 
 genai.configure(api_key=api_key)

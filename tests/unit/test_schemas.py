@@ -134,3 +134,23 @@ def test_agentic_attempt_limit_can_disable_retry(monkeypatch):
 
     monkeypatch.setenv("MAX_RETRIEVAL_ATTEMPTS", "1")
     assert LLMSettings().max_retrieval_attempts == 1
+
+
+def test_llm_settings_multi_key_parsing(monkeypatch):
+    from configs.settings import LLMSettings
+
+    monkeypatch.setattr("configs.settings.dotenv_values", lambda _: {})
+
+    # Comma-separated GEMINI_API_KEYS
+    monkeypatch.setenv("GEMINI_API_KEYS", "key-1, key-2, key-3")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    s = LLMSettings()
+    assert s.gemini_api_keys == ["key-1", "key-2", "key-3"]
+    assert s.gemini_api_key == "key-1"
+
+    # Single GEMINI_API_KEY fallback
+    monkeypatch.delenv("GEMINI_API_KEYS", raising=False)
+    monkeypatch.setenv("GEMINI_API_KEY", "single-key")
+    s2 = LLMSettings()
+    assert s2.gemini_api_keys == ["single-key"]
+    assert s2.gemini_api_key == "single-key"

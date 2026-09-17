@@ -43,6 +43,11 @@ class LegacyRetrieverAdapter(Retriever):
         """
         raw_results = await asyncio.to_thread(self._sync_search, query, top_k)
 
+        return self.map_results(raw_results)
+
+    @staticmethod
+    def map_results(raw_results: Any) -> List[RetrievedChunk]:
+        """Map indexed properties consistently for search and structural lookup."""
         chunks: List[RetrievedChunk] = []
         if not raw_results:
             return chunks

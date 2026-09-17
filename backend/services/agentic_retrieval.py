@@ -2,13 +2,15 @@
 
 from typing import List, Mapping, Optional, Sequence
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+import time
 
 from ai.agent.contextualizer import QueryContextualizer
 from ai.agent.evidence_grader import EvidenceGrade, EvidenceGrader
 from ai.agent.query_rewriter import QueryRewriter
 from ai.agent.state import AgentState
 from ai.retrieval.base import Retriever
+from ai.retrieval.neighborhood import LegalNeighborhoodExpander, LegalScope
 from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
 
 
@@ -21,6 +23,22 @@ class RetrievalAttempt(BaseModel):
     evidence_chunk_ids: List[str]
 
 
+class StructuralExpansionTrace(BaseModel):
+    after_attempt: int
+    triggered: bool
+    reason: str
+    missing_aspects: List[str]
+    scopes: List[LegalScope]
+    chunk_ids: List[str]
+    citations: List[str]
+    evidence_chunk_ids: List[str]
+    grade_before: EvidenceGrade
+    grade_after: EvidenceGrade
+    lookup_ms: float
+    regrade_ms: float
+    added_characters: int
+
+
 class AgenticRetrievalResult(RetrievalResult):
     retrieval_queries: List[str]
     retrieval_attempts: int
@@ -28,6 +46,8 @@ class AgenticRetrievalResult(RetrievalResult):
     grade: EvidenceGrade
     selected_attempt: int
     attempts: List[RetrievalAttempt]
+    structural_expansion_enabled: bool = False
+    structural_expansions: List[StructuralExpansionTrace] = Field(default_factory=list)
 
 
 class AgenticRetrievalService(HistoryAwareRetrievalService):
@@ -41,6 +61,7 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
     def __init__(
         self, contextualizer: QueryContextualizer, retriever: Retriever,
         grader: EvidenceGrader, rewriter: QueryRewriter, max_attempts: int = 2,
+        structural_expander: Optional[LegalNeighborhoodExpander] = None,
     ):
         if type(max_attempts) is not int or not 1 <= max_attempts <= 2:
             raise ValueError("max_attempts must be 1 or 2")
@@ -48,6 +69,7 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
         self._grader = grader
         self._rewriter = rewriter
         self._max_attempts = max_attempts
+        self._structural_expander = structural_expander
 
     async def retrieve(
         self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
@@ -70,6 +92,8 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
         selected_grade: Optional[EvidenceGrade] = None
         selected_attempt = 0
         query = standalone
+        expansions: List[StructuralExpansionTrace] = []
+        expansion_used = False
 
         for number in range(1, self._max_attempts + 1):
             chunks = await self._retriever.search(query, top_k=top_k)
@@ -99,6 +123,37 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
                 evidence_chunk_ids=[chunk.id for chunk in evidence],
             ))
 
+            if not grade.sufficient and self._structural_expander is not None and not expansion_used:
+                coverage = {item.aspect: item.covered for item in grade.coverage}
+                reliable = coverage.get("subject_violation", False) and all(
+                    coverage.get(aspect, True) for aspect in ("threshold_range", "condition_exception")
+                )
+                anchor_ids = set(grade.anchor_chunk_ids) if reliable else set()
+                anchors = [chunk for chunk in evidence if chunk.id in anchor_ids]
+                selection = await self._structural_expander.expand(anchors, grade.missing_aspects, evidence)
+                expansion_used = selection.triggered
+                before = grade
+                for chunk in selection.chunks:
+                    evidence_by_id.setdefault(chunk.id, chunk)
+                state["retrieved_chunks"] = list(evidence_by_id.values())
+                regrade_ms = 0.0
+                if selection.chunks:
+                    started = time.perf_counter()
+                    grade = await self._grader.grade(standalone, state["retrieved_chunks"])
+                    regrade_ms = round((time.perf_counter() - started) * 1000, 2)
+                    selected_grade, selected_attempt = grade, number
+                    state["evidence_sufficient"] = grade.sufficient
+                    state["evidence_reason"] = grade.reason
+                expansions.append(StructuralExpansionTrace(
+                    after_attempt=number, triggered=selection.triggered, reason=selection.reason,
+                    missing_aspects=selection.missing_aspects, scopes=selection.scopes,
+                    chunk_ids=[chunk.id for chunk in selection.chunks],
+                    citations=[chunk.citation for chunk in selection.chunks],
+                    evidence_chunk_ids=list(evidence_by_id), grade_before=before, grade_after=grade,
+                    lookup_ms=selection.lookup_ms, regrade_ms=regrade_ms,
+                    added_characters=selection.added_characters,
+                ))
+
             if grade.sufficient:
                 break
             if number < self._max_attempts:
@@ -115,4 +170,6 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
             retrieval_attempts=state["retrieval_attempts"],
             rewritten_query=state["rewritten_query"], grade=selected_grade,
             selected_attempt=selected_attempt, attempts=attempts,
+            structural_expansion_enabled=self._structural_expander is not None,
+            structural_expansions=expansions,
         )
