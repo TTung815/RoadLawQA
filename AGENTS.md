@@ -30,19 +30,29 @@ additional legal domains later.
 
 `ai/` holds agents, prompts, providers and retrieval adapters. `backend/` contains
 FastAPI routes, services, dependencies and Pydantic schemas. `frontend/app.py`
-is the legacy Streamlit UI; `configs/` holds settings. Legal data lives in
-`data/{raw,processed}/`. Tests live in `tests/{unit,integration}/`.
+is the legacy Streamlit UI; `configs/` holds settings. Legal source artifacts live
+under `data/raw/legal/`, their registry/reviews under `data/legal_sources/`, and
+derived current-law artifacts under `data/processed/current-law/`. Tests live in
+`tests/{unit,integration}/`.
 
-Read `docs/README.md` first and `docs/MILESTONE_4.md` when working with the
-current answer-generation and verification contracts.
+Read `docs/README.md` and `docs/SESSION_HANDOFF.md` first. Read
+`docs/MILESTONE_5_STATUS.md`, `docs/MILESTONE_5.md` and `docs/LEGAL_SCOPE.md`
+before corpus or evaluation work. Read `docs/MILESTONE_4.md` when changing the
+answer-generation and verification contracts.
 
 ## Current State
 
-Milestones 0–4 completed. End-to-end flow:
+Milestones 0–4 are implemented. End-to-end flow:
 `history + query → contextualize → retrieve → coverage grade → optional structural
 expansion/rewrite/retry → accumulated evidence → grounded answer → citation verification`.
 Production negative legal conclusions remain blocked without reliable negative-support
-provenance. Next: evaluation and technical reassessment before further features.
+provenance.
+
+Milestone 5 is in progress. The legal cutoff is `2026-09-22`. Source/extraction
+review and the effective view of Nghị định 168/2024/NĐ-CP amended by
+238/2026/NĐ-CP have passed. The next task is to build deterministic current-law
+processed chunks, an isolated shadow Weaviate/BM25 index, and a frozen snapshot
+receipt. Do not audit benchmark gold or run C0–C4 before that snapshot is frozen.
 
 ## Build, Test, and Development Commands
 
@@ -56,8 +66,10 @@ docker compose --env-file .env -f docker/docker-compose.yml up -d  # Weaviate
 .venv/bin/python -m pytest tests/integration -m integration -q  # Live smoke
 ```
 
-API docs: `/docs`. Run `backend/clean_and_split.py` and `backend/build_index.py`
-only for intentional regeneration.
+API docs: `/docs`. `backend/clean_and_split.py` is hard-coded to the 2025 sources.
+`backend/build_index.py` deletes and recreates the production `LawChunks`
+collection and indexes legacy top-level JSON files. Do not run either script for
+Milestone 5 current-law/shadow work. Build isolated tools and resources instead.
 
 ## Coding Style & Naming Conventions
 
@@ -77,6 +89,25 @@ They are migration debt, not permanent architecture. Avoid casual edits;
 deliberate, benchmarked migration/refactoring may replace them later.
 Health initializes no models, database or provider. Keep retries bounded.
 Missing evidence is not proof of non-applicability. Never fabricate completeness metadata.
+
+## Current Legal Data Contract
+
+- `data/legal_sources/registry.json` and its checksums/reviews are the source of
+  truth; do not silently replace source files or update hashes without provenance.
+- Use 49/VBHN-VPQH and 55/VBHN-VPQH as canonical reading texts. Keep lineage to
+  the original laws; do not index both copies as active rules.
+- Treat 238/2026/NĐ-CP as an overlay on 168/2024/NĐ-CP, not a complete replacement.
+  The effective view is a technical artifact, not an official consolidated text.
+- Preserve `legal_as_of`, source locators, amendment provenance, temporal status
+  and publication eligibility through processing and indexing.
+- Three mixed-date 2028 locators and three future 2029 locators remain blocked
+  from publication as recorded in `nd168_effective_view_review.json`. General
+  legal review approval does not remove those record-level blocks.
+- The 50 historical benchmark questions are candidates only. Rebuild every answer,
+  citation and gold label after the current-law snapshot is frozen; do not compare
+  V1 scores with V2.
+- Do not ingest additional traffic-law documents without a scoped dependency need
+  and review. Questions requiring a missing dependency must fail closed.
 
 ## Engineering Principles
 
