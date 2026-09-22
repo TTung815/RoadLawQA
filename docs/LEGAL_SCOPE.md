@@ -1,0 +1,90 @@
+# Phạm vi pháp lý RoadLawQA V2
+
+## Mốc áp dụng
+
+- Lãnh thổ: pháp luật cấp trung ương của Việt Nam.
+- Lĩnh vực: giao thông đường bộ.
+- Mốc mặc định: pháp luật có hiệu lực tại ngày `2026-09-22`.
+- Câu hỏi nêu ngày khác chỉ được trả lời khi corpus có nguồn hiệu lực tương ứng.
+  Nếu không có, hệ thống phải nêu giới hạn và từ chối kết luận chắc chắn.
+
+Tài liệu này định nghĩa phạm vi của corpus và evaluation. Nó không tuyên bố rằng
+RoadLawQA thay thế tư vấn pháp lý cho một vụ việc cụ thể.
+
+## Ma trận phạm vi
+
+| Nhóm câu hỏi | Trạng thái | Nguồn lõi | Giới hạn |
+| --- | --- | --- | --- |
+| Khái niệm và quy tắc về hoạt động đường bộ | Hỗ trợ | 49/VBHN-VPQH | Chỉ quy định cấp trung ương có trong corpus. |
+| Quy tắc, nghĩa vụ của người tham gia giao thông đường bộ | Hỗ trợ | 55/VBHN-VPQH | Phải giữ điều kiện, ngoại lệ và mốc hiệu lực. |
+| Phương tiện, người lái, GPLX, điểm và phục hồi điểm | Hỗ trợ | 55/VBHN-VPQH; 168/2024/NĐ-CP được sửa đổi bởi 238/2026/NĐ-CP | Không suy ra thủ tục chi tiết từ văn bản ngoài corpus. |
+| Mức phạt hành chính về giao thông đường bộ | Hỗ trợ | Effective view của 168 + 238 | Phải xác định đúng chủ thể, hành vi, loại xe, hậu quả và thời điểm. |
+| Tình huống thiếu dữ kiện quyết định | Có điều kiện | Các nguồn lõi | Nêu điều kiện còn thiếu; không chọn một nhánh như sự thật. |
+| Kết luận không áp dụng/không có chế tài | Có điều kiện | Nguồn có provenance đầy đủ trong phạm vi | Policy negative-support hiện tại vẫn áp dụng; thiếu evidence không chứng minh không áp dụng. |
+| Trách nhiệm hình sự, dân sự, bảo hiểm | Ngoài phạm vi | Không có | Từ chối và nêu phạm vi. |
+| Đăng ký, đăng kiểm, kinh doanh vận tải chi tiết | Ngoài phạm vi mặc định | Không có | Chỉ mở rộng sau dependency audit riêng. |
+| Quy định địa phương, biển báo hoặc tổ chức giao thông tạm thời | Ngoài phạm vi | Không có | Không dùng luật trung ương để phủ định quy định tại chỗ. |
+| Đường sắt, đường thủy, hàng không | Ngoài phạm vi | Không có | Từ chối và nêu lĩnh vực được hỗ trợ. |
+| Khiếu nại, cưỡng chế, thủ tục xử phạt chi tiết | Ngoài phạm vi mặc định | Không có | Chỉ trả lời phần được quy định trực tiếp trong nguồn lõi. |
+
+## Loại câu hỏi được đánh giá
+
+1. `factual`: định nghĩa, nghĩa vụ, thời hạn, điều kiện hoặc quy tắc trực tiếp.
+2. `penalty`: mức tiền, trừ điểm, hình thức bổ sung hoặc biện pháp khắc phục.
+3. `scenario`: áp dụng nhiều điều kiện vào dữ kiện cụ thể.
+
+Một câu chỉ được gắn `publish` khi mọi facet bắt buộc có positive support từ
+snapshot hiện hành. Câu có nhiều nhánh chỉ được trả lời chắc chắn khi dữ kiện xác
+định được nhánh; nếu không phải trả lời có điều kiện hoặc abstain.
+
+## Chính sách thời gian
+
+- Mặc định dùng `legal_as_of=2026-09-22` và phải hiển thị/ghi nhận mốc này trong
+  evaluation run.
+- Hành vi xảy ra trước `2026-08-15` không tự động áp dụng Nghị định 238; Điều 21
+  của Nghị định 238 yêu cầu áp dụng nghị định có hiệu lực tại thời điểm hành vi
+  xảy ra và kết thúc.
+- Quy định có ngày hiệu lực riêng trong tương lai phải mang interval hiệu lực ở
+  cấp chunk/facet; trạng thái chung của văn bản không đủ.
+- Snapshot Pha 0 chỉ phục vụ tái lập baseline pháp luật năm 2025, không được dùng
+  để trả lời mặc định cho mốc hiện hành.
+
+## Nguồn lõi và dependency gate
+
+Nguồn lõi hiện hành gồm:
+
+- 49/VBHN-VPQH: canonical reading text của Luật Đường bộ;
+- 55/VBHN-VPQH: canonical reading text của Luật Trật tự, an toàn giao thông đường bộ;
+- 168/2024/NĐ-CP: văn bản gốc về xử phạt;
+- 238/2026/NĐ-CP: văn bản sửa đổi trực tiếp Nghị định 168.
+
+Không ingest một văn bản khác chỉ vì benchmark cũ dẫn nó. Dependency mới phải có:
+
+1. nhóm câu hỏi sản phẩm cần hỗ trợ;
+2. facet không thể giải quyết bằng nguồn lõi;
+3. phạm vi điều/khoản cần thiết;
+4. rủi ro tạo false completeness khi ingest một phần;
+5. quyết định include/exclude và người duyệt.
+
+Luật Xử lý vi phạm hành chính hiện là dependency candidate cho câu hỏi về độ tuổi
+và chủ thể chịu xử phạt. Cho đến khi dependency này được duyệt và đóng băng trong
+snapshot, RoadLawQA phải abstain với kết luận cần nguồn đó.
+
+## Quy tắc citation
+
+- Điều khoản của Luật Đường bộ và Luật Trật tự, an toàn giao thông đường bộ được
+  dẫn theo 49/VBHN-VPQH hoặc 55/VBHN-VPQH; metadata giữ lineage tới luật gốc và
+  văn bản sửa đổi.
+- Phần không bị sửa của Nghị định 168 dẫn Nghị định 168/2024/NĐ-CP.
+- Phần bị Nghị định 238 sửa phải nêu Nghị định 168/2024/NĐ-CP được sửa đổi, bổ
+  sung bởi Nghị định 238/2026/NĐ-CP và giữ cả hai source locator.
+- Effective view là artifact kỹ thuật, không được trình bày như văn bản hợp nhất
+  chính thức.
+
+## Hành vi an toàn
+
+- Không tìm thấy nguồn không có nghĩa là hành vi được phép hoặc không bị phạt.
+- Không dùng model confidence để chứng minh corpus đầy đủ.
+- Không công bố kết luận âm khi provenance chưa chứng minh phạm vi quy tắc áp dụng.
+- Mâu thuẫn hiệu lực, amendment chưa ánh xạ, OCR chưa duyệt hoặc citation không
+  truy ngược được đều phải chặn build hoặc chặn publication.

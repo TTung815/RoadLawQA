@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "purpose": "Phase 0 integrity receipt; not an evaluation quality score",
+  "snapshot_path": "outputs/evaluation/phase0-baseline-20260918",
+  "snapshot_manifest_sha256": "2fc1f45d0bc47bb180d1c388e78ed44f3c4d5bf0262007b52f5f6d385bf736d9",
+  "created_at": "2026-09-18T06:31:44.943661+00:00",
+  "production_commit": "0fa31c9ecaa4214ca101e598a8721caa5352a4b1",
+  "baseline_kind": "as_is_verified",
+  "gate_passed": true,
+  "collection_fingerprint": {
+    "objects_sha256": "87b96da53db58b032ff91b477544d58d733235e3e3e547db22fc86fd06e67ba4",
+    "schema_sha256": "e9bcab94496999dddd8d026fa90149aae8feca97b8881788798fb17cfc4d9b90"
+  },
+  "runtime_order_sha256": "a5f5017ecfec09a1de66728ee02bbc57e1ad9182f97247dab1a48abe1b412363",
+  "production_bm25_sha256": "3c605362cd27ac6e324f360353a24c413f26a1c96a3407aace93d02a8dcaf847",
+  "chunks": 2520,
+  "worker_probe_path": "outputs/evaluation/phase0-worker-probe.json",
+  "worker_probe_sha256": "377f7cc8df067fb7717f9b924c78fb5962bd6574a314e2f9f839195395155ebe",
+  "worker_probe": {
+    "baseline_kind": "as_is_verified",
+    "bound_chunks": 2520,
+    "device": "cpu",
+    "llm_calls": 0,
+    "model_revisions": [
+      "9bbca17d9273fd0d03d5725c7a4b0f6b45142062",
+      "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    ],
+    "model_revisions_match": true,
+    "passed": true,
+    "search_calls": 0
+  },
+  "offline_tests": {
+    "passed": 299,
+    "deselected": 1
+  },
+  "archive_requirement": "Preserve the complete snapshot bundle and worker probe; this receipt alone cannot replay evidence."
+}

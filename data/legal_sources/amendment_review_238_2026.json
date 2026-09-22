@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "review_id": "nd168-nd238-technical-review-2026-09-22",
+  "reviewed_on": "2026-09-22",
+  "reviewer": "Codex — đối chiếu provenance, locator lá và phrase anchor",
+  "decision": "approved_for_current_law_snapshot_with_publication_blocks",
+  "scope": "Duyệt kỹ thuật nguồn DOCX 238 và locator/anchor của overlay; không phải phê duyệt pháp lý.",
+  "official_source": {
+    "landing_url": "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-238-2026-nd-cp-469913.htm",
+    "official_docx_sha256": "e103437f9b4489db2b55ea005365c430c9b2711f5ae4bf2bab5c87de6f6c479a",
+    "owner_provided_docx_byte_match": true,
+    "extracted_text_sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d"
+  },
+  "amendment_map": {
+    "path": "data/legal_sources/amendments_238_2026.json",
+    "sha256_at_review": "dc3fb195260a092098c0b9c7fc01d7d4765b9c47abbfcfe26b289e65cb6f54a7",
+    "operation_count": 102,
+    "target_article_count": 24,
+    "target_articles": [
+      3,
+      6,
+      7,
+      8,
+      13,
+      14,
+      17,
+      18,
+      20,
+      21,
+      26,
+      29,
+      32,
+      40,
+      41,
+      42,
+      43,
+      44,
+      46,
+      47,
+      48,
+      50,
+      53,
+      55
+    ]
+  },
+  "locator_audit": {
+    "path": "data/legal_sources/nd168_locator_audit.json",
+    "sha256_at_review": "f1299666dfafa38f777c140d73ecb95a81512bf49bde25da42e127292677b06c",
+    "status": "passed",
+    "passed_operations": 102,
+    "failed_operations": 0,
+    "docx_extraction_reproducible": true,
+    "normalized_only_anchor_matches": [
+      {
+        "anchor": "trực thuộc trung ương",
+        "operation_id": "a19-p16-nd168-d55"
+      }
+    ]
+  },
+  "fixed_findings": [
+    "Tách toàn bộ operation gộp thành 102 locator lá.",
+    "Sửa locator khoản 6 Điều 19: điểm d khoản 6 Điều 20, không phải điểm đ.",
+    "Sửa mô hình thời gian: ba locator mốc 2028 là mixed_effective_date, không phải future toàn phần.",
+    "Bổ sung source line và state hash cho đủ 102 patch ledger entry."
+  ],
+  "remaining_gates": [
+    "Tạo processed corpus và shadow Weaviate/BM25 có manifest/checksum.",
+    "Kiểm tra membership, thứ tự BM25 và runtime rồi mới freeze current-law snapshot.",
+    "Production index chỉ được thay sau một quyết định riêng."
+  ],
+  "legal_review_status": "approved",
+  "effective_view": {
+    "path": "data/processed/current-law/nd168-effective-2026-09-22.json",
+    "sha256_at_review": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d",
+    "manifest_path": "data/legal_sources/nd168_effective_view_manifest.json",
+    "manifest_sha256_at_review": "8e9fd9e6ce29d3bc53ee5af9db07eb2d4614de5f2bf7e82b6719eb0f485d2159",
+    "status": "approved_for_snapshot_freeze",
+    "effective_locator_count": 1308,
+    "active_at_cutoff_count": 1302,
+    "future_locator_count": 3,
+    "mixed_effective_date_locator_count": 3,
+    "applied_operation_count": 102
+  },
+  "effective_view_review_path": "data/legal_sources/nd168_effective_view_review.json"
+}

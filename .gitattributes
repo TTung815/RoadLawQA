@@ -1,0 +1,6 @@
+*.pdf binary
+*.docx binary
+
+# Giữ nguyên byte của nguồn pháp luật và benchmark lịch sử đã khóa checksum.
+data/raw/legal/**/*.txt -whitespace
+evaluation/datasets/historical_50/historical_candidates.csv -whitespace

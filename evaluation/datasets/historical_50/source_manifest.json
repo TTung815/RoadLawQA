@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "historical_candidates_only",
+  "source_url": "https://docs.google.com/spreadsheets/d/1DZJOybiuDRT3api1Aj_rdL2aWeUXgiOm9QX6eyjeDxE/edit?gid=0#gid=0",
+  "path": "evaluation/datasets/historical_50/historical_candidates.csv",
+  "sha256": "d700e5adec9a869717b06034641a0d654d6c294c4f93e3d5449e934ee8ac856b",
+  "question_count": 50,
+  "gold_status": "must_be_rebuilt_for_current_law",
+  "legacy_answers_and_citations_are_gold": false
+}

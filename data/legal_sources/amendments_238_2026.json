@@ -1,0 +1,1459 @@
+{
+  "schema_version": 1,
+  "map_id": "nd168-overlay-nd238-as-of-2026-09-22",
+  "base_document_id": "168-2024-nd-cp",
+  "amending_document_id": "238-2026-nd-cp",
+  "legal_as_of": "2026-09-22",
+  "interpretation": "overlay_on_base",
+  "legal_review": {
+    "status": "approved",
+    "reviewer": "Codex (đối chiếu 102 phép sửa) + Chủ dự án (duyệt policy fail-closed)",
+    "reviewed_on": "2026-09-22",
+    "notes": [
+      "102/102 phép sửa có locator, nguyên văn nguồn và kết quả effective text đã được đối chiếu; bốn locator bị bãi bỏ không còn trong view.",
+      "Ba locator mixed mốc 2028 giữ publication_eligible=false; ba locator mốc 2029 chưa active và không được publication tại cutoff.",
+      "Phê duyệt chỉ cho phép chuẩn bị current-law snapshot và shadow index; không coi effective view là văn bản hợp nhất chính thức hoặc tự động thay production index."
+    ]
+  },
+  "operations": [
+    {
+      "operation_id": "a01-nd168-d3-k3-i",
+      "amendment_article": 1,
+      "operation": "replace",
+      "target_article": 3,
+      "target_clause": "3",
+      "target_point": "i",
+      "source_pages": [
+        1
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm i về biện pháp buộc lắp thiết bị và thiết bị an toàn."
+    },
+    {
+      "operation_id": "a01-nd168-d3-k3-l",
+      "amendment_article": 1,
+      "operation": "replace",
+      "target_article": 3,
+      "target_clause": "3",
+      "target_point": "l",
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm l; đã đối chiếu với DOCX chính thức."
+    },
+    {
+      "operation_id": "a02-nd168-d6-k1a",
+      "amendment_article": 2,
+      "operation": "add",
+      "target_article": 6,
+      "target_clause": "1a",
+      "target_point": null,
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung cảnh cáo về thiết bị an toàn cho trẻ em."
+    },
+    {
+      "operation_id": "a02-nd168-d6-k3-m",
+      "amendment_article": 2,
+      "operation": "replace",
+      "target_article": 6,
+      "target_clause": "3",
+      "target_point": "m",
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hành vi chở trẻ em cùng hàng ghế với người lái."
+    },
+    {
+      "operation_id": "a03-nd168-d13-k8-b",
+      "amendment_article": 3,
+      "operation": "replace",
+      "target_article": 13,
+      "target_clause": "8",
+      "target_point": "b",
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hành vi liên quan đến biển số."
+    },
+    {
+      "operation_id": "a04-nd168-d14-k3-b",
+      "amendment_article": 4,
+      "operation": "replace",
+      "target_article": 14,
+      "target_clause": "3",
+      "target_point": "b",
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hành vi liên quan đến biển số."
+    },
+    {
+      "operation_id": "a05-nd168-d17-k2-a",
+      "amendment_article": 5,
+      "operation": "replace",
+      "target_article": 17,
+      "target_clause": "2",
+      "target_point": "a",
+      "source_pages": [
+        2
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hành vi chở vật liệu, hàng rời."
+    },
+    {
+      "operation_id": "a06-nd168-d18-k4-a",
+      "amendment_article": 6,
+      "operation": "replace",
+      "target_article": 18,
+      "target_clause": "4",
+      "target_point": "a",
+      "source_pages": [
+        2,
+        3
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa chủ thể từ đủ 16 đến dưới 18 tuổi."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k5-dd",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "5",
+      "target_point": "đ",
+      "source_pages": [
+        3
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bốn điểm được sửa; phải tách thành leaf riêng khi dựng effective view. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k5-g",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "5",
+      "target_point": "g",
+      "source_pages": [
+        3
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bốn điểm được sửa; phải tách thành leaf riêng khi dựng effective view. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k5-l",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "5",
+      "target_point": "l",
+      "source_pages": [
+        3
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bốn điểm được sửa; phải tách thành leaf riêng khi dựng effective view. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k5-m",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "5",
+      "target_point": "m",
+      "source_pages": [
+        3
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bốn điểm được sửa; phải tách thành leaf riêng khi dựng effective view. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k5-n",
+      "amendment_article": 7,
+      "operation": "add",
+      "target_article": 20,
+      "target_clause": "5",
+      "target_point": "n",
+      "source_pages": [
+        3,
+        4
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung thiết bị ghi nhận hình ảnh khoang chở khách; chế tài có mốc 01/01/2029 theo khoản 4 Điều 53 sau sửa đổi."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k6-d",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "6",
+      "target_point": "đ",
+      "source_pages": [
+        4
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa quy định về thiết bị giám sát hành trình."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k8a",
+      "amendment_article": 7,
+      "operation": "add",
+      "target_article": 20,
+      "target_clause": "8a",
+      "target_point": null,
+      "source_pages": [
+        4
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung mức phạt 12–14 triệu đồng."
+    },
+    {
+      "operation_id": "a07-nd168-d20-k10-c",
+      "amendment_article": 7,
+      "operation": "replace",
+      "target_article": 20,
+      "target_clause": "10",
+      "target_point": "c",
+      "source_pages": [
+        4
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hậu quả/biện pháp đi kèm khoản 8 và 8a."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k2-b",
+      "amendment_article": 8,
+      "operation": "replace",
+      "target_article": 21,
+      "target_clause": "2",
+      "target_point": "b",
+      "source_pages": [
+        4,
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hành vi chở hàng."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k3-b",
+      "amendment_article": 8,
+      "operation": "replace",
+      "target_article": 21,
+      "target_clause": "3",
+      "target_point": "b",
+      "source_pages": [
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa thiết bị ghi nhận hình ảnh người lái xe."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k5-c",
+      "amendment_article": 8,
+      "operation": "replace",
+      "target_article": 21,
+      "target_clause": "5",
+      "target_point": "c",
+      "source_pages": [
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa nhóm phương tiện/chủ thể."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k8-d",
+      "amendment_article": 8,
+      "operation": "replace",
+      "target_article": 21,
+      "target_clause": "8",
+      "target_point": "d",
+      "source_pages": [
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm d, đ và bổ sung điểm e; cần tách leaf. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k8-dd",
+      "amendment_article": 8,
+      "operation": "replace",
+      "target_article": 21,
+      "target_clause": "8",
+      "target_point": "đ",
+      "source_pages": [
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm d, đ và bổ sung điểm e; cần tách leaf. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a08-nd168-d21-k8-e",
+      "amendment_article": 8,
+      "operation": "add",
+      "target_article": 21,
+      "target_clause": "8",
+      "target_point": "e",
+      "source_pages": [
+        5
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm d, đ và bổ sung điểm e; cần tách leaf. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k7-e",
+      "amendment_article": 9,
+      "operation": "replace",
+      "target_article": 26,
+      "target_clause": "7",
+      "target_point": "e",
+      "source_pages": [
+        5,
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm e và bổ sung k, l. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k7-k",
+      "amendment_article": 9,
+      "operation": "add",
+      "target_article": 26,
+      "target_clause": "7",
+      "target_point": "k",
+      "source_pages": [
+        5,
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm e và bổ sung k, l. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k7-l",
+      "amendment_article": 9,
+      "operation": "add",
+      "target_article": 26,
+      "target_clause": "7",
+      "target_point": "l",
+      "source_pages": [
+        5,
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm e và bổ sung k, l. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k8-d",
+      "amendment_article": 9,
+      "operation": "add",
+      "target_article": 26,
+      "target_clause": "8",
+      "target_point": "d",
+      "source_pages": [
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điểm d."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k13-c",
+      "amendment_article": 9,
+      "operation": "replace",
+      "target_article": 26,
+      "target_clause": "13",
+      "target_point": "c",
+      "source_pages": [
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hai điểm về trừ điểm GPLX. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a09-nd168-d26-k13-d",
+      "amendment_article": 9,
+      "operation": "replace",
+      "target_article": 26,
+      "target_clause": "13",
+      "target_point": "d",
+      "source_pages": [
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa hai điểm về trừ điểm GPLX. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a10-nd168-d29-k3a",
+      "amendment_article": 10,
+      "operation": "add",
+      "target_article": 29,
+      "target_clause": "3a",
+      "target_point": null,
+      "source_pages": [
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung khoản 3a."
+    },
+    {
+      "operation_id": "a10-nd168-d29-k4",
+      "amendment_article": 10,
+      "operation": "replace",
+      "target_article": 29,
+      "target_clause": "4",
+      "target_point": null,
+      "source_pages": [
+        6
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Thay khoản 4."
+    },
+    {
+      "operation_id": "a11-nd168-d32-k9a",
+      "amendment_article": 11,
+      "operation": "add",
+      "target_article": 32,
+      "target_clause": "9a",
+      "target_point": null,
+      "source_pages": [
+        6,
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung khoản 9a; điểm b có mốc chế tài 01/01/2028 theo Điều 53."
+    },
+    {
+      "operation_id": "a11-nd168-d32-k11-e",
+      "amendment_article": 11,
+      "operation": "add",
+      "target_article": 32,
+      "target_clause": "11",
+      "target_point": "e",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điểm e."
+    },
+    {
+      "operation_id": "a11-nd168-d32-k13-e",
+      "amendment_article": 11,
+      "operation": "add",
+      "target_article": 32,
+      "target_clause": "13",
+      "target_point": "e",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điểm e."
+    },
+    {
+      "operation_id": "a11-nd168-d32-k19-l",
+      "amendment_article": 11,
+      "operation": "replace",
+      "target_article": 32,
+      "target_clause": "19",
+      "target_point": "l",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm l."
+    },
+    {
+      "operation_id": "a11-nd168-d32-k21-c",
+      "amendment_article": 11,
+      "operation": "replace",
+      "target_article": 32,
+      "target_clause": "21",
+      "target_point": "c",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa điểm c."
+    },
+    {
+      "operation_id": "a12-nd168-d41-k2-d",
+      "amendment_article": 12,
+      "operation": "replace",
+      "target_article": 41,
+      "target_clause": "2",
+      "target_point": "d",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "đã đối chiếu DOCX chính thức: locator là điểm d."
+    },
+    {
+      "operation_id": "a12-nd168-d41-k4-k1",
+      "amendment_article": 12,
+      "operation": "add",
+      "target_article": 41,
+      "target_clause": "4",
+      "target_point": "k1",
+      "source_pages": [
+        7
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điểm k1."
+    },
+    {
+      "operation_id": "a12-nd168-d41-k5",
+      "amendment_article": 12,
+      "operation": "replace",
+      "target_article": 41,
+      "target_clause": "5",
+      "target_point": null,
+      "source_pages": [
+        7,
+        8
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Thay khoản 5 về thẩm quyền."
+    },
+    {
+      "operation_id": "a13-nd168-d42",
+      "amendment_article": 13,
+      "operation": "replace",
+      "target_article": 42,
+      "target_clause": null,
+      "target_point": null,
+      "source_pages": [
+        8
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Thay toàn bộ Điều 42."
+    },
+    {
+      "operation_id": "a14-nd168-d43",
+      "amendment_article": 14,
+      "operation": "replace",
+      "target_article": 43,
+      "target_clause": null,
+      "target_point": null,
+      "source_pages": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Thay toàn bộ Điều 43."
+    },
+    {
+      "operation_id": "a15-nd168-d44",
+      "amendment_article": 15,
+      "operation": "replace",
+      "target_article": 44,
+      "target_clause": null,
+      "target_point": null,
+      "source_pages": [
+        11
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Thay toàn bộ Điều 44."
+    },
+    {
+      "operation_id": "a16-nd168-d46-k2",
+      "amendment_article": 16,
+      "operation": "replace",
+      "target_article": 46,
+      "target_clause": "2",
+      "target_point": null,
+      "source_pages": [
+        11
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa thẩm quyền lập biên bản."
+    },
+    {
+      "operation_id": "a17-nd168-d50-k1-d",
+      "amendment_article": 17,
+      "operation": "replace",
+      "target_article": 50,
+      "target_clause": "1",
+      "target_point": "đ",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa nguyên tắc không trừ điểm khi GPLX đang bị tước."
+    },
+    {
+      "operation_id": "a17-nd168-d50-k3-a-doan2",
+      "amendment_article": 17,
+      "operation": "replace",
+      "target_article": 50,
+      "target_clause": "3",
+      "target_point": "a",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Sửa đoạn thứ hai điểm a khoản 3; locator lá là điểm a, phạm vi patch là đoạn thứ hai."
+    },
+    {
+      "operation_id": "a18-nd168-d53-k3",
+      "amendment_article": 18,
+      "operation": "add",
+      "target_article": 53,
+      "target_clause": "3",
+      "target_point": null,
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điều khoản hiệu lực riêng: chế tài liên quan thiết bị ghi nhận hình ảnh người lái xe nêu tại khoản này áp dụng từ 01/01/2028."
+    },
+    {
+      "operation_id": "a18-nd168-d53-k4",
+      "amendment_article": 18,
+      "operation": "add",
+      "target_article": 53,
+      "target_clause": "4",
+      "target_point": null,
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Bổ sung điều khoản hiệu lực riêng: chế tài liên quan thiết bị ghi nhận hình ảnh khoang chở khách nêu tại khoản này áp dụng từ 01/01/2029."
+    },
+    {
+      "operation_id": "a19-p01-nd168-d6-k3-h",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 6,
+      "target_clause": "3",
+      "target_point": "h",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 1 Điều 19: thêm ngoại lệ dẫn chiếu điểm b khoản 3a Điều 29."
+    },
+    {
+      "operation_id": "a19-p02-nd168-d6-k2-a",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 6,
+      "target_clause": "2",
+      "target_point": "a",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 2 Điều 19: thêm cụm từ về chuyển làn và khoảng cách tại hai locator của Điều 6. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p02-nd168-d6-k5-g",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 6,
+      "target_clause": "5",
+      "target_point": "g",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 2 Điều 19: thêm cụm từ về chuyển làn và khoảng cách tại hai locator của Điều 6. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p02-nd168-d7-k1-e",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 7,
+      "target_clause": "1",
+      "target_point": "e",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 2 Điều 19: thêm cụm từ về chuyển làn và khoảng cách."
+    },
+    {
+      "operation_id": "a19-p02-nd168-d8-k6-h",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 8,
+      "target_clause": "6",
+      "target_point": "h",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 2 Điều 19: thêm cụm từ về chuyển làn và khoảng cách."
+    },
+    {
+      "operation_id": "a19-p03-nd168-d6-k5-i",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 6,
+      "target_clause": "5",
+      "target_point": "i",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 3 Điều 19: thêm trường hợp cấp có thẩm quyền cấm loại phương tiện."
+    },
+    {
+      "operation_id": "a19-p03-nd168-d7-k6-b",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 7,
+      "target_clause": "6",
+      "target_point": "b",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 3 Điều 19: thêm trường hợp cấp có thẩm quyền cấm loại phương tiện."
+    },
+    {
+      "operation_id": "a19-p03-nd168-d8-k6-d",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 8,
+      "target_clause": "6",
+      "target_point": "d",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 3 Điều 19: thêm trường hợp cấp có thẩm quyền cấm loại phương tiện."
+    },
+    {
+      "operation_id": "a19-p04-nd168-d6-k7-c",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 6,
+      "target_clause": "7",
+      "target_point": "c",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 4 Điều 19: thêm cụm từ “hoặc dải dừng xe khẩn cấp”."
+    },
+    {
+      "operation_id": "a19-p04-nd168-d8-k6-b",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 8,
+      "target_clause": "6",
+      "target_point": "b",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 4 Điều 19: thêm cụm từ “hoặc dải dừng xe khẩn cấp”."
+    },
+    {
+      "operation_id": "a19-p05-nd168-d14-k6-a",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 14,
+      "target_clause": "6",
+      "target_point": "a",
+      "source_pages": [
+        12
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 5 Điều 19: thêm dẫn chiếu “khoản 1; điểm d,”."
+    },
+    {
+      "operation_id": "a19-p06-nd168-d20-k6-d",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 20,
+      "target_clause": "6",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 6 Điều 19: thêm “xe vận tải nội bộ” tại điểm d khoản 6 Điều 20. Locator cũ ghi nhầm điểm đ; validator anchor đã phát hiện và sửa."
+    },
+    {
+      "operation_id": "a19-p06-nd168-d21-k5-b",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 21,
+      "target_clause": "5",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 6 Điều 19: thêm “xe vận tải nội bộ”."
+    },
+    {
+      "operation_id": "a19-p07-nd168-d26-k11",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 26,
+      "target_clause": "11",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 7 Điều 19: thêm dẫn chiếu điểm l sau điểm h."
+    },
+    {
+      "operation_id": "a19-p08-nd168-d47-k3-h",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 47,
+      "target_clause": "3",
+      "target_point": "h",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 8 Điều 19: thêm hai cụm dẫn chiếu tại cùng điểm h."
+    },
+    {
+      "operation_id": "a19-p09-nd168-d53-k1",
+      "amendment_article": 19,
+      "operation": "add_phrase",
+      "target_article": 53,
+      "target_clause": "1",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 9 Điều 19: thêm dẫn chiếu khoản 3, khoản 4."
+    },
+    {
+      "operation_id": "a19-p10-nd168-d6-k5-p",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 6,
+      "target_clause": "5",
+      "target_point": "p",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 10 Điều 19: thay cụm mô tả hành vi để người ở bên ngoài xe."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d3-k3-q",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 3,
+      "target_clause": "3",
+      "target_point": "q",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay “giấy chứng nhận kiểm định” bằng “chứng nhận kiểm định”. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d3-k3-r",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 3,
+      "target_clause": "3",
+      "target_point": "r",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay “giấy chứng nhận kiểm định” bằng “chứng nhận kiểm định”. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d13-k3-d",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 13,
+      "target_clause": "3",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại hai locator của Điều 13. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d13-k4-b",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 13,
+      "target_clause": "4",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại hai locator của Điều 13. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d18",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 18,
+      "target_clause": "3",
+      "target_point": "c",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại Điều 18."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k2-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "2",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k2-d",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "2",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k5-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "5",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k5-d",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "5",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k6-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "6",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k6-b",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "6",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k7-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "7",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k7-b",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "7",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k8-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "8",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d21-k8-b",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 21,
+      "target_clause": "8",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại mười locator của Điều 21. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d26-k1-a",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 26,
+      "target_clause": "1",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại điểm a khoản 1, khoản 3 và khoản 5 Điều 26. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d26-k3",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 26,
+      "target_clause": "3",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại điểm a khoản 1, khoản 3 và khoản 5 Điều 26. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d26-k5",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 26,
+      "target_clause": "5",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại điểm a khoản 1, khoản 3 và khoản 5 Điều 26. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k1-b",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "1",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k11-d",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "11",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k14-h",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "14",
+      "target_point": "h",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k18-c",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "18",
+      "target_point": "c",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k18-d",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "18",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k19-dd",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "19",
+      "target_point": "đ",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k19-g",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "19",
+      "target_point": "g",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d32-k20",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 32,
+      "target_clause": "20",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại các locator liệt kê của Điều 32. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d40",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 40,
+      "target_clause": "4",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại điểm a khoản 4 Điều 40."
+    },
+    {
+      "operation_id": "a19-p11-nd168-d48",
+      "amendment_article": 19,
+      "operation": "replace_phrase",
+      "target_article": 48,
+      "target_clause": "3",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 11 Điều 19: thay cụm từ tại khoản 3 Điều 48."
+    },
+    {
+      "operation_id": "a19-p12a-nd168-d32-k7-b",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 32,
+      "target_clause": "7",
+      "target_point": "b",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 12 Điều 19: bỏ cụm từ về giấy chứng nhận kiểm định tại hai điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p12a-nd168-d32-k7-d",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 32,
+      "target_clause": "7",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 12 Điều 19: bỏ cụm từ về giấy chứng nhận kiểm định tại hai điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p12b-nd168-d32-k18-d",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 32,
+      "target_clause": "18",
+      "target_point": "đ",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 12 Điều 19: bỏ cụm dẫn chiếu “điểm e, điểm g khoản 7;”."
+    },
+    {
+      "operation_id": "a19-p13-nd168-d47-k5-c",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 47,
+      "target_clause": "5",
+      "target_point": "c",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 13 Điều 19: bỏ cụm từ “tại nơi phát hiện vi phạm”."
+    },
+    {
+      "operation_id": "a19-p14-nd168-d48-k1-a",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 48,
+      "target_clause": "1",
+      "target_point": "a",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 14 Điều 19: bỏ cụm từ “Điểm g khoản 5;”."
+    },
+    {
+      "operation_id": "a19-p15-nd168-d53-k2",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 53,
+      "target_clause": "2",
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 15 Điều 19: bỏ dẫn chiếu điểm m khoản 3 Điều 6."
+    },
+    {
+      "operation_id": "a19-p16-nd168-d55",
+      "amendment_article": 19,
+      "operation": "remove_phrase",
+      "target_article": 55,
+      "target_clause": null,
+      "target_point": null,
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 16 Điều 19: bỏ cụm từ “trực thuộc trung ương” tại Điều 55."
+    },
+    {
+      "operation_id": "a19-p17-nd168-d32-k17-d",
+      "amendment_article": 19,
+      "operation": "repeal",
+      "target_article": 32,
+      "target_clause": "17",
+      "target_point": "d",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 17 Điều 19: bãi bỏ bốn điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p17-nd168-d32-k17-dd",
+      "amendment_article": 19,
+      "operation": "repeal",
+      "target_article": 32,
+      "target_clause": "17",
+      "target_point": "đ",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 17 Điều 19: bãi bỏ bốn điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p17-nd168-d32-k17-e",
+      "amendment_article": 19,
+      "operation": "repeal",
+      "target_article": 32,
+      "target_clause": "17",
+      "target_point": "e",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 17 Điều 19: bãi bỏ bốn điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    },
+    {
+      "operation_id": "a19-p17-nd168-d32-k17-g",
+      "amendment_article": 19,
+      "operation": "repeal",
+      "target_article": 32,
+      "target_clause": "17",
+      "target_point": "g",
+      "source_pages": [
+        13
+      ],
+      "effective_from": "2026-08-15",
+      "review_status": "approved",
+      "notes": "Khoản 17 Điều 19: bãi bỏ bốn điểm. Đã tách thành locator lá để kiểm tra và patch độc lập."
+    }
+  ]
+}
