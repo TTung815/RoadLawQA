@@ -4,14 +4,14 @@
     "amendment_map_sha256": "dc3fb195260a092098c0b9c7fc01d7d4765b9c47abbfcfe26b289e65cb6f54a7",
     "amendment_text_sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d",
     "base_text_sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718",
-    "builder_sha256": "13c3058bde6a5382e7560b9c233e21da3200bc7e20ea359ffa0f4305f51d487c",
+    "builder_sha256": "ea5c42e097a9432a3bc5ab4fdda26d80223e15ccb5197b58c72f967c9cb55abe",
     "registry_sha256": "bf639a4a784a6cbfa86f7274c3582314c405295376943f01efef7efb35149f63"
   },
   "legal_review_status": "approved",
   "limitations": [
     "Đây là artifact kỹ thuật, không phải văn bản hợp nhất chính thức.",
     "Ba locator có mốc 2029 chưa active tại cutoff.",
-    "Ba locator có mốc 2028 chứa đồng thời phạm vi đã hiệu lực và phạm vi được hoãn; chúng được đánh dấu mixed_effective_date và chặn publication cho tới legal review.",
+    "Ba locator có mốc 2028 chứa đồng thời phạm vi đã hiệu lực và phạm vi được hoãn; chúng được đánh dấu mixed_effective_date và tiếp tục chặn publication sau legal review chung, cho tới khi điều kiện được biểu diễn đủ an toàn và có duyệt publication riêng.",
     "View không tự suy luận bản cũ tiếp tục áp dụng trong thời gian chờ mốc 2028/2029.",
     "Được dùng để tạo snapshot/shadow index; việc thay production index là gate riêng."
   ],

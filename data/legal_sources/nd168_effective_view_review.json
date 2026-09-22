@@ -10,7 +10,7 @@
     "path": "data/processed/current-law/nd168-effective-2026-09-22.json",
     "sha256": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d",
     "manifest_path": "data/legal_sources/nd168_effective_view_manifest.json",
-    "manifest_sha256": "8e9fd9e6ce29d3bc53ee5af9db07eb2d4614de5f2bf7e82b6719eb0f485d2159"
+    "manifest_sha256": "8dc94982d76318341f762599a22177070a3f3b6042bc298956a2e2617c253d1c"
   },
   "source_evidence": {
     "official_landing_url": "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-238-2026-nd-cp-469913.htm",
@@ -105,7 +105,7 @@
     "approved_on": "2026-09-22",
     "approved_by": "Chủ dự án qua hội thoại",
     "decision": "approve_fail_closed_temporal_policy",
-    "meaning": "Cho phép dùng effective view cho bước chuẩn bị corpus, nhưng mọi câu phụ thuộc ba locator mixed_2028 phải abstain cho tới khi có duyệt pháp lý hoặc biểu diễn điều kiện đủ an toàn.",
+    "meaning": "Cho phép dùng effective view cho bước chuẩn bị corpus, nhưng mọi câu phụ thuộc ba locator mixed_2028 phải abstain cho tới khi điều kiện được biểu diễn đủ an toàn và có duyệt publication riêng; legal review chung không tự gỡ chặn này.",
     "does_not_authorize": [
       "chunk hoặc index production",
       "dùng locator bị chặn làm gold benchmark",

@@ -548,7 +548,7 @@ def build_effective_view(
         "limitations": [
             "Đây là artifact kỹ thuật, không phải văn bản hợp nhất chính thức.",
             "Ba locator có mốc 2029 chưa active tại cutoff.",
-            "Ba locator có mốc 2028 chứa đồng thời phạm vi đã hiệu lực và phạm vi được hoãn; chúng được đánh dấu mixed_effective_date và chặn publication cho tới legal review.",
+            "Ba locator có mốc 2028 chứa đồng thời phạm vi đã hiệu lực và phạm vi được hoãn; chúng được đánh dấu mixed_effective_date và tiếp tục chặn publication sau legal review chung, cho tới khi điều kiện được biểu diễn đủ an toàn và có duyệt publication riêng.",
             "View không tự suy luận bản cũ tiếp tục áp dụng trong thời gian chờ mốc 2028/2029.",
             (
                 "Được dùng để tạo snapshot/shadow index; việc thay production index là gate riêng."
