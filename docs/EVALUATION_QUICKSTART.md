@@ -85,11 +85,17 @@ thiện trung bình không bảo đảm cải thiện mọi câu. Artifact và p
 
 ## Các phép đo cần phân biệt
 
+Để chấm các metric generation riêng trên đáp án đã lưu, xem
+[GENERATION_EVALUATION.md](GENERATION_EVALUATION.md). Scorer này có lời gọi
+LLM judge và kết quả riêng; điểm rubric 44/50 ở trên không phải Factual F1
+hoặc Faithfulness. Không cần chạy lại retrieval/generation để chấm bổ sung.
+
 | Thành phần | Đã có | Phép đo mở rộng phù hợp |
 | --- | --- | --- |
 | Retrieval | HitRate/Recall@1,5,10, coverage và latency trên reviewed v2 | Nhãn relevance rộng hơn các nguồn tham chiếu gold |
 | Reranker | MRR/nDCG nhị phân trước–sau trên cùng pool | Ablation end-to-end để đo tác động tới đáp án |
-| Generation/verification | Review claims/citation, completeness, trạng thái và repair | Đúng / thiếu ý / sai / chưa trả lời, kèm kiểm điều kiện áp dụng |
+| Generation | Factual P/R/F1, Faithfulness, Answer Relevancy, Citation P/R bằng LLM judge; review rubric riêng | Owner duyệt các judgment và kiểm trên held-out sau chốt cấu hình |
+| Verification | Pass/fail, repair và latency | Độ chính xác phát hiện lỗi trên bộ nhãn độc lập |
 | Hội thoại | Probe intent, follow-up và expansion | Accuracy intent, bảo toàn dữ kiện và thành công nhiều lượt |
 
 Cột cuối là hướng đo tiếp, chưa có kết quả. Không tái sử dụng bảng

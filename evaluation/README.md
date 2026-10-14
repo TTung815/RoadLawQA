@@ -57,6 +57,9 @@ Giữ chúng nguyên vẹn. Thiết kế runtime hiện tại ở
 - `core_scoring.py`: gói review, đối chiếu nguồn và tổng hợp rubric hiện có.
 - `module_scoring.py`: HitRate/Recall/MRR/nDCG trước–sau rerank cùng pool,
   coverage theo facet và latency; không gọi model hoặc truy xuất lại.
+- `generation_scoring.py`: chấm lại đáp án đã lưu bằng LLM judge; Factual
+  Precision/Recall/F1, Faithfulness, Answer Relevancy và Citation Precision/Recall.
+  [Phương pháp và giới hạn](../docs/GENERATION_EVALUATION.md); có phí API riêng.
 - `llm_preflight.py`: kiểm provider/schema trước lượt chạy thật.
 - `*_dataset.py`, `phase3_design.py`, `current_law_snapshot.py`: build/verify
   dataset và corpus; các module có tên lịch sử vẫn là dependency cần dùng.
