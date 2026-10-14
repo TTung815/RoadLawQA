@@ -1,7 +1,6 @@
 """Deterministic provenance checks followed by claim-level semantic verification."""
 
 import json
-import re
 from typing import Annotated, Literal, Sequence
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
@@ -14,6 +13,8 @@ from ai.agent.support import SupportState, publishable_support
 from ai.llm.base import LLMMessage, LLMProvider
 from ai.prompts.citation_verification import CITATION_VERIFICATION_PROMPT
 from ai.retrieval.base import RetrievedChunk
+from ai.agent.evidence import SourceReferences, publishable_chunk
+from ai.diagnostics import traced
 
 
 class ClaimAssessment(BaseModel):
@@ -41,6 +42,7 @@ class SemanticVerification(BaseModel):
     answer_complete: StrictBool
     completeness_reason: NonEmptyText
     range_assessments: list[RangeAssessment] = Field(default_factory=list)
+    response_appropriate: StrictBool = False
 
 
 class CitationVerification(BaseModel):
@@ -51,41 +53,42 @@ class CitationVerification(BaseModel):
     issues: list[str] = Field(default_factory=list)
     assessments: list[ClaimAssessment] = Field(default_factory=list)
     range_assessments: list[VerifiedRangeAssessment] = Field(default_factory=list)
-
-
-# Legal reference strings must come from server-owned citation metadata only.
-_INLINE_REFERENCE = re.compile(
-    r"\b(?:điều|khoản)\s+\d|\bđiểm\s+[a-zđ]\b|"
-    r"\b(?:nghị định|luật)\s+(?:số\s+)?\d", re.IGNORECASE,
-)
+    response_appropriate: bool | None = None
 
 
 class CitationVerifier:
     def __init__(self, provider: LLMProvider):
         self._provider = provider
 
+    @traced("verification")
     async def verify(
         self, question: str, draft: DraftAnswer, chunks: Sequence[RetrievedChunk],
         required_aspects: Sequence[str] = (),
         range_coverage: RangeCoverage | None = None,
+        *, coverage_gaps: Sequence[str] = (), coverage_reason: str = "",
     ) -> CitationVerification:
         by_id = {chunk.id: chunk for chunk in chunks}
         if len(by_id) != len(chunks):
             raise ValueError("Final evidence must have unique chunk IDs")
         issues = []
-        if not draft.claims:
+        if not draft.claims and not (draft.limitations and (draft.response_kind == "abstain" or
+                                    (draft.response_kind == "clarification" and draft.follow_up_questions))):
             issues.append("Generator returned no grounded claims")
+        if draft.response_kind != "complete" and not draft.limitations:
+            issues.append("Partial answers must explain their limits")
+        if draft.response_kind == "abstain" and (draft.claims or draft.follow_up_questions):
+            issues.append("Abstention must contain only an explanation of missing evidence")
         for index, claim in enumerate(draft.claims):
             if len(set(claim.chunk_ids)) != len(claim.chunk_ids):
                 issues.append(f"Claim {index}: duplicate citation IDs")
-            if _INLINE_REFERENCE.search(claim.text):
-                issues.append(f"Claim {index}: inline legal references are not permitted")
             for identifier in claim.chunk_ids:
                 chunk = by_id.get(identifier)
                 if chunk is None:
                     issues.append(f"Claim {index}: citation ID outside final evidence: {identifier}")
                 elif not chunk.citation.strip():
                     issues.append(f"Claim {index}: missing citation metadata: {identifier}")
+                elif not publishable_chunk(chunk):
+                    issues.append(f"Claim {index}: source is not eligible for publication")
         if issues:
             return CitationVerification(status="failed", provenance_valid=False, issues=issues)
 
@@ -107,16 +110,21 @@ class CitationVerifier:
                         ", ".join(sorted(required_ids - cited_ids))],
             )
 
+        refs = SourceReferences(chunks)
         result = await self._provider.generate_structured(
             [LLMMessage(role="system", content=CITATION_VERIFICATION_PROMPT),
-             LLMMessage(role="user", content=json.dumps({
+             LLMMessage(role="user", content=json.dumps(refs.translate({
                  "question": question, "required_aspects": list(required_aspects),
                  "claims": [{"claim_index": index, "text": claim.text,
-                             "cited_chunks": evidence_payload([by_id[id_] for id_ in claim.chunk_ids])}
+                             "chunk_ids": claim.chunk_ids}
                             for index, claim in enumerate(draft.claims)],
                  "final_evidence": evidence_payload(chunks),
                  "required_range": required_range,
-             }, ensure_ascii=False))],
+                 "response_kind": draft.response_kind,
+                 "limitations": draft.limitations,
+                 "follow_up_questions": draft.follow_up_questions,
+                 "coverage_gaps": list(coverage_gaps), "coverage_reason": coverage_reason,
+             }), ensure_ascii=False))],
             response_schema=SemanticVerification, temperature=0.0,
         )
         semantic = SemanticVerification.model_validate(result)
@@ -147,12 +155,17 @@ class CitationVerifier:
         for item in semantic.range_assessments:
             if not item.addressed:
                 issues.append(f"Range branch {item.branch_index}: {item.reason}")
-        if not semantic.answer_complete:
+        adequate = semantic.response_appropriate and (
+            semantic.answer_complete if draft.response_kind == "complete" else True)
+        if not semantic.response_appropriate:
+            issues.append("Unsupported limitations or clarification questions: " + semantic.completeness_reason)
+        if draft.response_kind == "complete" and not semantic.answer_complete:
             issues.append("Incomplete answer: " + semantic.completeness_reason)
         return CitationVerification(
-            status="passed" if supported and semantic.answer_complete and range_complete else "failed",
+            status="passed" if supported and adequate and range_complete else "failed",
             provenance_valid=True, semantic_valid=supported,
             answer_complete=semantic.answer_complete and range_complete, issues=issues,
+            response_appropriate=semantic.response_appropriate,
             assessments=semantic.assessments,
             range_assessments=[VerifiedRangeAssessment(
                 **item.model_dump(), chunk_id=branches[item.branch_index]["chunk_id"],

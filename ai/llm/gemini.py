@@ -7,6 +7,7 @@ from urllib.parse import quote
 import httpx
 
 from ai.llm.base import LLMMessage, LLMProvider, LLMResponse, T
+from ai.llm.usage import normalize_usage
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +45,11 @@ class GeminiProvider(LLMProvider):
         self._transport = transport
         self._request_timeout = request_timeout
         self._max_transient_retries = max_transient_retries
+        self._last_usage = None
+
+    @property
+    def last_usage(self):
+        return self._last_usage
 
     @property
     def _api_key(self) -> Optional[str]:
@@ -59,6 +65,7 @@ class GeminiProvider(LLMProvider):
         self, messages: List[LLMMessage], temperature: float,
         response_schema: Optional[Type[T]] = None,
     ) -> LLMResponse:
+        self._last_usage = None
         if not self._api_keys:
             raise ValueError("GEMINI_API_KEY is required for LLM generation")
         if not self._model_name.strip():
@@ -174,6 +181,7 @@ class GeminiProvider(LLMProvider):
         )
         if not text.strip():
             raise ValueError("Gemini returned no text")
+        self._last_usage = normalize_usage("gemini", raw.get("usageMetadata"))
         return LLMResponse(
             content=text, raw_response=raw, usage=raw.get("usageMetadata") or {},
         )

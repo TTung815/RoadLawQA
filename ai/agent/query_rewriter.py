@@ -8,6 +8,7 @@ from pydantic import BaseModel, StringConstraints
 from ai.agent.evidence_grader import EvidenceGrade
 from ai.llm.base import LLMMessage, LLMProvider
 from ai.prompts.query_rewrite import QUERY_REWRITE_PROMPT
+from ai.diagnostics import traced
 
 
 class RewrittenQuery(BaseModel):
@@ -18,6 +19,7 @@ class QueryRewriter:
     def __init__(self, llm_provider: LLMProvider):
         self._llm_provider = llm_provider
 
+    @traced("query_rewrite")
     async def rewrite(
         self, question: str, retrieval_query: str, grade: EvidenceGrade,
     ) -> RewrittenQuery:

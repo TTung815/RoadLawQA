@@ -4,3 +4,5 @@
 # Giữ nguyên byte của nguồn pháp luật và benchmark lịch sử đã khóa checksum.
 data/raw/legal/**/*.txt -whitespace
 evaluation/datasets/historical_50/historical_candidates.csv -whitespace
+# Feedback owner review giữ nguyên whitespace của nội dung gốc.
+evaluation/datasets/current_law_20260922_reviewed_v1/review_feedback.txt -whitespace

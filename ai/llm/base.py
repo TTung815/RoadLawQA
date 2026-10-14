@@ -30,6 +30,15 @@ class LLMProvider(ABC):
     Decouples application logic from specific models (Gemini, OpenAI, Local vLLM).
     """
 
+    @property
+    def last_usage(self) -> Optional[Dict[str, Any]]:
+        """Normalized usage from the last request; unavailable providers return None.
+
+        Evaluation invokes a provider sequentially. A structured call still
+        returns its Pydantic model; this hook preserves its token observations.
+        """
+        return None
+
     @abstractmethod
     async def generate(
         self,

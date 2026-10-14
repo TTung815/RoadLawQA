@@ -7,6 +7,7 @@ from pydantic import BaseModel, StringConstraints
 
 from ai.llm.base import LLMMessage, LLMProvider
 from ai.prompts.contextualization import CONTEXTUALIZATION_PROMPT
+from ai.diagnostics import traced
 
 
 class ContextualizedQuery(BaseModel):
@@ -30,6 +31,7 @@ class QueryContextualizer:
     def __init__(self, llm_provider: LLMProvider):
         self._llm_provider = llm_provider
 
+    @traced("contextualization")
     async def contextualize(
         self,
         current_query: str,

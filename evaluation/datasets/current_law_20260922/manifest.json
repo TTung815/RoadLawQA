@@ -1,0 +1,41 @@
+{
+  "artifacts": {
+    "AUDIT.md": "5aea36ba17709824b79125f40c05998ad62545768febc7bd2301143e4844d05f",
+    "PILOT.md": "dfb901cc4d716058a6606b42148da51ac797474541c1b45b246959fbc4b4b2e0",
+    "audit.json": "4ce6288b5360027a6cdb755c3618cdd5b10e56e7e4d74e28d92d73e041e78a4b",
+    "case.schema.json": "9fa72b90d2a8c3d6aadb09cad7c054ad90725581a396bc9b4f927d156b3cf52b",
+    "cases.jsonl": "e10ef490f5184f1a3bfe3e7df0f2669c805208e20522e76ce895db823be6517a",
+    "draft_labels.json": "c7362aef038166b6c7aaa71b9582253388822904de3a0df8c8d365fe31fd5c60",
+    "evidence_catalog.json": "768882e66af3376a8a6b40dea7a877a94a91419b5e60d2fa402cc73de261cd26"
+  },
+  "benchmark_or_c0_c4_run": false,
+  "builder": {
+    "path": "evaluation/current_law_dataset.py",
+    "sha256": "c62b9d06e2674b800e766ba45c79d86e821908bc5d188a9cda409b4a2265cbe2"
+  },
+  "dataset_id": "current_law_20260922_candidates_v1",
+  "format_version": 1,
+  "legal_as_of": "2026-09-22",
+  "official_scoring_ready": false,
+  "production_index_changed": false,
+  "protocol": {
+    "path": "docs/BENCHMARK_PROTOCOL.md",
+    "sha256": "49d7bbf07912da693b033d1f94d6bf4a1f09611634280e4210baa3047dded24f"
+  },
+  "schema_sha256": "85521b91e6f4c56c7866735ce01cc1f5bb8b7a1d8a05760baceb006a8c842f02",
+  "snapshot": {
+    "collection_fingerprint": {
+      "objects_sha256": "7d3852a418d1d807c84e2fb8811cf9008ca6c60bb32dcb3aa4ddfe79008b8ab3",
+      "schema_sha256": "822bbaab50b399629cf0c5d7a4df1d04ca824b1c316655628b45c28d504b77ca"
+    },
+    "id": "roadlawqa-current-law-2026-09-22",
+    "manifest_sha256": "43652b7ad776ff4e7c9dceb9940f5fb777392769f4a66738894fc4a80543bedd",
+    "receipt_sha256": "afb2f618eae1495363353c760f71a48ce595c1f5cad6b637c9f5b8485d0add3f"
+  },
+  "source": {
+    "path": "evaluation/datasets/historical_50/historical_candidates.csv",
+    "sha256": "d700e5adec9a869717b06034641a0d654d6c294c4f93e3d5449e934ee8ac856b",
+    "source_manifest_sha256": "8198aae68719af7e936e0d057322a443366dd19085903b9ffe619b08fe113806"
+  },
+  "status": "draft_needs_independent_review"
+}

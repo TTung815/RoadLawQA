@@ -12,12 +12,13 @@ from ai.agent.state import AgentState
 from ai.retrieval.base import Retriever
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander, LegalScope
 from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
+from ai.diagnostics import traced
 
 
 class RetrievalAttempt(BaseModel):
     attempt: int
     query: str
-    grade: EvidenceGrade
+    grade: EvidenceGrade | None = None
     chunk_ids: List[str]
     citations: List[str]
     evidence_chunk_ids: List[str]
@@ -32,8 +33,8 @@ class StructuralExpansionTrace(BaseModel):
     chunk_ids: List[str]
     citations: List[str]
     evidence_chunk_ids: List[str]
-    grade_before: EvidenceGrade
-    grade_after: EvidenceGrade
+    grade_before: EvidenceGrade | None = None
+    grade_after: EvidenceGrade | None = None
     lookup_ms: float
     regrade_ms: float
     added_characters: int
@@ -50,9 +51,10 @@ class RetrievalTimings(BaseModel):
 
 class AgenticRetrievalResult(RetrievalResult):
     retrieval_queries: List[str]
+    retrieval_query: str | None = None
     retrieval_attempts: int
     rewritten_query: Optional[str]
-    grade: EvidenceGrade
+    grade: EvidenceGrade | None = None
     selected_attempt: int
     attempts: List[RetrievalAttempt]
     structural_expansion_enabled: bool = False
@@ -81,6 +83,7 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
         self._max_attempts = max_attempts
         self._structural_expander = structural_expander
 
+    @traced("retrieval")
     async def retrieve(
         self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
         top_k: int = 5,
@@ -142,11 +145,10 @@ class AgenticRetrievalService(HistoryAwareRetrievalService):
             ))
 
             if not grade.sufficient and self._structural_expander is not None and not expansion_used:
-                coverage = {item.aspect: item.covered for item in grade.coverage}
-                reliable = coverage.get("subject_violation", False) and all(
-                    coverage.get(aspect, True) for aspect in ("threshold_range", "condition_exception")
-                )
-                anchor_ids = set(grade.anchor_chunk_ids) if reliable else set()
+                # Lookup gathers candidates; it does not authorize an answer.
+                # An explicit reference may be needed to resolve applicability
+                # itself, so do not require that applicability be proven first.
+                anchor_ids = set(grade.anchor_chunk_ids)
                 anchors = [chunk for chunk in evidence if chunk.id in anchor_ids]
                 selection = await self._structural_expander.expand(anchors, grade.missing_aspects, evidence)
                 timings.structural_lookup_ms += selection.lookup_ms

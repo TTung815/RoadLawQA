@@ -71,7 +71,7 @@ def test_settings_does_not_require_gemini_key():
     settings = Settings(gemini_api_key=None)
     assert settings.gemini_api_key is None
     assert settings.app_name == "VietLaw-Agent"
-    assert settings.weaviate_collection == "LawChunks"
+    assert settings.weaviate_collection == "LawStructured20260922V2"
     assert settings.bm25_index_path.name == "bm25_index.pkl"
 
     global_s = get_settings()

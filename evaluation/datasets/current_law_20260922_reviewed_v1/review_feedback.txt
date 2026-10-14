@@ -1,0 +1,50 @@
+Câu 1: Duyệt. Nhưng câu trả lời tham chiếu (draft) của bạn lại cung cấp nội dung “Câu hỏi này chỉ hỏi quy tắc cấm, không hỏi ngưỡng xử phạt” như này thì thấy hơi thừa khi mà người dùng hỏi.
+Câu 2: Duyệt
+Câu 3: Duyệt
+Câu 4: Duyệt. Tương tự câu 1, nội dung này “Không dùng kết luận này để tự chuyển đổi quyền lái của GPLX A1 cấp theo quy định cũ.” là bạn cung cấp để reviewer xem hả, hay là có trong câu trả lời luôn
+Câu 5: Duyệt
+Câu 6: Duyệt
+Câu 7: Duyệt
+Câu 8: Duyệt
+Câu 9: Duyệt Abstain .Câu này tôi thắc mắc là ngày bị trừ điểm ảnh hưởng gì khi khoàn 2 Điều 58 55/VBHN-VPQH ghi “ Giấy phép lái xe chưa bị trừ hết điểm và không bị trừ điểm trong thời hạn 12 tháng từ ngày bị trừ điểm gần nhất thì được phục hồi đủ 12 điểm.” rồi mà bạn bảo snapshot hiện hành không phải snapshot lịch sử đã xác minh gì đó.
+Câu 10: Duyệt Abstain. Nộp tiền phạt và khôi phục điểm là 2 cơ chế độc lập (k2 Đ58 VBHN 55); không tự hứa trả điểm ngay.
+Câu 11: Duyệt. Tôi thắc mắc là tại sao phải thêm “tại ngày 22/09/2026”, benchmark cần thiết phải vậy hả, khi người dùng hỏi thì người ta hỏi hiện nay hoặc không nói cụ thể mà tại sao mình phải nói cụ thể vậy.
+Câu 12: Duyệt
+Câu 13: Duyệt
+Câu 14: Duyệt
+Câu 15: Duyệt
+Câu 16: Duyệt conditional. Mô tô chở 2 người phụ thuộc đối tượng chở có thuộc ngoại lệ cấm (cấp cứu, trẻ <12 tuổi...) hay không.
+Câu 17: Duyệt
+Câu 18: Duyệt
+Câu 19: Duyệt
+Câu 20: Duyệt
+Câu 21: Duyệt
+Câu 22: Duyệt
+Câu 23: Duyệt Abstain. Trừ điểm chốt 4 điểm (điểm b k1 Đ50 NĐ 168), nhưng tổng tiền phạt cần Luật XLVPHC (chưa ingest).  Nhưng theo tôi tìm hiểu thì theo 90/VBHN-VPQH điểm d khoản 1 Điều 3 ghi rằng: “Chỉ xử phạt vi phạm hành chính khi có hành vi vi phạm hành chính do pháp luật quy định. Một hành vi vi phạm hành chính chỉ bị xử phạt một lần. Nhiều người cùng thực hiện một hành vi vi phạm hành chính thì mỗi người vi phạm đều bị xử phạt về hành vi vi phạm hành chính đó. Một người thực hiện nhiều hành vi vi phạm hành chính hoặc vi phạm hành chính nhiều lần thì bị xử phạt về từng hành vi vi phạm, trừ trường hợp hành vi vi phạm hành chính nhiều lần được Chính phủ quy định là tình tiết tăng nặng;” Bây giờ phải ingest cả Luật XLVPHC vào hả.
+Câu 24: Câu này “tấm phản quang” thì có vấn đề gì không. Vì theo Khoản 1 Điều 15 là “Phạt tiền từ 100.000 đồng đến 200.000 đồng đối với hành vi điều khiển xe không có bộ phận phát âm thanh cảnh báo (còi, chuông); không có đèn chiếu sáng hoặc tấm phản quang phía trước; không có đèn tín hiệu hoặc tấm phản quang phía sau xe (đối với loại xe quy định phải có bộ phận này).”  , tại sao ở bạn lại có điểm i khoản 1 điều 9 vậy, chả lẽ cả 2 cùng trỏ về 1 nội dung hả.
+Câu 25: Duyệt
+Câu 26: Duyệt
+Câu 27: Duyệt. Chủ xe cá nhân giao ô tô cho người không GPLX: Phạt 28–30tr (điểm i k14 Đ32 NĐ 168), không lấy mức tổ chức.
+Câu 28: Duyệt.  Lắp/sử dụng còi/đèn ưu tiên trái phép: Phạt 4–6tr (điểm e k5 Đ6) + Tịch thu thiết bị (điểm a k15 Đ6 NĐ 168).
+Câu 29: Duyệt Abstain. Xe tang thuộc danh sách xe ưu tiên (k1 Đ27) nhưng không nằm trong nhóm được vượt đèn đỏ (k4 Đ27 VBHN 55).
+Câu 30: Duyệt. GPLX tích hợp A1/B, đi xe máy bị trừ điểm thì trừ vào phần A1 không thời hạn (điểm d k1 Đ50 NĐ 168).
+Câu 31: Duyệt
+Câu 32: Duyệt
+Câu 33: Duyệt
+Câu 34: Duyệt. Vi phạm nhiều hành vi cùng lần: Chỉ trừ điểm hành vi bị trừ nhiều điểm nhất (điểm b k1 Đ50 NĐ 168).
+Câu 35: Duyệt. 
+Câu 36: Duyệt
+Câu 37: Duyệt. Mô tô không đội mũ bảo hiểm: Phạt người điều khiển 400k–600k (điểm h k2 Đ7 NĐ 168).
+Câu 38: Duyệt. Ô tô đi ngược chiều trên cao tốc: Phạt 30–40tr (điểm đ k11 Đ6), trừ 10 điểm (điểm d k16 Đ6 NĐ 168).
+Câu 39: Duyệt.  Người lái xe tải chở quá tải 30%–50%: Phạt 3–5tr (điểm a k5 Đ21 NĐ 168, đã thẩm định lại với NĐ 238/2026).  Tôi có một thắc mắc là tại sao phải có “không đồng thời là chủ xe” vậy. 
+Câu 40: Duyệt. Ô tô không nhường đường xe ưu tiên phát tín hiệu: Phạt 6–8tr (điểm b k6 Đ6 NĐ 168).
+Câu 41: Duyệt. Lái ô tô lúc 18h30 không bật đèn: Phạt 800k–1tr (k1 Đ20 VBHN 55 + điểm g k3 Đ6 NĐ 168), độc lập cảm nhận trời còn sáng.
+Câu 42: Duyệt Conditional. Nổ lốp trên cao tốc đặt tam giác 50m: Phụ thuộc dừng ở làn khẩn cấp hay làn xe chạy (cần tối thiểu 150m theo k2 Đ25 VBHN 55).  Mà tôi thấy ở Khoản 4 Điều 19 Nghị định 238/2026/NĐ-CP có bổ sung cụm từ “hoặc dải dừng xe khẩn cấp” vào sau cụm từ “làn dừng xe khẩn cấp” tại điểm c khoản 7 điều 6 Nghị định 138/2024/NĐ-CP. Bạn đang xem trên văn bản luật nào vậy, đã hợp nhất,update giữa 238 với 138 chưa.
+Câu 43: Duyệt Abstain. Trẻ 13 tuổi lái xe 110cc: Cần Luật XLVPHC để xác định độ tuổi chịu phạt tiền; không suy từ độ tuổi lái xe.   Câu này bạn có nghĩ nên thay thành câu khác không vì câu hỏi cần phải ingest luật khác
+Câu 44: Duyệt Conditional. Đỗ ô tô cách cổng 3m: Phụ thuộc cổng có bố trí đường cho xe ra vào hay không (điểm k k4 Đ18 VBHN 55).
+Câu 45: Duyệt. Chạy 92/80 km/h (vượt 12 km/h, thuộc khoảng 10–20): Phạt 4–6tr (điểm đ k5 Đ6 NĐ 168).
+Câu 46: Duyệt Conditional. Xe cứu thương chưa có bệnh nhân: Phụ thuộc có đang thực hiện nhiệm vụ cấp cứu & phát tín hiệu ưu tiên không (Đ27 VBHN 55).
+Câu 47: Duyệt. Đi xe máy đeo tai nghe nghe Google Maps: Bị cấm (điểm c k3 Đ33 VBHN 55), Phạt 800k–1tr (điểm đ k4 Đ7 NĐ 168).
+Câu 48: Duyệt Conditional. Kéo ô tô chết máy bằng cáp mềm: Phụ thuộc hệ thống phanh có còn hiệu lực hay không (nếu mất phanh phải dùng thanh cứng theo k1 Đ29 VBHN 55).
+Câu 49: Duyệt. Vượt xe container không được vượt quá tốc độ tối đa cho phép (k1 Đ12 VBHN 55, điểm a k2 Đ26 VBHN 49).
+Câu 50: Duyệt. Duyệt. Chở vợ + 2 con nhỏ = 3 người được chở -> Vi phạm chở từ 03 người trở lên (k1 Đ33 VBHN 55 + điểm b k3 Đ7 NĐ 168).

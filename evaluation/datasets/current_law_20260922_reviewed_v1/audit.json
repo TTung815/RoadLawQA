@@ -1,0 +1,595 @@
+{
+  "additional_documents_indexed": 0,
+  "benchmark_c0_c4_ready": false,
+  "changes": [
+    {
+      "answer_changed": true,
+      "id": "current_law_001",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_002",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_003",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_004",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": true,
+      "updated_fields": [
+        "challenge_tags",
+        "gold.as_of_date",
+        "gold.reference_answer",
+        "gold.temporal_basis",
+        "query",
+        "revision.rationale"
+      ]
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_005",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_006",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_007",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_008",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_009",
+      "new_expectation": "publish",
+      "old_expectation": "abstain",
+      "query_changed": false,
+      "updated_fields": [
+        "challenge_tags",
+        "gold.evidence_groups",
+        "gold.expected_coverage",
+        "gold.failure_categories",
+        "gold.publication",
+        "gold.reference_answer",
+        "gold.required_facets"
+      ]
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_010",
+      "new_expectation": "abstain",
+      "old_expectation": "abstain",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_011",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": true,
+      "updated_fields": [
+        "challenge_tags",
+        "gold.as_of_date",
+        "gold.temporal_basis",
+        "query",
+        "revision.rationale"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_012",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_013",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_014",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_015",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_016",
+      "new_expectation": "conditional",
+      "old_expectation": "conditional",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_017",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_018",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_019",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_020",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_021",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_022",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_023",
+      "new_expectation": "abstain",
+      "old_expectation": "abstain",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_024",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": true,
+      "updated_fields": [
+        "challenge_tags",
+        "gold.evidence_groups",
+        "gold.reference_answer",
+        "gold.required_facets",
+        "query",
+        "revision.rationale"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_025",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_026",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_027",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_028",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_029",
+      "new_expectation": "abstain",
+      "old_expectation": "abstain",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_030",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_031",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_032",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_033",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_034",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_035",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_036",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_037",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_038",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_039",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": true,
+      "updated_fields": [
+        "challenge_tags",
+        "gold.evidence_groups",
+        "gold.reference_answer",
+        "gold.required_facets",
+        "query",
+        "revision.rationale"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_040",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_041",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_042",
+      "new_expectation": "conditional",
+      "old_expectation": "conditional",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_043",
+      "new_expectation": "abstain",
+      "old_expectation": "abstain",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_044",
+      "new_expectation": "conditional",
+      "old_expectation": "conditional",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_045",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_046",
+      "new_expectation": "conditional",
+      "old_expectation": "conditional",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_047",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_048",
+      "new_expectation": "conditional",
+      "old_expectation": "conditional",
+      "query_changed": false,
+      "updated_fields": []
+    },
+    {
+      "answer_changed": true,
+      "id": "current_law_049",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": [
+        "gold.reference_answer"
+      ]
+    },
+    {
+      "answer_changed": false,
+      "id": "current_law_050",
+      "new_expectation": "publish",
+      "old_expectation": "publish",
+      "query_changed": false,
+      "updated_fields": []
+    }
+  ],
+  "coverage": {
+    "count": 50,
+    "decisions": {
+      "edit": 32,
+      "keep": 18
+    },
+    "families": {
+      "car_speed_10_20": 2,
+      "expressway_reverse_direction": 2,
+      "historical_001": 1,
+      "historical_002": 1,
+      "historical_003": 1,
+      "historical_004": 1,
+      "historical_005": 1,
+      "historical_006": 1,
+      "historical_007": 1,
+      "historical_008": 1,
+      "historical_011": 1,
+      "historical_012": 1,
+      "historical_013": 1,
+      "historical_014": 1,
+      "historical_015": 1,
+      "historical_017": 1,
+      "historical_018": 1,
+      "historical_019": 1,
+      "historical_021": 1,
+      "historical_022": 1,
+      "historical_023": 1,
+      "historical_024": 1,
+      "historical_025": 1,
+      "historical_026": 1,
+      "historical_027": 1,
+      "historical_028": 1,
+      "historical_029": 1,
+      "historical_030": 1,
+      "historical_031": 1,
+      "historical_032": 1,
+      "historical_033": 1,
+      "historical_034": 1,
+      "historical_035": 1,
+      "historical_037": 1,
+      "historical_039": 1,
+      "historical_040": 1,
+      "historical_041": 1,
+      "historical_042": 1,
+      "historical_043": 1,
+      "historical_044": 1,
+      "historical_046": 1,
+      "historical_047": 1,
+      "historical_048": 1,
+      "historical_049": 1,
+      "license_point_recovery": 2,
+      "motorcycle_passengers": 2
+    },
+    "publication": {
+      "abstain": 4,
+      "conditional": 5,
+      "publish": 41
+    },
+    "query_types": {
+      "factual": 15,
+      "penalty": 16,
+      "scenario": 19
+    },
+    "review_status": {
+      "approved": 50
+    },
+    "tags": {
+      "additional_sanction": 1,
+      "amended_rule": 3,
+      "boundary": 4,
+      "condition": 14,
+      "cross_document": 6,
+      "default_cutoff": 2,
+      "definition": 8,
+      "direct": 8,
+      "equipment": 1,
+      "exception": 10,
+      "explicit_date": 2,
+      "license_points": 5,
+      "missing_dependency": 2,
+      "missing_facts": 5,
+      "money": 21,
+      "multi_locator": 14,
+      "multiple_facets": 7,
+      "negative_conclusion": 2,
+      "numeric": 11,
+      "reasoning": 7,
+      "rule": 1,
+      "source_cue_removed": 6,
+      "temporal_continuity": 1
+    }
+  },
+  "dataset_id": "current_law_20260922_reviewed_v1",
+  "evidence_chunk_count": 67,
+  "held_out_created": false,
+  "legal_as_of": "2026-09-22",
+  "limitations": [
+    "Owner-reviewed internal benchmark; reviewer professional legal qualifications not asserted.",
+    "All historical cases remain exposed/legacy, not unseen held-out.",
+    "Conditional/abstain labels reflect frozen corpus and existing serving safety policy."
+  ],
+  "model_runs": 0,
+  "pilot_ids": [
+    1,
+    2,
+    5,
+    7,
+    9,
+    16,
+    23,
+    36,
+    43,
+    48
+  ],
+  "production_writes": 0,
+  "remaining_gates": [
+    "Phase 3 regression/challenge and unseen held-out",
+    "Phase 4 runner and fixed-evidence replay"
+  ],
+  "review_scope": "Owner review cho benchmark nội bộ: feedback từng câu và chốt phương án sửa; không giả định reviewer luật sư hoặc independent review bổ sung.",
+  "reviewed_on": "2026-10-11",
+  "reviewer": "Chủ dự án — review AUDIT.md và chốt phương án sửa qua hội thoại",
+  "scoring_gold_ready": true,
+  "technical_integrity_passed": true,
+  "temporal_review_case_ids": [
+    "current_law_009"
+  ]
+}

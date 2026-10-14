@@ -26,13 +26,14 @@ class Retriever(ABC):
     """
 
     @abstractmethod
-    async def search(self, query: str, top_k: int = 5) -> List[RetrievedChunk]:
+    async def search(self, query: str, top_k: int = 5, *, retrieval_query: str | None = None) -> List[RetrievedChunk]:
         """
         Asynchronously search for relevant chunks given a query.
 
         Args:
             query: The user search query or contextualized query string.
             top_k: Number of highest ranking chunks to return.
+            retrieval_query: Optional search paraphrase, combined within the candidate budget.
 
         Returns:
             A list of RetrievedChunk objects ordered by relevance score descending.

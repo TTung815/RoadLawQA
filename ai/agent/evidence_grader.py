@@ -3,13 +3,15 @@
 import json
 from typing import Annotated, List, Literal, Optional, Sequence
 
-from pydantic import BaseModel, Field, StrictBool, StringConstraints, model_validator
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StringConstraints, model_validator
 
 from ai.llm.base import LLMMessage, LLMProvider
 from ai.prompts.evidence_grading import EVIDENCE_GRADING_PROMPT
 from ai.retrieval.base import RetrievedChunk
 from ai.agent.range_coverage import RangeCoverage, range_anchors, range_candidates
 from ai.agent.support import SupportState, publishable_support
+from ai.agent.evidence import SourceReferences, evidence_payload
+from ai.diagnostics import record, traced
 
 
 class AspectCoverage(BaseModel):
@@ -31,12 +33,18 @@ class AspectCoverage(BaseModel):
         return self
 
 
+class RangeDecision(BaseModel):
+    candidate_index: Annotated[StrictInt, Field(ge=0)]
+    compatible: StrictBool
+
+
 class EvidenceGrade(BaseModel):
     range_coverage: Optional[RangeCoverage] = None
     coverage: List[AspectCoverage]
     anchor_chunk_ids: List[str] = Field(default_factory=list)
     sufficient: StrictBool
     reason: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+    range_decisions: list[RangeDecision] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def check_coverage(self):
@@ -62,6 +70,7 @@ class EvidenceGrader:
     def __init__(self, llm_provider: LLMProvider):
         self._llm_provider = llm_provider
 
+    @traced("coverage_grading")
     async def grade(
         self, question: str, chunks: Sequence[RetrievedChunk],
     ) -> EvidenceGrade:
@@ -70,28 +79,38 @@ class EvidenceGrader:
                 sufficient=False, reason="No legal chunks were retrieved.", coverage=[],
             )
 
-        evidence = []
-        for chunk in chunks:
-            item = chunk.model_dump(mode="json", exclude={"score"})
-            item["metadata"] = {
-                key: value for key, value in item["metadata"].items()
-                if key not in ("raw_score", "rerank_score")
-            }
-            evidence.append(item)
+        evidence = evidence_payload(chunks)
+        refs = SourceReferences(chunks)
         candidates = range_candidates(question, chunks)
         payload = {"question": question, "chunks": evidence}
         if candidates is not None:
+            candidates = {**candidates, "leaves": [dict(item, candidate_index=i)
+                          for i, item in enumerate(candidates["leaves"])]}
             payload['range_candidates'] = candidates
         result = await self._llm_provider.generate_structured(
             [
                 LLMMessage(role="system", content=EVIDENCE_GRADING_PROMPT),
                 LLMMessage(role="user", content=json.dumps(
-                    payload, ensure_ascii=False,
+                    refs.translate(payload), ensure_ascii=False,
                 )),
             ],
             response_schema=EvidenceGrade, temperature=0.0,
         )
         grade = EvidenceGrade.model_validate(result)
+        grade = EvidenceGrade.model_validate(refs.translate(grade.model_dump(), decode=True))
+        record("coverage_grading", event="assessment", grade=grade.model_dump(mode="json"))
+        if grade.range_decisions:
+            decisions = {item.candidate_index: item.compatible for item in grade.range_decisions}
+            if (candidates is None or len(decisions) != len(grade.range_decisions)
+                    or set(decisions) != set(range(len(candidates["leaves"])))):
+                raise ValueError("Range decisions must assess every supplied candidate exactly once")
+            # Quotes, units and IDs originate on the server; the model only judges
+            # semantic compatibility. No long-ID or legal-boundary transcription.
+            grade.range_coverage = RangeCoverage(
+                question_quote=candidates["question_quote"], unit=candidates["unit"],
+                leaves=[dict(chunk_id=item["chunk_id"], range_quote=item["range_quote"],
+                             compatible=decisions[i]) for i, item in enumerate(candidates["leaves"])],
+            )
         known_ids = {chunk.id for chunk in chunks}
         if any(identifier not in known_ids for identifier in grade.anchor_chunk_ids):
             raise ValueError("Grader returned an anchor ID outside supplied evidence")

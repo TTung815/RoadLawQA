@@ -3,47 +3,38 @@
 from functools import lru_cache
 
 from ai.agent.contextualizer import QueryContextualizer
-from ai.agent.evidence_grader import EvidenceGrader
-from ai.agent.query_rewriter import QueryRewriter
-from ai.llm.gemini import GeminiProvider
-from ai.retrieval.legacy_adapter import LegacyRetrieverAdapter
+from ai.llm.factory import create_provider
+from ai.retrieval.current_law import LazyCurrentLawRetriever
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-from ai.retrieval.weaviate_lookup import WeaviateArticleLookup
 from backend.services.retrieval import HistoryAwareRetrievalService
-from backend.services.agentic_retrieval import AgenticRetrievalService
-from configs.settings import LLMSettings, Settings
+from backend.services.lean_retrieval import LeanRetrievalService
+from configs.settings import LLMSettings
+
+
+@lru_cache(maxsize=1)
+def get_current_retriever() -> LazyCurrentLawRetriever:
+    return LazyCurrentLawRetriever()
 
 
 @lru_cache(maxsize=1)
 def get_retrieval_service() -> HistoryAwareRetrievalService:
     settings = LLMSettings()
-    provider = GeminiProvider(
-        settings.gemini_api_key, settings.gemini_model_name,
-        api_keys=settings.gemini_api_keys,
-    )
+    provider = create_provider(settings)
     return HistoryAwareRetrievalService(
-        QueryContextualizer(provider), LegacyRetrieverAdapter(),
+        QueryContextualizer(provider), get_current_retriever(),
     )
 
 
 @lru_cache(maxsize=1)
-def get_agentic_retrieval_service() -> AgenticRetrievalService:
+def get_agentic_retrieval_service() -> LeanRetrievalService:
     settings = LLMSettings()
-    provider = GeminiProvider(
-        settings.gemini_api_key, settings.gemini_model_name,
-        api_keys=settings.gemini_api_keys,
-    )
+    provider = create_provider(settings)
     expander = None
     if settings.structural_expansion_enabled:
-        resources = Settings()
-        lookup = WeaviateArticleLookup(
-            resources.weaviate_host, resources.weaviate_port,
-            resources.weaviate_grpc_port, resources.weaviate_collection,
-        )
-        expander = LegalNeighborhoodExpander(lookup.fetch_article)
-    return AgenticRetrievalService(
-        QueryContextualizer(provider), LegacyRetrieverAdapter(),
-        EvidenceGrader(provider), QueryRewriter(provider),
-        max_attempts=settings.max_retrieval_attempts,
+        expander = LegalNeighborhoodExpander(
+            get_current_retriever().fetch_article,
+            combination_lookup=get_current_retriever().fetch_combination_rules)
+    return LeanRetrievalService(
+        QueryContextualizer(provider), get_current_retriever(),
         structural_expander=expander,
     )

@@ -4,12 +4,22 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from backend.dependencies.retrieval import get_agentic_retrieval_service, get_retrieval_service
+from backend.dependencies.retrieval import get_agentic_retrieval_service, get_retrieval_service, get_current_retriever
 from backend.schemas.retrieval import RetrievalRequest
 from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
-from backend.services.agentic_retrieval import AgenticRetrievalResult, AgenticRetrievalService
+from backend.services.agentic_retrieval import AgenticRetrievalResult
+from backend.services.lean_retrieval import LeanRetrievalService
 
 router = APIRouter(tags=["Retrieval"])
+
+
+@router.post("/retrieve/inspect")
+async def inspect_sources(request: RetrievalRequest, retriever=Depends(get_current_retriever)) -> dict:
+    from backend.services.retrieval_inspection import inspect_retrieval
+    from fastapi import HTTPException
+    if request.chat_history:
+        raise HTTPException(status_code=422, detail="Màn hình truy xuất nhận câu hỏi độc lập, không gọi LLM để xử lý lịch sử.")
+    return await inspect_retrieval(retriever, request.current_query, request.top_k)
 
 
 @router.post("/retrieve", response_model=RetrievalResult)
@@ -27,7 +37,7 @@ async def retrieve(
 @router.post("/retrieve/agentic", response_model=AgenticRetrievalResult)
 async def retrieve_agentic(
     request: RetrievalRequest,
-    service: Annotated[AgenticRetrievalService, Depends(get_agentic_retrieval_service)],
+    service: Annotated[LeanRetrievalService, Depends(get_agentic_retrieval_service)],
 ) -> AgenticRetrievalResult:
     return await service.retrieve(
         request.current_query,

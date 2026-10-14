@@ -1,0 +1,39 @@
+{
+  "version": "structured-law-20260922-v1",
+  "corpus_sha256": "a4a2617c97e5fd8b322f4db24ba7cdab9ac13faa5b9a235d5f2ceecac00ebdc5",
+  "inputs": {
+    "data/raw/legal/49-vbhn-vpqh/supporting-text.txt": "ebf20b2826c6ab03d44ce564f7dfc1eddd6e7c78ac12b66cfd50a9f092f057fe",
+    "data/raw/legal/55-vbhn-vpqh/supporting-text.txt": "07fcfdf64b410b32f159d4e201971ddae41f5e73875f690562321beeeacd8a6b",
+    "data/processed/current-law/nd168-effective-2026-09-22.json": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d",
+    "data/processed/current-law/current-law-chunks-2026-09-22.json": "2da4b2f4934718a3e0ccf91d53599a32e42e735777ba4ac11eba5cc3f9b13b09"
+  },
+  "builder_sha256": "51287305a32bf5b55486562f29626cf668d126bb20cd4adc72a736114746bff3",
+  "embedding_model": "Alibaba-NLP/gte-multilingual-base",
+  "embedding_revision": "9bbca17d9273fd0d03d5725c7a4b0f6b45142062",
+  "lexical_pipeline": "NFC+casefold+punctuation-to-space+PyVi+whitespace",
+  "statistics": {
+    "source_leaves": 2531,
+    "search_chunks": 1755,
+    "levels": {
+      "article": 98,
+      "clause": 636,
+      "point": 1021
+    },
+    "blocked_chunks": 10,
+    "blocked_source_ids": [
+      "49-vbhn-vpqh-d10-k4",
+      "49-vbhn-vpqh-d83",
+      "55-vbhn-vpqh-d35-k2",
+      "55-vbhn-vpqh-d62-k7",
+      "nd168-effective-as-of-2026-09-22-d20-k5-pl",
+      "nd168-effective-as-of-2026-09-22-d20-k5-pn",
+      "nd168-effective-as-of-2026-09-22-d21-k3-pb",
+      "nd168-effective-as-of-2026-09-22-d26-k7-pk",
+      "nd168-effective-as-of-2026-09-22-d26-k7-pl",
+      "nd168-effective-as-of-2026-09-22-d32-k9a-pb"
+    ],
+    "max_tokens": 467,
+    "merge_budget_tokens": 480,
+    "hard_budget_tokens": 2048
+  }
+}

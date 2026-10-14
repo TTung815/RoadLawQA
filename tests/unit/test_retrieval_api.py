@@ -7,7 +7,7 @@ import pytest
 
 from ai.agent.contextualizer import QueryContextualizer
 from ai.llm.gemini import GeminiProvider
-from ai.retrieval.legacy_adapter import LegacyRetrieverAdapter
+from tests.retrieval_fakes import CallbackRetriever
 from backend.dependencies.retrieval import get_retrieval_service
 from backend.main import create_app
 from backend.services.retrieval import HistoryAwareRetrievalService
@@ -37,7 +37,7 @@ def api_setup():
                  "score": 0.3, "rerank_score": 1.2}]
 
     provider = GeminiProvider("fake-key", "test-model", httpx.MockTransport(llm_handler))
-    service = HistoryAwareRetrievalService(QueryContextualizer(provider), LegacyRetrieverAdapter(fake_legacy))
+    service = HistoryAwareRetrievalService(QueryContextualizer(provider), CallbackRetriever(fake_legacy))
     app = create_app()
     app.dependency_overrides[get_retrieval_service] = lambda: service
     return app, service, llm_calls, retrieval_calls

@@ -1,0 +1,39 @@
+{
+  "plan_id": "current_law_20260922_phase3_design_v1",
+  "status": "design_draft",
+  "legal_as_of": "2026-09-22",
+  "held_out_status": "not_authored",
+  "custodian": null,
+  "author": null,
+  "reviewer": null,
+  "development_recipes": [
+    {"id": "dev_001", "parent": 5, "kind": "money_only", "purpose": "Thiếu căn cứ điểm nhưng có mức tiền", "failures": ["grade_false_sufficient", "answer_incomplete", "unsafe_publication"]},
+    {"id": "dev_002", "parent": 5, "kind": "complete_pool", "purpose": "Control: đủ căn cứ tiền và điểm", "failures": ["grade_false_insufficient", "unnecessary_abstention"]},
+    {"id": "dev_003", "parent": 28, "kind": "money_only", "purpose": "Thiếu căn cứ chế tài bổ sung", "failures": ["expansion_missed_consequence", "answer_incomplete"]},
+    {"id": "dev_004", "parent": 28, "kind": "complete_pool", "purpose": "Control: đủ tiền và xử lý thiết bị", "failures": ["grade_false_insufficient", "unnecessary_abstention"]},
+    {"id": "dev_005", "parent": 5, "kind": "wrong_citation", "purpose": "Citation tồn tại nhưng source không hỗ trợ kết luận", "failures": ["citation_unsupported", "verification_false_accept"]},
+    {"id": "dev_006", "parent": 24, "kind": "equipment_distractor", "purpose": "Không đổi hành vi thiếu trang bị thành không sử dụng đèn", "failures": ["retrieval_miss", "grade_false_sufficient", "citation_unsupported"]},
+    {"id": "dev_007", "parent": 8, "kind": "accumulation", "purpose": "Giữ căn cứ tiền của batch trước khi batch sau có điểm", "failures": ["accumulation_loss", "evidence_incomplete"]},
+    {"id": "dev_008", "parent": 39, "kind": "rewrite_probe", "purpose": "Rewrite giữ tài xế không phải chủ xe và biên khối lượng", "failures": ["rewrite_drift", "expansion_irrelevant"]},
+    {"id": "dev_009", "parent": 5, "kind": "multi_turn", "purpose": "Theo dõi chủ thể/hành vi và yêu cầu tiền + điểm qua history", "failures": ["rewrite_drift", "answer_incomplete"]},
+    {"id": "dev_010", "parent": 8, "kind": "distractor_history", "purpose": "Không lấy dữ kiện ô tô từ history cũ cho câu xe mô tô mới", "failures": ["rewrite_drift", "answer_incorrect"]},
+    {"id": "dev_011", "parent": 16, "kind": "end_to_end", "purpose": "Thiếu dữ kiện về ngoại lệ: không chọn nhánh chắc chắn", "failures": ["unsafe_publication", "grade_false_sufficient"]},
+    {"id": "dev_012", "parent": 43, "kind": "end_to_end", "purpose": "Thiếu dependency tuổi chịu xử phạt: không đoán mức phạt", "failures": ["unsafe_publication", "expected_abstention"]},
+    {"id": "dev_013", "parent": 10, "kind": "end_to_end", "purpose": "Thiếu negative-support provenance không được kết luận âm", "failures": ["unsafe_publication", "expected_abstention"]},
+    {"id": "dev_014", "parent": 7, "kind": "end_to_end", "purpose": "Đủ rule đã sửa đổi và dữ kiện: đo từ chối không cần thiết", "failures": ["unnecessary_abstention", "answer_incomplete"]},
+    {"id": "dev_015", "parent": 9, "kind": "end_to_end", "purpose": "Ngày lịch sử có scoped continuity proof; không tự mở lịch sử khác", "failures": ["unnecessary_abstention", "answer_incorrect"]},
+    {"id": "dev_016", "parent": 42, "kind": "end_to_end", "purpose": "Giữ điều kiện thiếu và provenance overlay 238", "failures": ["citation_unsupported", "unsafe_publication"]}
+  ],
+  "pending_suites": [
+    {"id": "numeric_boundaries", "parent": 36, "authoring_spec": "Author riêng các trường hợp vượt tốc độ 9, 10, 20, 21 km/h, không gây tai nạn; review support và mức tiền từng nhánh trước approval. Giữ family exposed, không copy gold 10–20 sang 9/21."},
+    {"id": "temporal_blocks", "parent": null, "authoring_spec": "Mỗi một trong 10 blocked chunks cần probe context-only; nhóm mixed/future cần ngày trước/đúng/sau mốc ghi trong nguồn. Chỉ kiểm tra fail-closed của snapshot, không công bố luật tương lai hoặc suy no-penalty. Repealed placeholder không là active support."}
+  ],
+  "held_out_cells": [
+    {"id": "direct_new_rule", "target_families": 2, "query_type": "factual", "goal": "Quy tắc/định nghĩa trực tiếp ở article chưa lộ; đủ nguồn để đo unnecessary abstention."},
+    {"id": "new_penalty", "target_families": 2, "query_type": "penalty", "goal": "Chủ thể/hành vi mới, yêu cầu nhiều facet nếu nguồn có; đúng clause head và đơn vị."},
+    {"id": "new_cross_document", "target_families": 2, "query_type": "scenario", "goal": "Kết hợp rule và áp dụng/chế tài, ngoài rule families đã lộ; không phụ thuộc nguồn ngoài scope."},
+    {"id": "new_missing_facts", "target_families": 2, "query_type": "scenario", "goal": "Thiếu một dữ kiện quyết định ở family mới; trả conditional thay vì đoán."},
+    {"id": "new_scope_limit", "target_families": 2, "query_type": "scenario", "goal": "Giới hạn thời gian/dependency ở family mới; không paraphrase câu 10/23/29/43."},
+    {"id": "new_multi_turn", "target_families": 2, "query_type": "scenario", "goal": "History liên quan/nhiễu ở family chưa dùng tuning; toàn conversation cùng split."}
+  ]
+}

@@ -10,7 +10,7 @@ from ai.agent.contextualizer import QueryContextualizer
 from ai.llm.base import LLMMessage, LLMProvider, LLMResponse, T
 from ai.llm.gemini import GeminiProvider
 from ai.retrieval.base import RetrievedChunk, Retriever
-from ai.retrieval.legacy_adapter import LegacyRetrieverAdapter
+from tests.retrieval_fakes import CallbackRetriever
 from backend.services.retrieval import HistoryAwareRetrievalService
 
 CURRENT = "Còn ô tô thì sao?"
@@ -69,7 +69,7 @@ async def test_orchestration_uses_legacy_adapter_without_changing_call_contract(
                            "display_citation": "Fake citation"}, "rerank_score": -0.5}]
 
     service = HistoryAwareRetrievalService(
-        QueryContextualizer(RecordingProvider()), LegacyRetrieverAdapter(fake_legacy),
+        QueryContextualizer(RecordingProvider()), CallbackRetriever(fake_legacy),
     )
     result = await service.retrieve(CURRENT, HISTORY, top_k=2)
     assert calls == [(STANDALONE, 2, True)]

@@ -1,0 +1,119 @@
+[
+  {
+    "case_ids": [
+      "numeric_009"
+    ],
+    "content_sha256": "e433e71fe3645fdd3ad53fb93dfc8e4e10f212e429470d14b0054640ec44e9b5",
+    "id": "A1",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "numeric_010"
+    ],
+    "content_sha256": "e49950b752d063888651a29eeb872f19184c6c462e7540e5a9526bf7b0ed9917",
+    "id": "A2",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "numeric_020"
+    ],
+    "content_sha256": "26284cc1d2224259c1362f4ae7ca1e4ae52beb64fe9a59237afe48a4156e0e29",
+    "id": "A3",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "numeric_021"
+    ],
+    "content_sha256": "7a6ae02c2e5d26a31df98f97d83360ccfcac11ab85b6353b6341942f915b1f08",
+    "id": "A4",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "dev_009"
+    ],
+    "content_sha256": "67dadc0cdc756339e943ca13fb2ea85fcc72cec3c2c4af1edb81c79d244a458c",
+    "id": "B1",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "dev_010"
+    ],
+    "content_sha256": "0f2b324dba9102d194b53f51cc556ffeaef44195a5f1415722b9e9822f0f8970",
+    "id": "B2",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  },
+  {
+    "case_ids": [
+      "dev_001",
+      "dev_002",
+      "dev_003",
+      "dev_004",
+      "dev_005",
+      "dev_006",
+      "dev_007",
+      "dev_008",
+      "dev_011",
+      "dev_012",
+      "dev_013",
+      "dev_014",
+      "dev_015",
+      "dev_016",
+      "guard_01_cutoff",
+      "guard_02_cutoff",
+      "guard_03_cutoff",
+      "guard_03_2028-01-01_before",
+      "guard_03_2028-01-01_on",
+      "guard_03_2028-01-01_after",
+      "guard_03_2029-01-01_before",
+      "guard_03_2029-01-01_on",
+      "guard_03_2029-01-01_after",
+      "guard_04_cutoff",
+      "guard_05_cutoff",
+      "guard_05_2028-01-01_before",
+      "guard_05_2028-01-01_on",
+      "guard_05_2028-01-01_after",
+      "guard_06_cutoff",
+      "guard_06_2029-01-01_before",
+      "guard_06_2029-01-01_on",
+      "guard_06_2029-01-01_after",
+      "guard_07_cutoff",
+      "guard_07_2028-01-01_before",
+      "guard_07_2028-01-01_on",
+      "guard_07_2028-01-01_after",
+      "guard_08_cutoff",
+      "guard_08_2029-01-01_before",
+      "guard_08_2029-01-01_on",
+      "guard_08_2029-01-01_after",
+      "guard_09_cutoff",
+      "guard_09_2029-01-01_before",
+      "guard_09_2029-01-01_on",
+      "guard_09_2029-01-01_after",
+      "guard_10_cutoff",
+      "guard_10_2028-01-01_before",
+      "guard_10_2028-01-01_on",
+      "guard_10_2028-01-01_after"
+    ],
+    "content_sha256": "d0580dd43d38df691db99a71397d5f67fe9183b5f40d15453c9e0b65cc09a774",
+    "id": "C1",
+    "reviewed_on": "2026-10-11",
+    "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+    "status": "approved"
+  }
+]

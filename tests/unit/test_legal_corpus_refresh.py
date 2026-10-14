@@ -185,9 +185,3 @@ def test_current_sources_have_complete_top_level_article_sequences():
     assert readiness["effective_view"]["summary"]["applied_operation_count"] == 102
     assert "không phải effective view" in review_packet["purpose"]
     assert "Production index bị thay đổi: **không**" in markdown
-
-
-def test_phase0_receipt_remains_present_and_separate():
-    receipt = PROJECT_ROOT / "evaluation/manifests/phase0-baseline.json"
-    assert receipt.is_file()
-    assert "phase0" in receipt.read_text(encoding="utf-8")

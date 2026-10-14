@@ -15,15 +15,8 @@ pyvi==0.1.1
 # Ranking & Search
 rank-bm25==0.2.2
 
-# Google Gemini
-google-generativeai==0.8.3
-
 # Data Processing
 numpy==1.26.4
-tqdm==4.67.1
-
-# Utilities
-unicodedata2==15.1.0
 
 # Web Interface
 streamlit==1.41.1

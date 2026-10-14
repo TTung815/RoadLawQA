@@ -1,0 +1,2023 @@
+[
+  {
+    "historical_id": 1,
+    "action": "edit",
+    "query": "Người điều khiển phương tiện giao thông đường bộ có bị nghiêm cấm điều khiển phương tiện khi trong máu hoặc hơi thở có nồng độ cồn không?",
+    "rationale": "Bỏ số hiệu luật và câu dẫn nguồn để kiểm tra tìm căn cứ từ câu hỏi tự nhiên; giữ hành vi gốc.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_001",
+    "tags": [
+      "direct",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Có. Hành vi điều khiển phương tiện tham gia giao thông đường bộ mà trong máu hoặc hơi thở có nồng độ cồn thuộc các hành vi bị nghiêm cấm, theo khoản 2 Điều 9 của văn bản hợp nhất 55/VBHN-VPQH. Câu này chỉ hỏi quy tắc cấm, không hỏi ngưỡng xử phạt.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Xác định đúng hành vi bị cấm; không biến ngưỡng xử phạt thành ngưỡng được phép.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d9-k2"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 2,
+    "action": "keep",
+    "query": "Kết cấu hạ tầng đường bộ bao gồm những gì?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_002",
+    "tags": [
+      "definition",
+      "direct"
+    ],
+    "reference_answer": "Kết cấu hạ tầng đường bộ gồm công trình đường bộ; bến xe; bãi đỗ xe; trạm dừng nghỉ; điểm dừng xe, đỗ xe; đất của đường bộ; hành lang an toàn đường bộ và các công trình phụ trợ phục vụ cho hoạt động đường bộ (khoản 4 Điều 2, 49/VBHN-VPQH).",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Nêu đủ các thành phần của kết cấu hạ tầng đường bộ, không chỉ liệt kê đường/cầu.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d2-k4"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 3,
+    "action": "edit",
+    "query": "Người điều khiển xe ô tô không thắt dây đai an toàn khi xe đang chạy trên đường bị phạt bao nhiêu tiền?",
+    "rationale": "Làm rõ phạm vi đang chạy trên đường để khớp hành vi, giữ mục tiêu mức tiền của người lái.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_003",
+    "tags": [
+      "money",
+      "direct"
+    ],
+    "reference_answer": "Người lái ô tô không thắt dây đai an toàn khi điều khiển xe chạy trên đường bị phạt từ 800.000 đến 1.000.000 đồng, theo điểm k khoản 3 Điều 6 Nghị định 168/2024/NĐ-CP trong snapshot. Không suy từ câu trả lời mức tiền rằng mọi chế tài khác đều không áp dụng.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Đúng chủ thể người lái và khoảng 800.000–1.000.000 đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k3-pk"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 4,
+    "action": "edit",
+    "query": "Giấy phép lái xe hạng A1 cấp mới theo quy định tại ngày 22/09/2026 cho phép lái xe mô tô hai bánh có dung tích xi-lanh tối đa bao nhiêu cm³?",
+    "rationale": "Thay 'luật mới' bằng ngày cố định và làm rõ cấp mới, không lẫn GPLX cũ theo chuyển tiếp.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_004",
+    "tags": [
+      "numeric",
+      "explicit_date"
+    ],
+    "reference_answer": "Hạng A1 cấp cho người lái xe mô tô hai bánh có dung tích xi-lanh đến 125 cm³; trường hợp động cơ điện có công suất đến 11 kW. Căn cứ điểm a khoản 1 Điều 57, 55/VBHN-VPQH. Không dùng kết luận này để tự chuyển đổi quyền lái của GPLX A1 cấp theo quy định cũ.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Giới hạn đến 125 cm³, bao gồm mốc 125, đúng phạm vi GPLX cấp mới.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d57-k1-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "explicit_date",
+    "as_of_date": "2026-09-22",
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 5,
+    "action": "edit",
+    "query": "Người lái ô tô dùng tay cầm và sử dụng điện thoại khi xe đang di chuyển trên đường, không gây tai nạn, bị phạt bao nhiêu tiền và trừ bao nhiêu điểm giấy phép lái xe?",
+    "rationale": "Bỏ gợi ý thuật ngữ và thêm rõ không gây tai nạn để cô lập nhánh thông thường; không suy đây là dữ kiện gốc.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_005",
+    "tags": [
+      "money",
+      "license_points",
+      "multiple_facets",
+      "multi_locator"
+    ],
+    "reference_answer": "Với hành vi và điều kiện đã nêu: phạt 4.000.000–6.000.000 đồng (điểm h khoản 5 Điều 6) và trừ 04 điểm GPLX (điểm b khoản 16 Điều 6 Nghị định 168/2024/NĐ-CP). Cần dẫn cả leaf hành vi và leaf trừ điểm.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Phạt 4–6 triệu đồng cho hành vi dùng tay cầm và sử dụng điện thoại khi xe di chuyển.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-ph"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "license_points",
+        "description": "Trừ 04 điểm; đối chiếu liên kết điểm h khoản 5 với điểm b khoản 16.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-ph",
+          "nd168-effective-as-of-2026-09-22-d6-k16-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 6,
+    "action": "keep",
+    "query": "Việc thu tiền sử dụng đường bộ trên đường cao tốc có bắt buộc phải thực hiện theo hình thức điện tử không dừng không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_006",
+    "tags": [
+      "direct"
+    ],
+    "reference_answer": "Có. Khoản 3 Điều 43 của 49/VBHN-VPQH quy định thanh toán tiền sử dụng đường bộ trên đường cao tốc phải thực hiện theo hình thức điện tử không dừng. Không mở rộng thành mọi loại khoản thu ở mọi tuyến đường.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Đúng phạm vi thanh toán tiền sử dụng đường bộ trên đường cao tốc và hình thức điện tử không dừng.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d43-k3"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 7,
+    "action": "edit",
+    "query": "Tôi lái ô tô gia đình 5 chỗ, không kinh doanh vận tải, chở con 9 tuổi cao 1,30 m. Tôi có được cho con ngồi cùng hàng ghế với người lái không và phải dùng thiết bị an toàn nào?",
+    "rationale": "Làm rõ xe gia đình và bổ sung facet thiết bị an toàn để đánh giá cả điều kiện, ngoại lệ và sửa đổi; không hỏi tiền phạt.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_007",
+    "tags": [
+      "amended_rule",
+      "condition",
+      "exception",
+      "multiple_facets"
+    ],
+    "reference_answer": "Theo khoản 3 Điều 10 của 55/VBHN-VPQH tại cutoff, trẻ vừa dưới 10 tuổi vừa cao dưới 1,35 m không được ngồi cùng hàng ghế với người lái, trừ ô tô chỉ có một hàng ghế. Xe gia đình 5 chỗ trong câu không thuộc ngoại lệ một hàng ghế; người lái phải sử dụng, hướng dẫn sử dụng thiết bị an toàn phù hợp cho trẻ. Ngoại lệ xe kinh doanh vận tải hành khách đối với thiết bị không áp dụng dữ kiện đã nêu.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Hai điều kiện tuổi và chiều cao đồng thời: 9<10 và 1,30<1,35.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d10-k3"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "rule",
+        "description": "Không xếp trẻ ngồi cùng hàng ghế người lái; có ngoại lệ xe chỉ một hàng ghế.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d10-k3"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "exception",
+        "description": "Nghĩa vụ thiết bị phù hợp và ngoại lệ xe kinh doanh vận tải hành khách, không áp dụng xe gia đình.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d10-k3"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 8,
+    "action": "edit",
+    "query": "Một người lái xe mô tô vượt đèn đỏ trên đường, không có hiệu lệnh khác cho phép đi và không gây tai nạn. Người đó bị phạt tiền và trừ điểm giấy phép lái xe như thế nào?",
+    "rationale": "Chuẩn hóa xe máy thành xe mô tô và nêu điều kiện loại trừ nhánh tai nạn/hiệu lệnh ưu tiên.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_008",
+    "tags": [
+      "money",
+      "license_points",
+      "multiple_facets",
+      "multi_locator"
+    ],
+    "reference_answer": "Không chấp hành hiệu lệnh đèn tín hiệu giao thông ở nhánh đã nêu: phạt 4.000.000–6.000.000 đồng theo điểm c khoản 7 Điều 7 và trừ 04 điểm GPLX theo điểm b khoản 13 Điều 7 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Đúng nhánh xe mô tô: 4–6 triệu đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k7-pc"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "license_points",
+        "description": "04 điểm, không nhầm điểm của ô tô hoặc nhánh tai nạn.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k7-pc",
+          "nd168-effective-as-of-2026-09-22-d7-k13-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 9,
+    "action": "keep",
+    "query": "Giấy phép lái xe của tôi có 12 điểm. Ngày 01/02/2025 tôi bị trừ 2 điểm. Nếu sau đó tôi không vi phạm gì thêm, khi nào giấy phép lái xe của tôi được phục hồi đủ 12 điểm?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "license_point_recovery",
+    "tags": [
+      "explicit_date",
+      "temporal_gap"
+    ],
+    "reference_answer": "Câu nêu lần trừ điểm ngày 01/02/2025. Snapshot hiện hành 22/09/2026 không phải snapshot lịch sử đã xác minh cho ngày đó; chưa thể chốt ngày phục hồi cho vụ việc năm 2025 bằng corpus này. Có thể nêu quy tắc hiện hành về GPLX chưa bị trừ hết điểm và 12 tháng không bị trừ điểm, nhưng không tự áp ngược rồi kết luận ngày 01/02/2026.",
+    "facets": [
+      {
+        "kind": "temporal",
+        "description": "Nhận diện ngày lịch sử 01/02/2025 ngoài phạm vi replay đã xác minh; không suy ngược quy tắc hiện hành.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Chỉ dùng quy tắc 12 tháng hiện hành làm context, không làm căn cứ chốt vụ việc lịch sử.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d58-k2"
+        ],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "abstain",
+    "publication_rationale": "Thiếu dependency, provenance thời gian hoặc negative support cho kết luận được hỏi; không công bố đáp án đầy đủ.",
+    "expected_coverage": "insufficient",
+    "temporal_basis": "explicit_date",
+    "as_of_date": "2025-02-01",
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer cần snapshot/temporal provenance cho 2025 nếu muốn chuyển expectation khỏi abstain; không dùng Pha 0 làm current-law gold."
+    ]
+  },
+  {
+    "historical_id": 10,
+    "action": "keep",
+    "query": "Tôi bị Cảnh sát giao thông lập biên bản xử phạt và thông báo bị trừ 2 điểm giấy phép lái xe. Tôi đã ra kho bạc nộp phạt xong xuôi vào ngày hôm sau. Vậy 2 điểm bị trừ đó có được cộng lại (hoàn trả) ngay lập tức sau khi tôi đóng tiền không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "license_point_recovery",
+    "tags": [
+      "negative_conclusion",
+      "multi_locator"
+    ],
+    "reference_answer": "Không đủ provenance để công bố một kết luận âm đầy đủ theo policy V2 hiện tại. Phần có căn cứ: trừ điểm gắn với hiệu lực quyết định xử phạt; phục hồi đủ 12 điểm hiện hành cần GPLX chưa bị trừ hết điểm và 12 tháng không bị trừ điểm kể từ lần gần nhất. Nộp tiền phạt và phục hồi điểm là hai cơ chế cần phân biệt; không tự hứa cộng lại điểm sau nộp tiền.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Phân biệt cơ chế trừ/khôi phục điểm và thời điểm quyết định có hiệu lực.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d50-k1-pa",
+          "55-vbhn-vpqh-d58-k2"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Kết luận phủ định hoàn trả ngay cần reviewer xác nhận provenance theo policy negative-support.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "abstain",
+    "publication_rationale": "Thiếu dependency, provenance thời gian hoặc negative support cho kết luận được hỏi; không công bố đáp án đầy đủ.",
+    "expected_coverage": "insufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Xem liệu quy tắc dương về thời hạn đã đủ trả lời phủ định cụ thể mà không nới contract negative-support; hiện draft giữ abstain."
+    ]
+  },
+  {
+    "historical_id": 11,
+    "action": "edit",
+    "query": "Giấy phép lái xe hạng B cấp mới theo quy định tại ngày 22/09/2026 có thời hạn bao nhiêu năm kể từ ngày cấp?",
+    "rationale": "Làm rõ cấp mới và điểm bắt đầu tính thời hạn, không suy từ hạng B cũ/chuyển tiếp.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_011",
+    "tags": [
+      "numeric",
+      "explicit_date"
+    ],
+    "reference_answer": "GPLX hạng B có thời hạn 10 năm kể từ ngày cấp, theo điểm b khoản 5 Điều 57, 55/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "10 năm và tính kể từ ngày cấp; đúng phạm vi GPLX cấp mới.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d57-k5-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "explicit_date",
+    "as_of_date": "2026-09-22",
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 12,
+    "action": "keep",
+    "query": "Khi nào người lái xe ô tô phải bật đèn chiếu sáng phía trước?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_012",
+    "tags": [
+      "condition",
+      "multiple_facets"
+    ],
+    "reference_answer": "Phải bật đèn chiếu sáng phía trước từ 18 giờ ngày hôm trước đến 06 giờ ngày hôm sau, hoặc khi sương mù, khói, bụi, trời mưa, thời tiết xấu làm hạn chế tầm nhìn (khoản 1 Điều 20, 55/VBHN-VPQH). Hai căn cứ thời gian và hạn chế tầm nhìn là các nhánh thay thế, không đòi đồng thời.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Mốc 18h–06h hoặc điều kiện hạn chế tầm nhìn; giữ đúng quan hệ hoặc.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d20-k1"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 13,
+    "action": "keep",
+    "query": "Người điều khiển xe mô tô chạy quá tốc độ quy định 15 km/h bị phạt bao nhiêu tiền?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "penalty",
+    "type_revision_reason": "Câu chỉ yêu cầu mức tiền tại một tốc độ cho sẵn; phân loại penalty thay vì scenario để báo coverage chính xác.",
+    "family_id": "historical_013",
+    "tags": [
+      "money",
+      "numeric",
+      "boundary"
+    ],
+    "reference_answer": "Vượt tốc độ 15 km/h thuộc khoảng từ 10 đến 20 km/h: phạt 800.000–1.000.000 đồng đối với người lái xe mô tô tại điểm a khoản 4 Điều 7 Nghị định 168/2024/NĐ-CP. Đây là câu mức tiền, không suy về mọi chế tài khác.",
+    "facets": [
+      {
+        "kind": "reasoning",
+        "description": "15 nằm trong khoảng từ 10 đến 20 km/h.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k4-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "800.000–1.000.000 đồng, đúng xe mô tô.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k4-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 14,
+    "action": "keep",
+    "query": "Hành vi đi xe máy dàn hàng ngang từ 3 xe trở lên bị phạt bao nhiêu tiền?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_014",
+    "tags": [
+      "money",
+      "numeric"
+    ],
+    "reference_answer": "Điều khiển xe mô tô, xe gắn máy chạy dàn hàng ngang từ 03 xe trở lên bị phạt 600.000–800.000 đồng theo điểm k khoản 3 Điều 7 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Giữ điều kiện từ 03 xe trở lên và mức 600.000–800.000 đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k3-pk"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 15,
+    "action": "edit",
+    "query": "Đường tỉnh được định nghĩa như thế nào?",
+    "rationale": "Bỏ câu dẫn tên luật để đánh giá tự tìm nguồn và nội dung định nghĩa đã sửa.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_015",
+    "tags": [
+      "definition",
+      "amended_rule",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Đường tỉnh là đường nằm trong địa bàn một tỉnh nối trung tâm hành chính của tỉnh với trung tâm hành chính của cấp xã; đường có vị trí quan trọng đối với sự phát triển kinh tế–xã hội của tỉnh, theo điểm b khoản 1 Điều 8, 49/VBHN-VPQH. Không giữ phần định nghĩa cấp huyện của đáp án cũ.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Định nghĩa cấp xã theo nội dung hợp nhất tại cutoff, không lẫn cấp huyện.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d8-k1-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 16,
+    "action": "keep",
+    "query": "Người lái xe mô tô hai bánh chở theo 2 người trên xe thì có bị phạt không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "motorcycle_passengers",
+    "tags": [
+      "missing_facts",
+      "exception",
+      "multi_locator"
+    ],
+    "reference_answer": "Cần biết hai người được chở thuộc trường hợp nào. Quy tắc là chỉ chở một người, nhưng được chở tối đa hai người trong các trường hợp người bệnh đi cấp cứu, áp giải người vi phạm, trẻ em dưới 12 tuổi, người già yếu/người khuyết tật. Nhánh chở hai người không thuộc ngoại lệ có mức phạt 400.000–600.000 đồng. Không chốt người trong câu bị phạt khi chưa biết ngoại lệ.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Quy tắc chở một người và tối đa hai người ở ngoại lệ, đọc cả clause head.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d33-k1-pa",
+          "55-vbhn-vpqh-d33-k1-pb",
+          "55-vbhn-vpqh-d33-k1-pc",
+          "55-vbhn-vpqh-d33-k1-pd"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "Nhánh không ngoại lệ: 400.000–600.000 đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k2-pg"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Chưa biết tuổi/tình trạng/lý do chở hai người; không gán một nhánh.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "conditional",
+    "publication_rationale": "Thiếu dữ kiện quyết định; cần nêu điều kiện hoặc hỏi lại, không kết luận chắc chắn một nhánh.",
+    "expected_coverage": "conditional",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 17,
+    "action": "edit",
+    "query": "Một người đi bộ không làm nhiệm vụ quản lý hoặc bảo trì đường cao tốc đi vào đường cao tốc thì bị phạt bao nhiêu tiền?",
+    "rationale": "Thêm điều kiện loại trừ ngoại lệ quản lý/bảo trì để câu mức tiền có đáp án xác định.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_017",
+    "tags": [
+      "money",
+      "exception"
+    ],
+    "reference_answer": "Với dữ kiện không thuộc ngoại lệ quản lý/bảo trì đường cao tốc, mức phạt 400.000–600.000 đồng theo điểm a khoản 2 Điều 10 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "400.000–600.000 đồng cho người đi bộ; giữ ngoại lệ quản lý/bảo trì.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d10-k2-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 18,
+    "action": "edit",
+    "query": "Kinh doanh vận tải hành khách công cộng bằng xe buýt là gì và gồm những loại tuyến nào?",
+    "rationale": "Chuẩn hóa đúng tên khái niệm và hỏi rõ cả nội tỉnh/liên tỉnh để kiểm tra toàn bộ định nghĩa.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_018",
+    "tags": [
+      "definition",
+      "multi_locator"
+    ],
+    "reference_answer": "Là loại hình kinh doanh dùng ô tô chở người từ 08 chỗ trở lên, không kể chỗ người lái, để vận tải hành khách; có điểm đầu, cuối, các điểm dừng đón/trả khách và lịch trình, hành trình xác định. Gồm tuyến nội tỉnh hoạt động trong một tỉnh/thành phố và liên tỉnh hoạt động từ hai tỉnh/thành phố trở lên, theo khoản 8 Điều 56, 49/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Đủ loại xe, số chỗ, điểm đầu/cuối/dừng và lịch trình/hành trình; đọc clause head đầy đủ.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d56-k8-pa",
+          "49-vbhn-vpqh-d56-k8-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 19,
+    "action": "edit",
+    "query": "Người lái ô tô kinh doanh vận tải chở trẻ em mầm non, xe không có thiết bị có chức năng cảnh báo chống bỏ quên trẻ em, bị phạt bao nhiêu tiền?",
+    "rationale": "Làm rõ kinh doanh vận tải để chọn Điều 27, không nhầm nhánh xe chở người thông thường.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_019",
+    "tags": [
+      "money",
+      "condition"
+    ],
+    "reference_answer": "Phạt 3.000.000–5.000.000 đồng theo điểm b khoản 3 Điều 27 Nghị định 168/2024/NĐ-CP cho người lái ô tô kinh doanh vận tải thuộc phạm vi đã nêu.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Đúng đối tượng ô tô kinh doanh vận tải chở trẻ và mức 3–5 triệu đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d27-k3-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 20,
+    "action": "edit",
+    "query": "Người lái ô tô thông thường, không phải xe ưu tiên đang làm nhiệm vụ khẩn cấp, lùi xe trên đường cao tốc bị phạt tiền và trừ điểm như thế nào?",
+    "rationale": "Nêu rõ điều kiện loại trừ xe ưu tiên để có một nhánh áp dụng.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "expressway_reverse_direction",
+    "tags": [
+      "money",
+      "license_points",
+      "exception",
+      "multi_locator"
+    ],
+    "reference_answer": "Phạt 30.000.000–40.000.000 đồng theo điểm đ khoản 11 Điều 6 và trừ 10 điểm GPLX theo điểm d khoản 16 Điều 6 Nghị định 168/2024/NĐ-CP. Giữ ngoại lệ xe ưu tiên làm nhiệm vụ khẩn cấp trong căn cứ.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "30–40 triệu đồng, đúng hành vi lùi xe trên cao tốc.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k11-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "license_points",
+        "description": "10 điểm liên kết đúng điểm đ khoản 11.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k11-pđ",
+          "nd168-effective-as-of-2026-09-22-d6-k16-pd"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 21,
+    "action": "edit",
+    "query": "Xe gắn máy được định nghĩa như thế nào?",
+    "rationale": "Bỏ số hiệu 36/2024, giữ mục tiêu định nghĩa tự nhiên.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_021",
+    "tags": [
+      "definition",
+      "numeric",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Xe gắn máy là xe hai hoặc ba bánh chạy bằng động cơ, thiết kế/sản xuất để hoạt động trên đường bộ, vận tốc thiết kế không lớn hơn 50 km/h; động cơ nhiệt có dung tích làm việc hoặc tương đương không lớn hơn 50 cm³, động cơ điện không lớn hơn 04 kW; không bao gồm xe đạp máy. Căn cứ điểm g khoản 1 Điều 34, 55/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Đủ số bánh, vận tốc thiết kế, ngưỡng động cơ nhiệt/điện và loại trừ xe đạp máy.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d34-k1-pg"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 22,
+    "action": "edit",
+    "query": "Người lái ô tô thuộc loại phải kiểm định, không phải xe đăng ký tạm thời, có tem kiểm định đã hết hạn 2 tháng, bị phạt bao nhiêu tiền?",
+    "rationale": "Nêu rõ phạm vi phải kiểm định và ngoại lệ xe đăng ký tạm thời; không hỏi mức phạt chủ xe.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_022",
+    "tags": [
+      "money",
+      "numeric",
+      "boundary"
+    ],
+    "reference_answer": "Hai tháng thuộc nhánh hết hiệu lực từ 01 tháng trở lên: người lái bị phạt 4.000.000–6.000.000 đồng theo điểm b khoản 6 Điều 13 Nghị định 168/2024/NĐ-CP. Không lẫn mức phạt của chủ phương tiện.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "4–6 triệu đồng, nhánh từ 01 tháng trở lên và đúng chủ thể người lái.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d13-k6-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 23,
+    "action": "edit",
+    "query": "Tôi lái ô tô vượt đèn đỏ và đồng thời dùng tay cầm, sử dụng điện thoại khi xe đang di chuyển. Tôi không gây tai nạn và không có hiệu lệnh khác cho phép đi. Nếu hai hành vi bị xử phạt trong cùng một lần, tiền phạt tổng hợp và điểm giấy phép lái xe được tính thế nào?",
+    "rationale": "Làm rõ hai hành vi, hậu quả và cùng lần xử phạt; giữ bài toán tổng hợp thay vì rút thành hai câu tra cứu.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_023",
+    "tags": [
+      "missing_dependency",
+      "multiple_facets",
+      "multi_locator"
+    ],
+    "reference_answer": "Trong snapshot, có căn cứ cho từng hành vi: vượt đèn đỏ ở ô tô phạt 18–20 triệu đồng, dùng tay cầm và sử dụng điện thoại phạt 4–6 triệu đồng; mỗi hành vi thuộc nhánh trừ 04 điểm. Nếu cùng lần xử phạt và có từ hai hành vi bị trừ điểm, chỉ áp dụng hành vi bị trừ nhiều điểm nhất, không cộng điểm. Tuy nhiên, để chốt tiền phạt tổng hợp và các nguyên tắc xử phạt nhiều hành vi cần dependency Luật Xử lý vi phạm hành chính chưa ingest; không tự cộng khoảng thành đáp án đầy đủ.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "Có mức tiền riêng từng hành vi 18–20 và 4–6 triệu, không tự chứng minh nguyên tắc tổng hợp.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k9-pb",
+          "nd168-effective-as-of-2026-09-22-d6-k5-ph"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "license_points",
+        "description": "Cùng lần: chọn hành vi bị trừ nhiều điểm nhất; liên kết 04 điểm cho hai hành vi.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k16-pb",
+          "nd168-effective-as-of-2026-09-22-d50-k1-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Thiếu dependency cho phép chốt tiền phạt tổng hợp.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "abstain",
+    "publication_rationale": "Thiếu dependency, provenance thời gian hoặc negative support cho kết luận được hỏi; không công bố đáp án đầy đủ.",
+    "expected_coverage": "insufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [
+      "Luật Xử lý vi phạm hành chính: nguyên tắc xử phạt nhiều hành vi và xác định tiền phạt tổng hợp."
+    ],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 24,
+    "action": "edit",
+    "query": "Một người đi xe đạp trên đường lúc 20 giờ, không sử dụng đèn và không có báo hiệu ở phía trước hoặc phía sau xe, bị phạt bao nhiêu tiền?",
+    "rationale": "Thay 'ban đêm' bằng giờ cố định và mô tả chính xác thiếu đèn/báo hiệu; không tự đồng nhất tấm phản quang với mọi báo hiệu hợp lệ.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_024",
+    "tags": [
+      "money",
+      "condition",
+      "cross_document"
+    ],
+    "reference_answer": "Thời gian 20 giờ thuộc 18h–06h. Xe thô sơ phải dùng đèn hoặc có báo hiệu phía trước và phía sau; nhánh vi phạm nêu trong câu bị phạt 100.000–200.000 đồng theo điểm i khoản 1 Điều 9 Nghị định 168/2024/NĐ-CP, cùng khoản 4 Điều 31 của 55/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Nhận diện thời gian và nghĩa vụ đèn/báo hiệu trước-sau.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d31-k4"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "100.000–200.000 đồng cho xe đạp, không nhầm hầm đường bộ.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d9-k1-pi"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 25,
+    "action": "edit",
+    "query": "Người lái xe mô tô thông thường rú ga (nẹt pô) liên tục trong khu đông dân cư, không phải xe ưu tiên làm nhiệm vụ, bị phạt bao nhiêu tiền?",
+    "rationale": "Chuẩn hóa khu dân cư thành phạm vi khu đông dân cư và loại trừ xe ưu tiên; giữ mục tiêu tiền phạt.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_025",
+    "tags": [
+      "money",
+      "condition",
+      "exception"
+    ],
+    "reference_answer": "Phạt 8.000.000–10.000.000 đồng theo điểm k khoản 9 Điều 7 Nghị định 168/2024/NĐ-CP; giữ điều kiện liên tục, khu đông dân cư và ngoại lệ xe ưu tiên làm nhiệm vụ.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "8–10 triệu đồng và đầy đủ điều kiện hành vi.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k9-pk"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 26,
+    "action": "edit",
+    "query": "Khi xác định một xe chạy quá tốc độ cho phép trên đường, cần phân biệt tốc độ thiết kế và tốc độ khai thác như thế nào?",
+    "rationale": "Bỏ gợi ý Điều 26/số hiệu luật; giữ mục tiêu phân biệt hai loại tốc độ, không yêu cầu thủ tục đo tốc độ ngoài corpus.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_026",
+    "tags": [
+      "definition",
+      "reasoning",
+      "cross_document"
+    ],
+    "reference_answer": "Tốc độ thiết kế dùng tính chỉ tiêu kỹ thuật trong giai đoạn đầu tư/xây dựng; tốc độ khai thác là giới hạn tối đa/tối thiểu cho phép phương tiện lưu thông. Nghĩa vụ của người lái là chấp hành quy định tốc độ áp dụng, không dùng giá trị thiết kế công trình làm tốc độ được phép. Căn cứ khoản 1, điểm a khoản 2 Điều 26 của 49/VBHN-VPQH và khoản 1 Điều 12 của 55/VBHN-VPQH. Không kết luận thủ tục đo, biển cụ thể hay chứng cứ xử phạt một vụ việc.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Phân biệt vận tốc tính thiết kế với giới hạn khai thác cho phương tiện.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d26-k1",
+          "49-vbhn-vpqh-d26-k2-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "reasoning",
+        "description": "Nghĩa vụ chấp hành tốc độ áp dụng cho người lái; không tự dùng tốc độ thiết kế.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d12-k1"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 27,
+    "action": "edit",
+    "query": "Tôi là cá nhân chủ xe ô tô, biết bạn tôi không có giấy phép lái xe mà vẫn giao xe để bạn lái trên đường. Tôi, với tư cách chủ xe, bị phạt bao nhiêu tiền?",
+    "rationale": "Làm rõ chủ xe cá nhân, giao xe điều khiển trên đường và chỉ hỏi mức tiền; không gộp nhánh chủ xe tổ chức.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_027",
+    "tags": [
+      "money",
+      "condition",
+      "cross_document"
+    ],
+    "reference_answer": "Chủ xe cá nhân thuộc nhánh giao xe cho người không đủ điều kiện bị phạt 28.000.000–30.000.000 đồng theo điểm i khoản 14 Điều 32 Nghị định 168/2024/NĐ-CP trong snapshot. Nghĩa vụ có GPLX còn điểm/còn hiệu lực phù hợp loại xe nằm tại khoản 1 Điều 56, 55/VBHN-VPQH; không lấy mức phạt tổ chức 56–60 triệu cho cá nhân.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Người lái không đủ điều kiện GPLX; đọc đầy đủ clause head Điều 56.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d56-k1-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "28–30 triệu đồng đúng chủ xe cá nhân.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d32-k14-pi"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 28,
+    "action": "edit",
+    "query": "Người lái ô tô không được quyền ưu tiên nhưng lắp đặt, sử dụng còi hoặc đèn phát tín hiệu ưu tiên trái quy định thì bị phạt tiền và xử lý thiết bị như thế nào?",
+    "rationale": "Chuẩn hóa thiết bị phát tín hiệu và yêu cầu hai facet tiền/thiết bị; không coi mọi đèn màu là thiết bị ưu tiên.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_028",
+    "tags": [
+      "money",
+      "additional_sanction",
+      "multiple_facets",
+      "multi_locator"
+    ],
+    "reference_answer": "Đối với đúng thiết bị phát tín hiệu ưu tiên và chủ thể nêu trong câu: phạt 4.000.000–6.000.000 đồng theo điểm e khoản 5 Điều 6; thiết bị phát tín hiệu ưu tiên lắp đặt/sử dụng trái quy định bị tịch thu theo điểm a khoản 15 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "4–6 triệu đồng, đúng xe không có quyền ưu tiên.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pe"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "additional_sanction",
+        "description": "Tịch thu thiết bị, liên kết điểm e khoản 5 với khoản 15.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pe",
+          "nd168-effective-as-of-2026-09-22-d6-k15-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 29,
+    "action": "keep",
+    "query": "Đoàn xe tang (xe đám ma) có nằm trong danh sách \"xe ưu tiên\" không? Nếu có thì xe tang có được phép vượt đèn đỏ như xe cứu thương không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_029",
+    "tags": [
+      "exception",
+      "negative_conclusion",
+      "multi_locator"
+    ],
+    "reference_answer": "Phần có positive support: đoàn xe tang được liệt kê là xe ưu tiên tại khoản 1 và điểm đ khoản 2 Điều 27 của 55/VBHN-VPQH. Khoản 4 mô tả quyền đi không phụ thuộc đèn cho nhóm điểm a, b, c, d. Không được tự mở rộng quyền đó cho đoàn xe tang; policy V2 hiện chưa cho công bố kết luận âm đầy đủ nếu thiếu negative-support provenance. Draft nêu phạm vi đã biết và giới hạn, chưa chốt câu trả lời phủ định toàn bộ.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Đoàn xe tang có trong danh sách xe ưu tiên.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d27-k1",
+          "55-vbhn-vpqh-d27-k2-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "exception",
+        "description": "Đối chiếu phạm vi nhóm a–d trong khoản 4; không coi context là completeness mọi ngoại lệ.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d27-k4"
+        ],
+        "role": "context",
+        "support_state": "unknown"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Reviewer cần provenance cho kết luận không được vượt đèn đỏ theo policy hiện tại.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "abstain",
+    "publication_rationale": "Thiếu dependency, provenance thời gian hoặc negative support cho kết luận được hỏi; không công bố đáp án đầy đủ.",
+    "expected_coverage": "insufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Duyệt phạm vi danh sách a–d và cơ sở của kết luận âm; không dùng việc không có điểm đ trong một leaf để tự chứng minh đầy đủ."
+    ]
+  },
+  {
+    "historical_id": 30,
+    "action": "keep",
+    "query": "Tôi có bằng lái xe tích hợp A1 và B. Nếu tôi lái xe máy (A1) vi phạm và bị trừ điểm, thì điểm đó có ảnh hưởng đến việc tôi lái xe ô tô (B) không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_030",
+    "tags": [
+      "condition",
+      "direct"
+    ],
+    "reference_answer": "Điểm d khoản 1 Điều 50 Nghị định 168/2024/NĐ-CP quy định khi GPLX tích hợp phần không thời hạn và phần có thời hạn, vi phạm khi điều khiển xe mô tô được trừ vào phần không thời hạn; vi phạm khi lái ô tô được trừ vào phần có thời hạn. Với dữ kiện lái mô tô A1, việc trừ điểm áp vào phần mô tô không thời hạn. Đây là quy tắc phân định phần bị trừ, không kết luận mọi vấn đề quyền lái khi GPLX bị tước hoặc có vi phạm khác.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Chỉ đúng phần GPLX bị trừ theo loại phương tiện đang điều khiển.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d50-k1-pd"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 31,
+    "action": "keep",
+    "query": "\"Ùn tắc giao thông đường bộ\" được định nghĩa như thế nào?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_031",
+    "tags": [
+      "definition",
+      "direct"
+    ],
+    "reference_answer": "Ùn tắc giao thông đường bộ là tình trạng người, phương tiện tham gia giao thông bị dồn ứ, di chuyển với tốc độ rất chậm hoặc không thể di chuyển được, theo khoản 11 Điều 2, 55/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Đủ yếu tố dồn ứ, tốc độ rất chậm hoặc không thể di chuyển.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d2-k11"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 32,
+    "action": "edit",
+    "query": "Đường gom là gì?",
+    "rationale": "Bỏ tên luật/năm, giữ câu định nghĩa tự nhiên.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_032",
+    "tags": [
+      "definition",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Đường gom gom hệ thống đường giao thông nội bộ của các khu đô thị, công nghiệp, kinh tế, dân cư, thương mại–dịch vụ và các đường khác vào đường chính hoặc đường nhánh trước khi đấu nối vào đường chính; có thể là đường bên theo khoản 4 Điều 9. Căn cứ khoản 3 Điều 9, 49/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Đúng chức năng gom trước đấu nối và khả năng là đường bên.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d9-k3"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 33,
+    "action": "keep",
+    "query": "Khi người điều khiển giao thông (Cảnh sát giao thông) giơ tay thẳng đứng, hiệu lệnh này có ý nghĩa gì đối với người tham gia giao thông?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_033",
+    "tags": [
+      "direct"
+    ],
+    "reference_answer": "Tay bên phải giơ thẳng đứng báo hiệu người tham gia giao thông ở tất cả các hướng phải dừng lại, theo điểm a khoản 3 Điều 11 của 55/VBHN-VPQH. Không chỉ người đi từ một hướng.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Tất cả hướng phải dừng khi tay phải giơ thẳng đứng.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d11-k3-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 34,
+    "action": "edit",
+    "query": "Một cá nhân có từ hai hành vi bị trừ điểm giấy phép lái xe trở lên và bị xử phạt trong cùng một lần thì điểm bị trừ được tính thế nào?",
+    "rationale": "Bỏ số hiệu văn bản; nêu điều kiện từ hai hành vi có chế tài trừ điểm và cùng lần để không nhầm cộng điểm qua nhiều lần.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_034",
+    "tags": [
+      "condition",
+      "reasoning",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Chỉ áp dụng trừ điểm đối với hành vi bị trừ nhiều điểm nhất theo điểm b khoản 1 Điều 50 Nghị định 168/2024/NĐ-CP. Điều kiện là cùng một lần xử phạt và có từ hai hành vi theo quy định bị trừ điểm; không áp dụng nguyên tắc này cho các lần xử phạt tách biệt.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Chọn mức trừ lớn nhất, giữ đúng điều kiện cùng lần; không cộng cơ học.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d50-k1-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 35,
+    "action": "edit",
+    "query": "Thanh toán điện tử giao thông đường bộ là gì?",
+    "rationale": "Bỏ câu dẫn tên luật, giữ nhu cầu định nghĩa.",
+    "query_type": "factual",
+    "type_revision_reason": null,
+    "family_id": "historical_035",
+    "tags": [
+      "definition",
+      "source_cue_removed"
+    ],
+    "reference_answer": "Là thanh toán các loại phí, giá, tiền dịch vụ liên quan đến hoạt động giao thông của phương tiện đường bộ thông qua tài khoản giao thông, theo khoản 1 Điều 43 của 49/VBHN-VPQH.",
+    "facets": [
+      {
+        "kind": "definition",
+        "description": "Đủ đối tượng phí/giá/tiền dịch vụ và phương thức qua tài khoản giao thông.",
+        "chunk_ids": [
+          "49-vbhn-vpqh-d43-k1"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 36,
+    "action": "edit",
+    "query": "Người lái ô tô chạy quá tốc độ quy định từ 10 km/h đến 20 km/h, không gây tai nạn, bị phạt bao nhiêu tiền?",
+    "rationale": "Nêu rõ không gây tai nạn để chọn nhánh thông thường, giữ hai mốc 10 và 20 cho bài khoảng số.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "car_speed_10_20",
+    "tags": [
+      "money",
+      "numeric",
+      "boundary"
+    ],
+    "reference_answer": "Phạt 4.000.000–6.000.000 đồng tại điểm đ khoản 5 Điều 6 Nghị định 168/2024/NĐ-CP. Khoảng từ 10 đến 20 km/h giữ cả hai đầu mút; không gán mức trên 20 cho đúng mốc 20.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "4–6 triệu đồng cho toàn khoảng 10–20 km/h của ô tô.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "reasoning",
+        "description": "Giữ biên 10 và 20; không trộn khoảng trên 20.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 37,
+    "action": "keep",
+    "query": "Người điều khiển xe mô tô, xe gắn máy không đội \"mũ bảo hiểm cho người đi mô tô, xe máy\" khi tham gia giao thông bị phạt bao nhiêu tiền?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_037",
+    "tags": [
+      "money",
+      "direct"
+    ],
+    "reference_answer": "Người điều khiển xe mô tô/xe gắn máy không đội mũ bảo hiểm theo mô tả bị phạt 400.000–600.000 đồng theo điểm h khoản 2 Điều 7 Nghị định 168/2024/NĐ-CP. Căn cứ này cũng nêu đội mũ nhưng không cài quai đúng quy cách; không lẫn chế tài chở người không đội mũ.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "400.000–600.000 đồng cho người điều khiển không đội mũ.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k2-ph"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 38,
+    "action": "edit",
+    "query": "Người lái ô tô thông thường, không phải xe ưu tiên đang làm nhiệm vụ khẩn cấp, đi ngược chiều trên đường cao tốc bị phạt tiền và trừ điểm như thế nào?",
+    "rationale": "Loại trừ nhánh xe ưu tiên khẩn cấp, giữ phân biệt đường cao tốc với đường thông thường.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "expressway_reverse_direction",
+    "tags": [
+      "money",
+      "license_points",
+      "exception",
+      "multi_locator"
+    ],
+    "reference_answer": "Phạt 30.000.000–40.000.000 đồng theo điểm đ khoản 11 Điều 6 và trừ 10 điểm GPLX theo điểm d khoản 16 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "30–40 triệu đồng đúng đường cao tốc.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k11-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "license_points",
+        "description": "10 điểm và giữ ngoại lệ trong locator hành vi.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k11-pđ",
+          "nd168-effective-as-of-2026-09-22-d6-k16-pd"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 39,
+    "action": "edit",
+    "query": "Người lái xe tải chở hàng vượt khối lượng hàng chuyên chở cho phép ghi trong chứng nhận kiểm định trên 30% đến 50%, không đồng thời là chủ xe, bị phạt bao nhiêu tiền?",
+    "rationale": "Làm rõ đại lượng quá tải và chủ thể người lái không đồng thời chủ xe; tránh nhầm tải trọng trục/đường hoặc chế tài chủ xe.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_039",
+    "tags": [
+      "money",
+      "numeric",
+      "boundary",
+      "condition"
+    ],
+    "reference_answer": "Phạt 3.000.000–5.000.000 đồng theo điểm a khoản 5 Điều 21 Nghị định 168/2024/NĐ-CP. Khoảng mở ở 30% và đóng ở 50%; căn cứ là khối lượng hàng chuyên chở cho phép trong chứng nhận kiểm định.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "3–5 triệu đồng và đúng đại lượng/đối tượng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d21-k5-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "reasoning",
+        "description": "Trên 30% đến 50%: không bao gồm đúng 30%, có đúng 50%.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d21-k5-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 40,
+    "action": "edit",
+    "query": "Người lái ô tô không nhường đường hoặc cản trở xe có quyền ưu tiên đang phát tín hiệu ưu tiên đi làm nhiệm vụ, không gây tai nạn, bị phạt bao nhiêu tiền?",
+    "rationale": "Làm rõ nhánh không gây tai nạn, giữ hai điều kiện tín hiệu và làm nhiệm vụ.",
+    "query_type": "penalty",
+    "type_revision_reason": null,
+    "family_id": "historical_040",
+    "tags": [
+      "money",
+      "condition"
+    ],
+    "reference_answer": "Phạt 6.000.000–8.000.000 đồng theo điểm b khoản 6 Điều 6 Nghị định 168/2024/NĐ-CP đối với hành vi và điều kiện nêu trong câu.",
+    "facets": [
+      {
+        "kind": "money",
+        "description": "6–8 triệu đồng và giữ đúng xe ưu tiên đang phát tín hiệu đi làm nhiệm vụ.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k6-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 41,
+    "action": "edit",
+    "query": "Ngày 22/09/2026 lúc 18 giờ 30, tôi lái ô tô trên đường mà không bật đèn chiếu sáng phía trước. Trời vẫn còn sáng và tôi không gây tai nạn. Tôi có vi phạm không, mức phạt tiền là bao nhiêu?",
+    "rationale": "Thay hôm qua/mùa hè bằng ngày cutoff và giờ cố định; thêm nhánh không tai nạn để có mức phạt xác định, không để luật phụ thuộc ngày chạy test.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_041",
+    "tags": [
+      "explicit_date",
+      "reasoning",
+      "cross_document",
+      "money"
+    ],
+    "reference_answer": "18h30 nằm trong thời gian 18h–06h phải bật đèn chiếu sáng phía trước, không phụ thuộc trời vẫn sáng, theo khoản 1 Điều 20 của 55/VBHN-VPQH. Hành vi của người lái ô tô ở nhánh đã nêu bị phạt 800.000–1.000.000 đồng theo điểm g khoản 3 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "reasoning",
+        "description": "Áp mốc giờ độc lập với cảm nhận còn sáng.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d20-k1"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "800.000–1.000.000 đồng cho ô tô không sử dụng đèn.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k3-pg"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "explicit_date",
+    "as_of_date": "2026-09-22",
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 42,
+    "action": "keep",
+    "query": "Xe ô tô của tôi bị nổ lốp trên đường cao tốc. Tôi đã bật đèn khẩn cấp và đặt tam giác cảnh báo cách đuôi xe khoảng 50 mét. Như vậy tôi có làm đúng luật không và có bị phạt không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_042",
+    "tags": [
+      "missing_facts",
+      "condition",
+      "cross_document"
+    ],
+    "reference_answer": "Cần biết xe đã vào làn dừng khẩn cấp hay còn trên làn xe chạy. Nếu xe không thể vào làn khẩn cấp, khoản 2 Điều 25 của 55/VBHN-VPQH yêu cầu đèn khẩn cấp, cảnh báo phía sau tối thiểu 150 m và nhanh chóng báo cơ quan chức năng; 50 m không đáp ứng nhánh đó. Điểm c khoản 7 Điều 6 Nghị định 168/2024/NĐ-CP có chế tài 12–14 triệu cho nhánh vi phạm mô tả. Không áp mốc 150 m và tiền phạt vô điều kiện khi chưa rõ vị trí và tình huống dừng.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Phân biệt làn dừng khẩn cấp với không thể di chuyển vào làn; giữ yêu cầu tối thiểu 150 m của đúng nhánh.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d25-k2"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "Chế tài nhánh dừng cao tốc vi phạm tại điểm c khoản 7 là 12–14 triệu, không chọn nhánh khi chưa rõ facts.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k7-pc"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Thiếu vị trí xe và các điều kiện quyết định hành vi.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "conditional",
+    "publication_rationale": "Thiếu dữ kiện quyết định; cần nêu điều kiện hoặc hỏi lại, không kết luận chắc chắn một nhánh.",
+    "expected_coverage": "conditional",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 43,
+    "action": "keep",
+    "query": "Con trai tôi năm nay 13 tuổi, cháu lấy trộm chìa khóa xe máy (xe ga 110cc) của gia đình để chạy đi chơi và bị công an giữ lại. Xin hỏi ở độ tuổi này cháu bị phạt tiền bao nhiêu?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_043",
+    "tags": [
+      "missing_dependency",
+      "reasoning"
+    ],
+    "reference_answer": "Không đủ nguồn để xác định mức phạt tiền của người 13 tuổi. Điều kiện tuổi lái xe trong luật giao thông và tuổi/chủ thể chịu xử phạt hành chính là hai vấn đề khác nhau. Cần dependency Luật Xử lý vi phạm hành chính đã được duyệt trước khi chốt mức tiền hoặc kết luận không bị phạt. Không suy từ chưa đủ tuổi lái xe thành một mức phạt tiền cho trẻ.",
+    "facets": [
+      {
+        "kind": "uncertainty",
+        "description": "Nhận diện thiếu dependency về tuổi chịu xử phạt; không công bố con số/không phạt.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "abstain",
+    "publication_rationale": "Thiếu dependency, provenance thời gian hoặc negative support cho kết luận được hỏi; không công bố đáp án đầy đủ.",
+    "expected_coverage": "insufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [
+      "Luật Xử lý vi phạm hành chính: tuổi, chủ thể chịu xử phạt và hình thức xử phạt người chưa thành niên."
+    ],
+    "review_items": [
+      "Duyệt scope dependency về người chưa thành niên; phân biệt lái 110 cm³, tuổi được lái và trách nhiệm của trẻ/chủ xe."
+    ]
+  },
+  {
+    "historical_id": 44,
+    "action": "edit",
+    "query": "Tôi dừng ô tô sát lề đường bên phải, cách cổng trụ sở một cơ quan 3 m để đón người thân. Tôi chưa rõ cổng này có bố trí đường cho xe ra vào hay không. Có đủ dữ kiện kết luận tôi vi phạm lỗi dừng xe không?",
+    "rationale": "Bỏ tên UBND huyện để tránh phụ thuộc mô hình hành chính cũ; làm rõ điều kiện cổng có đường xe ra/vào đang thiếu, giữ bài vị trí 3 m.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_044",
+    "tags": [
+      "missing_facts",
+      "condition",
+      "numeric",
+      "cross_document"
+    ],
+    "reference_answer": "Chưa đủ dữ kiện. Điểm k khoản 4 Điều 18 của 55/VBHN-VPQH và điểm đ khoản 3 Điều 6 Nghị định 168/2024/NĐ-CP nêu phạm vi cổng trụ sở cơ quan/tổ chức có bố trí đường cho xe ra, vào. Nếu đúng điều kiện đó, khoảng 3 m thuộc phạm vi 5 m, nhánh tiền phạt 800.000–1.000.000 đồng. Cần xác minh điều kiện cổng và không suy sát lề phải là đủ hợp pháp trong mọi trường hợp.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Cổng có bố trí đường xe ra/vào là điều kiện phải xác minh; 3<5 m.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d18-k4-pk"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "Nhánh vi phạm tại điểm đ khoản 3: 800.000–1.000.000 đồng.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k3-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Chưa rõ điều kiện cổng nên chưa kết luận một nhánh.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "conditional",
+    "publication_rationale": "Thiếu dữ kiện quyết định; cần nêu điều kiện hoặc hỏi lại, không kết luận chắc chắn một nhánh.",
+    "expected_coverage": "conditional",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 45,
+    "action": "edit",
+    "query": "Tôi lái ô tô thông thường trên quốc lộ, biển báo cho phép tối đa 80 km/h, thực tế chạy 92 km/h và không gây tai nạn. Tôi bị phạt bao nhiêu tiền?",
+    "rationale": "Nêu ô tô thông thường và không tai nạn để cô lập nhánh; giữ phép suy luận 92−80.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "car_speed_10_20",
+    "tags": [
+      "money",
+      "numeric",
+      "reasoning"
+    ],
+    "reference_answer": "92−80=12 km/h, thuộc khoảng từ 10 đến 20 km/h. Mức phạt 4.000.000–6.000.000 đồng theo điểm đ khoản 5 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "facets": [
+      {
+        "kind": "reasoning",
+        "description": "Tính vượt 12 km/h, chọn đúng khoảng 10–20.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "4–6 triệu đồng đúng nhánh ô tô.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d6-k5-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 46,
+    "action": "keep",
+    "query": "Xe cứu thương đang trên đường đi đón bệnh nhân cấp cứu (chưa có bệnh nhân trên xe) thì có được phép vượt đèn đỏ không? Tại sao?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_046",
+    "tags": [
+      "missing_facts",
+      "condition",
+      "exception",
+      "multi_locator"
+    ],
+    "reference_answer": "Việc xe chưa có bệnh nhân không tự quyết định quyền ưu tiên: cần xác định xe đang thực hiện nhiệm vụ cấp cứu và các điều kiện tín hiệu/hiệu lệnh áp dụng. Khoản 1, điểm c khoản 2, điểm a khoản 3 và khoản 4 Điều 27 của 55/VBHN-VPQH quy định xe cứu thương làm nhiệm vụ và phạm vi ưu tiên; vẫn phải tuân hiệu lệnh người điều khiển giao thông/biển tạm thời. Không khẳng định mọi xe đang đi đón bệnh nhân đều được vượt đèn đỏ chỉ từ dữ kiện chưa có bệnh nhân.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Nhiệm vụ cấp cứu, tín hiệu và phạm vi quyền ưu tiên của xe cứu thương.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d27-k1",
+          "55-vbhn-vpqh-d27-k2-pc",
+          "55-vbhn-vpqh-d27-k3-pa",
+          "55-vbhn-vpqh-d27-k4"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Chưa rõ nhiệm vụ/tín hiệu/hiệu lệnh cụ thể; không khẳng định một nhánh.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "conditional",
+    "publication_rationale": "Thiếu dữ kiện quyết định; cần nêu điều kiện hoặc hỏi lại, không kết luận chắc chắn một nhánh.",
+    "expected_coverage": "conditional",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 47,
+    "action": "edit",
+    "query": "Tôi lái xe mô tô, đeo tai nghe âm thanh để nghe chỉ dẫn Google Maps, không phải thiết bị trợ thính. Hành vi này có bị cấm và mức phạt tiền là bao nhiêu?",
+    "rationale": "Làm rõ người lái, thiết bị âm thanh và loại trừ trợ thính; hỏi đúng quy tắc/mức tiền thay vì mọi hệ quả.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_047",
+    "tags": [
+      "money",
+      "exception",
+      "cross_document",
+      "multiple_facets"
+    ],
+    "reference_answer": "Người lái mô tô bị cấm sử dụng thiết bị âm thanh, trừ thiết bị trợ thính, theo điểm c khoản 3 Điều 33 của 55/VBHN-VPQH. Hành vi sử dụng thiết bị âm thanh ở nhánh đã nêu bị phạt 800.000–1.000.000 đồng theo điểm đ khoản 4 Điều 7 Nghị định 168/2024/NĐ-CP. Mục đích nghe Maps không thay đổi mô tả thiết bị/hành vi trong căn cứ.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Đúng chủ thể người lái và ngoại lệ trợ thính.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d33-k3-pc"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "money",
+        "description": "800.000–1.000.000 đồng cho sử dụng thiết bị âm thanh.",
+        "chunk_ids": [
+          "nd168-effective-as-of-2026-09-22-d7-k4-pđ"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 48,
+    "action": "keep",
+    "query": "Xe ô tô của tôi bị chết máy giữa đường. Tôi nhờ một người bạn lái xe bán tải dùng dây cáp mềm để kéo xe tôi về gara sửa chữa. Việc này có đúng luật không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_048",
+    "tags": [
+      "missing_facts",
+      "condition",
+      "multi_locator"
+    ],
+    "reference_answer": "Cần biết hệ thống phanh/lái còn hiệu lực, có người điều khiển xe được kéo, nối chắc chắn/an toàn và biển/đèn cảnh báo. Khoản 1 Điều 29 của 55/VBHN-VPQH yêu cầu nếu hệ thống hãm không còn hiệu lực thì phải nối bằng thanh cứng; đồng thời có người điều khiển, hệ thống lái còn hiệu lực, biển và đèn cảnh báo phù hợp. Dữ kiện chỉ có cáp mềm và chết máy chưa đủ kết luận việc kéo xe hợp pháp.",
+    "facets": [
+      {
+        "kind": "condition",
+        "description": "Đủ người điều khiển, hệ thống lái, nối an toàn, điều kiện thanh cứng và cảnh báo.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d29-k1-pa",
+          "55-vbhn-vpqh-d29-k1-pb",
+          "55-vbhn-vpqh-d29-k1-pc"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "uncertainty",
+        "description": "Thiếu tình trạng phanh/lái, người điều khiển và cảnh báo.",
+        "chunk_ids": [],
+        "role": "context",
+        "support_state": "unknown"
+      }
+    ],
+    "disposition": "conditional",
+    "publication_rationale": "Thiếu dữ kiện quyết định; cần nêu điều kiện hoặc hỏi lại, không kết luận chắc chắn một nhánh.",
+    "expected_coverage": "conditional",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  },
+  {
+    "historical_id": 49,
+    "action": "edit",
+    "query": "Khi vượt xe container trên quốc lộ, tôi có phải tiếp tục tuân thủ tốc độ tối đa cho phép của đoạn đường, kể cả chỉ vượt trong thời gian ngắn, không?",
+    "rationale": "Giữ nhu cầu về tốc độ khi vượt nhưng viết thành nghĩa vụ dương có căn cứ; không yêu cầu suy từ thiếu evidence về ngoại lệ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "historical_049",
+    "tags": [
+      "rule",
+      "reasoning"
+    ],
+    "reference_answer": "Có. Người lái phải chấp hành quy định về tốc độ theo khoản 1 Điều 12 của 55/VBHN-VPQH. Tốc độ khai thác là giới hạn cho phép phương tiện tham gia giao thông theo điểm a khoản 2 Điều 26 của 49/VBHN-VPQH. Việc vượt xe và thời gian ngắn không thay thế nghĩa vụ dương đã nêu; câu này không đánh giá một vụ xử phạt có xe ưu tiên hoặc điều kiện đặc biệt.",
+    "facets": [
+      {
+        "kind": "rule",
+        "description": "Nghĩa vụ chấp hành tốc độ áp dụng vẫn là yêu cầu cho người lái trong tình huống đã nêu.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d12-k1",
+          "49-vbhn-vpqh-d26-k2-pa"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer kiểm tra cách diễn đạt nghĩa vụ dương, tránh biến nó thành chứng minh không tồn tại mọi ngoại lệ; nếu cần nới phạm vi query, phải đổi expectation."
+    ]
+  },
+  {
+    "historical_id": 50,
+    "action": "keep",
+    "query": "Nhà tôi có 4 người (2 vợ chồng và 2 con nhỏ, một bé 3 tuổi, một bé 5 tuổi). Chúng tôi có được phép đi chung trên một chiếc xe máy (xe mô tô 2 bánh) không?",
+    "rationale": "Giữ nhu cầu gốc; audit lại căn cứ và đáp án tại cutoff, không sử dụng gold cũ.",
+    "query_type": "scenario",
+    "type_revision_reason": null,
+    "family_id": "motorcycle_passengers",
+    "tags": [
+      "numeric",
+      "exception",
+      "multi_locator"
+    ],
+    "reference_answer": "Một người lái chở thêm vợ/chồng và hai con là chở 03 người, tổng 04 người trên mô tô. Khoản 1 Điều 33 của 55/VBHN-VPQH chỉ cho tối đa hai người được chở trong ngoại lệ trẻ em dưới 12 tuổi; không nâng tối đa lên ba người được chở. Hành vi chở từ 03 người trở lên có quy định xử phạt tại điểm b khoản 3 Điều 7 Nghị định 168/2024/NĐ-CP. Vì vậy dữ kiện không đáp ứng giới hạn chở người; không suy miễn phạt vì cả hai trẻ nhỏ.",
+    "facets": [
+      {
+        "kind": "reasoning",
+        "description": "Đếm 03 người được chở, không nhầm tổng số người gồm người lái.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d33-k1-pc"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      },
+      {
+        "kind": "exception",
+        "description": "Ngoại lệ dưới 12 tuổi vẫn tối đa hai người được chở; có quy định chở từ 03 trở lên.",
+        "chunk_ids": [
+          "55-vbhn-vpqh-d33-k1-pc",
+          "nd168-effective-as-of-2026-09-22-d7-k3-pb"
+        ],
+        "role": "support",
+        "support_state": "positive_support"
+      }
+    ],
+    "disposition": "publish",
+    "publication_rationale": "Các facet bắt buộc có căn cứ trực tiếp trong snapshot và query xác định phạm vi áp dụng.",
+    "expected_coverage": "sufficient",
+    "temporal_basis": "frozen_corpus",
+    "as_of_date": null,
+    "external_evidence_needed": [],
+    "review_items": [
+      "Reviewer độc lập đối chiếu từng facet với source spans và full context trước khi approved."
+    ]
+  }
+]

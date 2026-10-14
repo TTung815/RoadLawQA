@@ -29,8 +29,8 @@ _EXPRESSION = re.compile(
     rf"|(?:đúng|trên|dưới|không quá|từ)\s+{_NUMBER})(?![\d.,])"
 )
 _REQUEST = re.compile(
-    rf"(?<!\w)(?:(?:từ(?: trên)?|trên)\s+{_NUMBER}(?:\s+[^\s\d;,.?!]+)?\s+(?:đến|tới)\s+{_NUMBER}"
-    rf"|(?:đúng|trên|dưới|không quá|từ)\s+{_NUMBER})\s+(?P<unit>[^\s\d;,.?!]+)"
+    rf"(?<!\w)(?:(?:từ(?: trên)?|trên)\s+{_NUMBER}(?:\s*[^\s\d;,.?!]+)?\s+(?:đến|tới)\s+{_NUMBER}"
+    rf"|(?:đúng|trên|dưới|không quá|từ)\s+{_NUMBER})\s*(?P<unit>[^\s\d;,.?!]+)"
 )
 
 

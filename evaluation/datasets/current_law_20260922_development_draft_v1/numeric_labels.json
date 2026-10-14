@@ -1,0 +1,42 @@
+[
+  {
+    "id": "numeric_009",
+    "excess_kmh": 9,
+    "chunk_id": "nd168-effective-as-of-2026-09-22-d6-k3-pa",
+    "money_min": 800000,
+    "money_max": 1000000,
+    "query": "Người lái ô tô thông thường chạy quá tốc độ quy định 9 km/h trên đường, không gây tai nạn. Hành vi chạy quá tốc độ này bị phạt bao nhiêu tiền?",
+    "reference_answer": "Vượt tốc độ 9 km/h thuộc khoảng từ 5 đến dưới 10 km/h: phạt từ 800.000 đến 1.000.000 đồng theo điểm a khoản 3 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "interval_description": "Từ 5 km/h đến dưới 10 km/h; 9 thuộc khoảng này, còn 10 không thuộc."
+  },
+  {
+    "id": "numeric_010",
+    "excess_kmh": 10,
+    "chunk_id": "nd168-effective-as-of-2026-09-22-d6-k5-pđ",
+    "money_min": 4000000,
+    "money_max": 6000000,
+    "query": "Người lái ô tô thông thường chạy quá tốc độ quy định đúng 10 km/h trên đường, không gây tai nạn. Hành vi chạy quá tốc độ này bị phạt bao nhiêu tiền?",
+    "reference_answer": "Vượt tốc độ đúng 10 km/h thuộc khoảng từ 10 đến 20 km/h: phạt từ 4.000.000 đến 6.000.000 đồng theo điểm đ khoản 5 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "interval_description": "Từ 10 km/h đến 20 km/h; bao gồm mốc 10 và mốc 20."
+  },
+  {
+    "id": "numeric_020",
+    "excess_kmh": 20,
+    "chunk_id": "nd168-effective-as-of-2026-09-22-d6-k5-pđ",
+    "money_min": 4000000,
+    "money_max": 6000000,
+    "query": "Người lái ô tô thông thường chạy quá tốc độ quy định đúng 20 km/h trên đường, không gây tai nạn. Hành vi chạy quá tốc độ này bị phạt bao nhiêu tiền?",
+    "reference_answer": "Vượt tốc độ đúng 20 km/h vẫn thuộc khoảng từ 10 đến 20 km/h: phạt từ 4.000.000 đến 6.000.000 đồng theo điểm đ khoản 5 Điều 6 Nghị định 168/2024/NĐ-CP; không chuyển sang nhánh trên 20 km/h.",
+    "interval_description": "Từ 10 km/h đến 20 km/h; mốc 20 được bao gồm, nhánh kế tiếp đòi hỏi trên 20."
+  },
+  {
+    "id": "numeric_021",
+    "excess_kmh": 21,
+    "chunk_id": "nd168-effective-as-of-2026-09-22-d6-k6-pa",
+    "money_min": 6000000,
+    "money_max": 8000000,
+    "query": "Người lái ô tô thông thường chạy quá tốc độ quy định 21 km/h trên đường, không gây tai nạn. Hành vi chạy quá tốc độ này bị phạt bao nhiêu tiền?",
+    "reference_answer": "Vượt tốc độ 21 km/h thuộc khoảng trên 20 đến 35 km/h: phạt từ 6.000.000 đến 8.000.000 đồng theo điểm a khoản 6 Điều 6 Nghị định 168/2024/NĐ-CP.",
+    "interval_description": "Trên 20 km/h đến 35 km/h; không bao gồm 20, có bao gồm 21."
+  }
+]

@@ -84,12 +84,13 @@ async def test_generator_negative_or_unknown_claim_never_reaches_public_answer(s
                                       [[chunk("source")]], max_attempts=1)
     provider = ScriptedProvider([(DraftAnswer, {"claims": [
         {"text": NEGATIVE, "chunk_ids": ["source"], "support_state": state},
-    ]})])
+    ]})] * 2)
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(QUESTION)
     assert result.status == "verification_failed"
     assert result.answer is None
     assert result.verification.semantic_valid is False
-    assert len(provider.calls) == 1
+    assert len(provider.calls) == 2
+    assert result.repair_attempts == 1
 
 
 @pytest.mark.asyncio

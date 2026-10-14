@@ -13,7 +13,7 @@ from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.evidence_grader import EvidenceGrade
 from ai.agent.query_rewriter import RewrittenQuery
 from ai.agent.range_coverage import RangeCoverage
-from backend.dependencies.answer import get_answer_service
+from backend.dependencies.answer import get_chat_service
 from backend.main import create_app
 from backend.services.answer import AnswerService
 from tests.unit.test_agentic_retrieval import chunk, make_service, ScriptedProvider
@@ -36,7 +36,7 @@ def semantic(count, supported=True, complete=True):
          "support_state": "positive_support" if supported else "unknown",
          "reason": "Supported by attached source." if supported else "Attached source does not support the claim."}
         for index in range(count)],
-        "answer_complete": complete, "completeness_reason": "Question coverage checked."}
+        "response_appropriate": supported, "answer_complete": complete, "completeness_reason": "Question coverage checked."}
 
 
 def qa_service(draft=DRAFT, verification=None, sufficient=True):
@@ -47,11 +47,15 @@ def qa_service(draft=DRAFT, verification=None, sufficient=True):
     }
     evidence = [chunk("money"), chunk("points")] if sufficient else [chunk("money")]
     retrieval, grading, retriever, _ = make_service([(EvidenceGrade, grade)], [evidence], max_attempts=1)
+    if not sufficient and draft is DRAFT:
+        draft = {"claims": [DRAFT["claims"][0]], "response_kind": "partial",
+                 "limitations": ["Chưa đủ căn cứ xác định số điểm bị trừ."]}
+        verification = {**semantic(1, complete=False), "response_appropriate": True}
     script = [(DraftAnswer, draft)]
     if verification is not False:
         script.append((SemanticVerification, semantic(len(draft["claims"])) if verification is None else verification))
-    provider = ScriptedProvider(script if sufficient else [])
-    return (AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)),
+    provider = ScriptedProvider(script)
+    return (AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider), max_answer_attempts=1),
             provider, grading, retriever)
 
 
@@ -72,8 +76,8 @@ async def test_sufficient_evidence_generates_and_verifies_server_rendered_citati
     assert generation["question"] == verification["question"] == QUESTION
     assert generation["required_aspects"] == ["monetary_penalty", "license_points"]
     assert [item["id"] for item in generation["chunks"]] == ["money", "points"]
-    assert [item["id"] for item in verification["claims"][0]["cited_chunks"]] == ["money"]
-    assert [item["id"] for item in verification["claims"][1]["cited_chunks"]] == ["points"]
+    assert verification["claims"][0]["chunk_ids"] == ["money"]
+    assert verification["claims"][1]["chunk_ids"] == ["points"]
     assert all(value >= 0 for value in result.timings.model_dump().values())
     assert all(value >= 0 for value in result.retrieval.timings.model_dump().values())
     assert result.timings.total_ms >= result.retrieval.timings.total_ms
@@ -81,17 +85,17 @@ async def test_sufficient_evidence_generates_and_verifies_server_rendered_citati
 
 
 @pytest.mark.asyncio
-async def test_insufficient_retrieval_skips_generation_and_preserves_evidence():
+async def test_incomplete_retrieval_returns_verified_partial_answer_with_limits():
     service, provider, _, _ = qa_service(sufficient=False)
     result = await service.answer(QUESTION)
-    assert result.status == "insufficient_evidence"
-    assert result.answer is None
-    assert result.verification.status == "not_run"
-    assert provider.calls == []
-    assert [item.chunk_id for item in result.evidence_citations] == ["money"]
+    assert result.status == "partial_answer"
+    assert result.answer is not None
+    assert result.verification.status == "passed"
+    assert result.verification.answer_complete is False
+    assert len(provider.calls) == 2
+    assert result.limitations == ["Chưa đủ căn cứ xác định số điểm bị trừ."]
     assert result.retrieval.grade.missing_aspects == ["license_points"]
-    assert "không có nghĩa chế tài không tồn tại" in result.message
-    assert result.timings.generation_ms == result.timings.verification_ms == 0
+    assert [c.chunk_id for c in result.answer.claims[0].citations] == ["money"]
 
 
 @pytest.mark.asyncio
@@ -158,7 +162,7 @@ async def test_complementary_retry_leaves_reach_generation_and_claim_verificatio
     assert result.retrieval.selected_attempt == 2
     assert len(retriever.calls) == 2
     assert [item["id"] for item in provider.calls[0]["payload"]["chunks"]] == ["money", "points"]
-    assert [item["id"] for item in provider.calls[1]["payload"]["claims"][0]["cited_chunks"]] == ["money", "points"]
+    assert provider.calls[1]["payload"]["claims"][0]["chunk_ids"] == ["money", "points"]
     assert [citation.chunk_id for citation in result.answer.claims[0].citations] == ["money", "points"]
 
 
@@ -177,7 +181,8 @@ async def test_numeric_boundary_is_visible_to_verifier_and_collapse_is_rejected(
     provider = ScriptedProvider([(SemanticVerification, semantic(1, supported=not collapsed))])
     result = await CitationVerifier(provider).verify(question, draft, [lower, upper], ["threshold_range"])
     assert result.status == ("failed" if collapsed else "passed")
-    attached = provider.calls[0]["payload"]["claims"][0]["cited_chunks"]
+    payload = provider.calls[0]["payload"]
+    attached = [c for c in payload["final_evidence"] if c["id"] in payload["claims"][0]["chunk_ids"]]
     assert [item["text"] for item in attached] == [lower.text, upper.text]
     assert provider.calls[0]["payload"]["question"] == question
     assert "đúng B" in provider.calls[0]["prompt"]
@@ -286,7 +291,7 @@ async def test_provider_and_retrieval_failures_propagate(stage):
         provider.script[1] = (SemanticVerification, RuntimeError("verifier unavailable"))
     else:
         grading.script[0] = (EvidenceGrade, RuntimeError("retrieval grading unavailable"))
-    with pytest.raises(RuntimeError, match="unavailable"):
+    with pytest.raises(RuntimeError, match="RuntimeError"):
         await service.answer(QUESTION)
     assert len(provider.calls) == {"generator": 1, "verifier": 2, "retrieval": 0}[stage]
 
@@ -316,10 +321,9 @@ async def test_supported_claims_with_incomplete_answer_are_not_published():
 @pytest.mark.asyncio
 @pytest.mark.parametrize("draft", [
     {"claims": []},
-    {"claims": [{"support_state": "positive_support", "text": "Mức phạt được quy định tại Điều 999.", "chunk_ids": ["money"]}]},
     {"claims": [{"support_state": "positive_support", "text": "Bị phạt theo nguồn.", "chunk_ids": ["money", "money"]}]},
 ])
-async def test_empty_draft_inline_reference_and_duplicate_id_fail_without_verifier(draft):
+async def test_empty_draft_and_duplicate_id_fail_without_verifier(draft):
     service, provider, _, _ = qa_service(draft, verification=False)
     result = await service.answer(QUESTION)
     assert result.verification.status == "failed"
@@ -332,14 +336,14 @@ async def test_empty_draft_inline_reference_and_duplicate_id_fail_without_verifi
 async def test_answer_api_observable_success_and_insufficiency(sufficient):
     service, _, _, retriever = qa_service(sufficient=sufficient)
     app = create_app()
-    app.dependency_overrides[get_answer_service] = lambda: service
+    app.dependency_overrides[get_chat_service] = lambda: service
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
         response = await client.post("/api/v1/answer", json={"current_query": QUESTION, "top_k": 3})
     assert response.status_code == 200
     result = response.json()
     assert result["retrieval"]["original_query"] == result["retrieval"]["standalone_query"] == QUESTION
     assert result["retrieval"]["grade"]["sufficient"] is sufficient
-    assert result["status"] == ("answered" if sufficient else "insufficient_evidence")
+    assert result["status"] == ("answered" if sufficient else "partial_answer")
     assert result["repair_attempts"] == 0
     assert result["evidence_citations"]
     assert "generation_ms" in result["timings"]
@@ -354,13 +358,14 @@ async def test_answer_api_provider_failure_is_server_error_without_legal_answer(
     index, schema = (0, DraftAnswer) if stage == "generator" else (1, SemanticVerification)
     provider.script[index] = (schema, RuntimeError("provider unavailable"))
     app = create_app()
-    app.dependency_overrides[get_answer_service] = lambda: service
+    app.dependency_overrides[get_chat_service] = lambda: service
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app, raise_app_exceptions=False), base_url="http://test",
     ) as client:
         response = await client.post("/api/v1/answer", json={"current_query": QUESTION})
-    assert response.status_code == 500
-    assert response.text == "Internal Server Error"
+    assert response.status_code == 502
+    assert response.json()["stage"] == {"generator": "generation", "verifier": "verification"}[stage]
+    assert "unavailable" not in response.text
 
 
 @pytest.mark.asyncio

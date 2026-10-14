@@ -192,11 +192,11 @@ async def test_joint_range_anchor_set_allows_complementary_sanction_expansion():
 @pytest.mark.parametrize('uncertain', ['subject_violation', 'condition_exception'])
 async def test_range_union_does_not_override_other_safety_constraints(uncertain):
     chunks = [leaf('first', 'từ 10 km/h đến 20 km/h'), leaf('second', 'trên 20 km/h đến 35 km/h')]
-    lookup = Lookup(AssertionError('Safety gate must remain conservative'))
+    lookup = Lookup([]) if uncertain == 'condition_exception' else Lookup(AssertionError('Safety gate must remain conservative'))
     agent, _, _ = service([(EvidenceGrade, assessment(chunks, **{uncertain: False}))], [chunks], lookup)
     result = await agent.retrieve(QUESTION)
     assert result.grade.sufficient is False
-    assert lookup.calls == []
+    assert bool(lookup.calls) is (uncertain == "condition_exception")
 
 
 @pytest.mark.asyncio

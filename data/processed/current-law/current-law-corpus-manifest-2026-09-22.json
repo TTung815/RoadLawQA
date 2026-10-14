@@ -1,0 +1,71 @@
+{
+  "builder": {
+    "path": "ingestion/current_law_corpus.py",
+    "sha256": "9ff27e0ed17c4443a3dfd9c15c2300b513eb36bc80494793d0b34b9da94bcfab"
+  },
+  "chunking_contract": "legacy-leaf-window-v1+legal-provenance-v1",
+  "corpus_id": "roadlawqa-current-law-2026-09-22",
+  "frozen": false,
+  "inputs": {
+    "effective_view": {
+      "path": "data/processed/current-law/nd168-effective-2026-09-22.json",
+      "sha256": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d"
+    },
+    "effective_view_manifest": {
+      "path": "data/legal_sources/nd168_effective_view_manifest.json",
+      "sha256": "8dc94982d76318341f762599a22177070a3f3b6042bc298956a2e2617c253d1c"
+    },
+    "effective_view_review": {
+      "path": "data/legal_sources/nd168_effective_view_review.json",
+      "sha256": "d062688480bae0a80507538c50d25b3a6c76c1e4de3c8334b2b9bd65304a055d"
+    },
+    "law_49_footnotes": {
+      "path": "data/raw/legal/49-vbhn-vpqh/footnotes.json",
+      "sha256": "98e5cc89ecf4f764193c5bd131d395a8882710b18e348a67e194591d87f004bf"
+    },
+    "law_49_text": {
+      "path": "data/raw/legal/49-vbhn-vpqh/supporting-text.txt",
+      "sha256": "ebf20b2826c6ab03d44ce564f7dfc1eddd6e7c78ac12b66cfd50a9f092f057fe"
+    },
+    "law_55_footnotes": {
+      "path": "data/raw/legal/55-vbhn-vpqh/footnotes.json",
+      "sha256": "64173167e772c9b76b84efb28dcb6e0398660c14d3ff730dd5b28fdb4c408e9a"
+    },
+    "law_55_text": {
+      "path": "data/raw/legal/55-vbhn-vpqh/supporting-text.txt",
+      "sha256": "07fcfdf64b410b32f159d4e201971ddae41f5e73875f690562321beeeacd8a6b"
+    },
+    "registry": {
+      "path": "data/legal_sources/registry.json",
+      "sha256": "bf639a4a784a6cbfa86f7274c3582314c405295376943f01efef7efb35149f63"
+    },
+    "source_review": {
+      "path": "data/legal_sources/source_extraction_review.json",
+      "sha256": "fa48235b1fedccb55cca19b103a550d2dec29cba447bb07cf415fa798f86b28c"
+    }
+  },
+  "legal_as_of": "2026-09-22",
+  "output": {
+    "path": "data/processed/current-law/current-law-chunks-2026-09-22.json",
+    "sha256": "2da4b2f4934718a3e0ccf91d53599a32e42e735777ba4ac11eba5cc3f9b13b09"
+  },
+  "production_bm25_touched": false,
+  "production_collection_touched": false,
+  "schema_version": 1,
+  "shadow_collection": "LawChunksCurrentLaw20260922",
+  "status": "processed_corpus_validated_shadow_index_pending",
+  "summary": {
+    "chunk_count": 2531,
+    "errors": [],
+    "passed": true,
+    "publication_blocked_count": 10,
+    "publication_eligible_count": 2521,
+    "temporal_status_counts": {
+      "active": 2521,
+      "future": 3,
+      "mixed_effective_date": 4,
+      "repealed": 3
+    },
+    "unique_id_count": 2531
+  }
+}

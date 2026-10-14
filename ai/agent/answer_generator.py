@@ -1,7 +1,7 @@
 """Generate cited claims through the provider-neutral LLM contract."""
 
 import json
-from typing import Annotated, Sequence
+from typing import Annotated, Literal, Sequence
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
@@ -10,6 +10,8 @@ from ai.prompts.answer_generation import ANSWER_GENERATION_PROMPT
 from ai.retrieval.base import RetrievedChunk
 from ai.agent.range_coverage import RangeCoverage, range_anchors, range_candidates
 from ai.agent.support import SupportState
+from ai.agent.evidence import SourceReferences, evidence_payload
+from ai.diagnostics import record, traced
 
 NonEmptyText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
@@ -24,17 +26,9 @@ class AnswerClaim(BaseModel):
 class DraftAnswer(BaseModel):
     model_config = ConfigDict(extra="forbid")
     claims: list[AnswerClaim]
-
-
-def evidence_payload(chunks: Sequence[RetrievedChunk]) -> list[dict]:
-    """Retain legal and structural context, excluding retrieval ranking scores."""
-    evidence = []
-    for chunk in chunks:
-        item = chunk.model_dump(mode="json", exclude={"score"})
-        item["metadata"] = {key: value for key, value in item["metadata"].items()
-                            if key not in ("raw_score", "rerank_score")}
-        evidence.append(item)
-    return evidence
+    response_kind: Literal["complete", "partial", "clarification", "abstain"] = "complete"
+    limitations: list[NonEmptyText] = Field(default_factory=list)
+    follow_up_questions: list[NonEmptyText] = Field(default_factory=list)
 
 
 def required_range_branches(
@@ -61,18 +55,30 @@ class AnswerGenerator:
     def __init__(self, provider: LLMProvider):
         self._provider = provider
 
+    @traced("generation")
     async def generate(
         self, question: str, chunks: Sequence[RetrievedChunk],
         required_aspects: Sequence[str] = (),
         range_coverage: RangeCoverage | None = None,
+        *, coverage_gaps: Sequence[str] = (), coverage_reason: str = "",
+        previous_draft: DraftAnswer | None = None, verification_feedback: Sequence[str] = (),
     ) -> DraftAnswer:
+        refs = SourceReferences(chunks)
+        payload = refs.translate({
+            "question": question, "required_aspects": list(required_aspects),
+            "chunks": evidence_payload(chunks),
+            "required_range": required_range_branches(question, chunks, range_coverage),
+            "coverage_gaps": list(coverage_gaps),
+            "coverage_reason": coverage_reason,
+            "previous_draft": previous_draft.model_dump(mode="json") if previous_draft else None,
+            "verification_feedback": list(verification_feedback),
+        })
         result = await self._provider.generate_structured(
             [LLMMessage(role="system", content=ANSWER_GENERATION_PROMPT),
-             LLMMessage(role="user", content=json.dumps({
-                 "question": question, "required_aspects": list(required_aspects),
-                 "chunks": evidence_payload(chunks),
-                 "required_range": required_range_branches(question, chunks, range_coverage),
-             }, ensure_ascii=False))],
+             LLMMessage(role="user", content=json.dumps(payload, ensure_ascii=False))],
             response_schema=DraftAnswer, temperature=0.0,
         )
-        return DraftAnswer.model_validate(result)
+        draft = DraftAnswer.model_validate(result)
+        draft = DraftAnswer.model_validate(refs.translate(draft.model_dump(), decode=True))
+        record("generation", event="draft", draft=draft.model_dump(mode="json"))
+        return draft

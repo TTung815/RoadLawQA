@@ -1,0 +1,30 @@
+{
+  "artifact_hashes": {
+    "REVIEWED.md": "02c381eb1c3084c8e77a8bca512a58fc5451e340a1da37bd9ee1d22a1c6ce684",
+    "audit.json": "6b5325cd2727e217b41546efdcaa3be8f5388576725d2abb498b6828497efb7a",
+    "case.schema.json": "a69a12225ca3c1674086a266a4ff7857dd464a849fe69df1a8bf1ebe69abfa36",
+    "cases.jsonl": "6d3de315928bdef81d35b2bfb1cb8182b6d607a6a73858acdbe145bf0611489e",
+    "evidence_catalog.json": "ce580d3a17e2419eda9a864884c482d999cbf138d337d73b1636e4c6a8f900ca",
+    "review_authorization.md": "36f5d570d976f74cc6e5801e6f8cb51e42444d5e29e991f92c222c37d699e094",
+    "review_decisions.json": "41fb697f6d4580d0a20e339c0779daa2aab2920947808bdd61016f883eb7f0ec",
+    "review_feedback.txt": "9544da0d39714fcda48bf00b8641944780ac1011373ac2d766ed55153c9f2aec",
+    "source_recovery.json": "2a10b9a3ae3d008264f08898d125b12565b7f24ec6f0446980e61e7216e12472"
+  },
+  "benchmark_c0_c4_ready": false,
+  "dataset_id": "current_law_20260922_reviewed_v1",
+  "frozen_on": "2026-10-11",
+  "manifest_sha256": "e71b42513de81ef392fb1157b8e78cc5c3a715c7d8acd0c7ab3a9963b0bf3257",
+  "model_runs": 0,
+  "production_writes": 0,
+  "scoring_gold_ready": true,
+  "snapshot": {
+    "fingerprint": {
+      "objects_sha256": "7d3852a418d1d807c84e2fb8811cf9008ca6c60bb32dcb3aa4ddfe79008b8ab3",
+      "schema_sha256": "822bbaab50b399629cf0c5d7a4df1d04ca824b1c316655628b45c28d504b77ca"
+    },
+    "id": "roadlawqa-current-law-2026-09-22",
+    "manifest_sha256": "43652b7ad776ff4e7c9dceb9940f5fb777392769f4a66738894fc4a80543bedd",
+    "receipt_sha256": "afb2f618eae1495363353c760f71a48ce595c1f5cad6b637c9f5b8485d0add3f"
+  },
+  "status": "frozen"
+}

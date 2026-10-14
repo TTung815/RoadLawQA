@@ -9,7 +9,7 @@ from ai.agent.contextualizer import QueryContextualizer
 from ai.agent.evidence_grader import EvidenceGrade, EvidenceGrader
 from ai.agent.query_rewriter import QueryRewriter
 from ai.llm.gemini import GeminiProvider
-from ai.retrieval.legacy_adapter import LegacyRetrieverAdapter
+from tests.retrieval_fakes import CallbackRetriever
 from backend.dependencies.retrieval import get_agentic_retrieval_service
 from backend.main import create_app
 from backend.services.agentic_retrieval import AgenticRetrievalService
@@ -50,7 +50,7 @@ async def test_api_with_history_contextualizes_grades_rewrites_and_returns_trace
 
     provider = GeminiProvider("fake-key", "test-model", httpx.MockTransport(handler))
     service = AgenticRetrievalService(
-        QueryContextualizer(provider), LegacyRetrieverAdapter(legacy),
+        QueryContextualizer(provider), CallbackRetriever(legacy),
         EvidenceGrader(provider), QueryRewriter(provider),
     )
     app = create_app()

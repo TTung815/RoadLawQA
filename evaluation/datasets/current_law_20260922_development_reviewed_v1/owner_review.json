@@ -1,0 +1,10 @@
+{
+  "dataset_id": "current_law_20260922_development_reviewed_v1",
+  "parent_manifest_sha256": "365301f5f05af56a9d08ebaa46a0556525c302f1aba43a9c25f356fbf1a81475",
+  "reviewer": "Chủ dự án — grouped owner content/scope review qua hội thoại",
+  "reviewed_on": "2026-10-11",
+  "recorded_on": "2026-10-12",
+  "approved_groups": ["A1", "A2", "A3", "A4", "B1", "B2", "C1"],
+  "authorization": "Owner: 'Oke tôi Duyệt. Bước tiếp theo làm gì'. Codex xác nhận phạm vi cả A1–A4, B1–B2 và C1, đề xuất version reviewed riêng. Owner: 'Oke, thống nhất như bạn dự tính'. Sau khi thu gọn workflow cho project CV, owner tiếp tục: 'Oke thực hiện đi'.",
+  "scope": "Duyệt bốn numeric cases, hai history cases và quyết định dùng lại nội dung/gold cũ cùng policy fail-closed cho C1. Exact membership/content hashes theo review_groups.json của parent draft. Không khẳng định owner đã audit code/batches hoặc đọc riêng từng guard; không giả review luật sư, không mở publication blocks hoặc negative-support gate."
+}

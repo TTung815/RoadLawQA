@@ -1,0 +1,188 @@
+{
+  "approved_selected_ids": [],
+  "coverage": {
+    "count": 50,
+    "decisions": {
+      "edit": 32,
+      "keep": 18
+    },
+    "families": {
+      "car_speed_10_20": 2,
+      "expressway_reverse_direction": 2,
+      "historical_001": 1,
+      "historical_002": 1,
+      "historical_003": 1,
+      "historical_004": 1,
+      "historical_005": 1,
+      "historical_006": 1,
+      "historical_007": 1,
+      "historical_008": 1,
+      "historical_011": 1,
+      "historical_012": 1,
+      "historical_013": 1,
+      "historical_014": 1,
+      "historical_015": 1,
+      "historical_017": 1,
+      "historical_018": 1,
+      "historical_019": 1,
+      "historical_021": 1,
+      "historical_022": 1,
+      "historical_023": 1,
+      "historical_024": 1,
+      "historical_025": 1,
+      "historical_026": 1,
+      "historical_027": 1,
+      "historical_028": 1,
+      "historical_029": 1,
+      "historical_030": 1,
+      "historical_031": 1,
+      "historical_032": 1,
+      "historical_033": 1,
+      "historical_034": 1,
+      "historical_035": 1,
+      "historical_037": 1,
+      "historical_039": 1,
+      "historical_040": 1,
+      "historical_041": 1,
+      "historical_042": 1,
+      "historical_043": 1,
+      "historical_044": 1,
+      "historical_046": 1,
+      "historical_047": 1,
+      "historical_048": 1,
+      "historical_049": 1,
+      "license_point_recovery": 2,
+      "motorcycle_passengers": 2
+    },
+    "publication": {
+      "abstain": 5,
+      "conditional": 5,
+      "publish": 40
+    },
+    "query_types": {
+      "factual": 15,
+      "penalty": 16,
+      "scenario": 19
+    },
+    "review_status": {
+      "needs_review": 50
+    },
+    "tags": {
+      "additional_sanction": 1,
+      "amended_rule": 2,
+      "boundary": 4,
+      "condition": 14,
+      "cross_document": 7,
+      "definition": 8,
+      "direct": 8,
+      "exception": 10,
+      "explicit_date": 4,
+      "license_points": 4,
+      "missing_dependency": 2,
+      "missing_facts": 5,
+      "money": 21,
+      "multi_locator": 13,
+      "multiple_facets": 7,
+      "negative_conclusion": 2,
+      "numeric": 11,
+      "reasoning": 6,
+      "rule": 1,
+      "source_cue_removed": 6,
+      "temporal_gap": 1
+    }
+  },
+  "coverage_gaps": [
+    "No unseen held-out cases; revised historical questions remain exposed.",
+    "No multi-turn cases or complete temporal boundary suite for 2028/2029.",
+    "No independent legal gold review; pilot only checks schema/provenance.",
+    "Missing dependencies and negative-support provenance intentionally remain blocked."
+  ],
+  "drafted_by": "Codex — technical draft; independent legal review pending",
+  "drafted_on": "2026-10-09",
+  "evidence_chunk_count": 67,
+  "held_out_created": false,
+  "legal_as_of": "2026-09-22",
+  "model_runs": 0,
+  "official_scoring_ready": false,
+  "pilot": {
+    "count": 10,
+    "decisions": {
+      "edit": 5,
+      "keep": 5
+    },
+    "families": {
+      "car_speed_10_20": 1,
+      "historical_001": 1,
+      "historical_002": 1,
+      "historical_005": 1,
+      "historical_007": 1,
+      "historical_023": 1,
+      "historical_043": 1,
+      "historical_048": 1,
+      "license_point_recovery": 1,
+      "motorcycle_passengers": 1
+    },
+    "publication": {
+      "abstain": 3,
+      "conditional": 2,
+      "publish": 5
+    },
+    "query_types": {
+      "factual": 3,
+      "penalty": 2,
+      "scenario": 5
+    },
+    "review_status": {
+      "needs_review": 10
+    },
+    "tags": {
+      "amended_rule": 1,
+      "boundary": 1,
+      "condition": 2,
+      "definition": 1,
+      "direct": 2,
+      "exception": 2,
+      "explicit_date": 1,
+      "license_points": 1,
+      "missing_dependency": 2,
+      "missing_facts": 2,
+      "money": 2,
+      "multi_locator": 4,
+      "multiple_facets": 3,
+      "numeric": 1,
+      "reasoning": 1,
+      "source_cue_removed": 1,
+      "temporal_gap": 1
+    }
+  },
+  "pilot_ids": [
+    1,
+    2,
+    5,
+    7,
+    9,
+    16,
+    23,
+    36,
+    43,
+    48
+  ],
+  "pilot_schema_provenance_passed": true,
+  "pilot_semantic_approval": false,
+  "production_writes": 0,
+  "regression_overlap_candidates": [
+    {
+      "case_id": "current_law_013",
+      "matches": [
+        {
+          "file": "tests/unit/test_contextualizer.py",
+          "similarity": 0.8077
+        }
+      ]
+    }
+  ],
+  "regression_overlap_method": "normalized SequenceMatcher >=0.72; manual semantic review required",
+  "schema_version": 1,
+  "snapshot_id": "roadlawqa-current-law-2026-09-22",
+  "technical_integrity_passed": true
+}

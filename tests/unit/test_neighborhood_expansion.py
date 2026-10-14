@@ -170,13 +170,14 @@ async def test_lookup_failure_propagates_as_error():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('coverage', [{'subject_violation': False}, {'threshold_range': False}, {'condition_exception': False}])
-async def test_unproven_anchor_constraints_prevent_structural_lookup(coverage):
-    lookup = Lookup(AssertionError('Unreliable anchor'))
+@pytest.mark.parametrize('coverage', [{'subject_violation': False}, {'threshold_range': False}])
+async def test_unresolved_applicability_can_lookup_but_does_not_authorize_publication(coverage):
+    lookup = Lookup([])
     agent, _, _ = service([(EvidenceGrade, assessment(False, **coverage))], [[legal('fine')]], lookup)
     result = await agent.retrieve(QUESTION)
-    assert lookup.calls == []
-    assert result.structural_expansions[0].triggered is False
+    assert lookup.calls == [('Test regulation', '6')]
+    assert result.structural_expansions[0].triggered is True
+    assert result.grade.sufficient is False
 
 
 @pytest.mark.asyncio
