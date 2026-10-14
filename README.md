@@ -1,191 +1,124 @@
 # RoadLawQA
 
-RoadLawQA is a CS529 course project at the University of Information Technology (UIT). The system answers Vietnamese road-law questions using a Retrieval-Augmented Generation (RAG) pipeline over selected legal documents about road traffic, road infrastructure, and traffic penalties.
+Chatbot hỏi đáp luật giao thông đường bộ Việt Nam sử dụng Retrieval-Augmented
+Generation (RAG). Hệ thống xử lý câu hỏi theo ngữ cảnh hội thoại, tìm nguồn luật,
+sinh đáp án và kiểm chứng nội dung cùng citation trước khi trả cho người dùng.
 
-This is a group project. The core technical work in this repository focuses on data processing, hybrid retrieval, reranking, answer generation, quiz generation, and the Streamlit application.
+Project được phát triển từ đồ án nhóm thành portfolio cá nhân về AI/LLM.
+Phạm vi dữ liệu hiện tại là pháp luật tại **22/09/2026**, không phải dịch vụ
+cập nhật pháp luật theo thời gian thực.
 
-## Demo
+## Hệ thống làm được gì?
 
-Demo materials: [Google Drive folder](https://drive.google.com/drive/u/0/folders/1EvIlpftgOCiCtmg6J0KFYhahq10RMEVm)
+- Hỏi về quy tắc giao thông, mức phạt và tình huống có điều kiện trong corpus.
+- Hiểu câu hỏi tiếp nối, trả lời lời chào/câu hỏi cách dùng và giới hạn chủ đề.
+- Viết lại truy vấn tìm nguồn ngay trong lượt router khi cần; giữ câu hỏi
+  độc lập để sinh và kiểm chứng đáp án.
+- Trích dẫn văn bản, Điều/Khoản/Điểm cùng nội dung nguồn có xuống dòng.
+- Trả lời một phần, hỏi làm rõ hoặc báo thiếu căn cứ khi chưa đủ nguồn.
+- Kiểm tra riêng nguồn truy xuất và thời gian từng bước trong giao diện.
 
-## Project Scope
+## Kiến trúc
 
-RoadLawQA is designed for Vietnamese legal QA in the road-traffic domain. Given a user question, the system retrieves relevant legal chunks, reranks them, and generates an answer with legal-source citations.
-
-Main supported documents:
-
-- `Nghị định số 168/2024/NĐ-CP`
-- `Luật số 36/2024/QH15`
-- `Luật số 35/2024/QH15`
-
-## System Features
-
-- Answer Vietnamese road-law questions with retrieved legal citations.
-- Retrieve relevant clauses using hybrid keyword and semantic search.
-- Generate multiple-choice quizzes from selected legal topics.
-- Provide a Streamlit demo interface for QA and quiz generation.
-- Support CLI scripts for data processing, indexing, retrieval testing, QA, and quiz generation.
-
-## Tech Stack
-
-- **Core language:** Python
-- **Interface:** Streamlit
-- **Retrieval:** BM25, dense embeddings, Weaviate
-- **Models:** `Alibaba-NLP/gte-multilingual-base`, `BAAI/bge-reranker-v2-m3`, Gemini 2.5 Flash
-- **Infrastructure:** Docker Compose
-
-## Methodology / Workflow
-
-1. Parse raw legal documents into structured chunks by article, clause, point, and bullet.
-2. Enrich each chunk with legal hierarchy and citation metadata.
-3. Build a Weaviate index with dense embeddings and BM25-searchable fields.
-4. Retrieve candidates with hybrid search, rerank them, and pass the top chunks to Gemini.
-5. Generate cited answers or topic-based multiple-choice quizzes.
-
-## Results
-
-The system was evaluated on a manually curated 50-question benchmark with ground-truth answers and legal citations. The benchmark covers three query types: factual lookup, penalty lookup, and scenario-based reasoning.
-
-Retrieval evaluation at `k=5`:
-
-| Method | Recall@5 | MRR@5 | nDCG@5 | HitRate@5 |
-| --- | ---: | ---: | ---: | ---: |
-| BM25-only | 0.707 | 0.538 | 0.598 | 0.780 |
-| Dense-only | 0.762 | 0.760 | 0.791 | 0.880 |
-| Hybrid | 0.817 | 0.752 | 0.789 | 0.900 |
-| Hybrid + `BAAI/bge-reranker-v2-m3` | 0.817 | 0.796 | 0.827 | 0.920 |
-
-End-to-end answer generation evaluation:
-
-| Question type | Questions | Legal Accuracy | Legal Citation | Relevance |
-| --- | ---: | ---: | ---: | ---: |
-| Factual lookup | 15 | 0.97 | 0.87 | 0.93 |
-| Penalty lookup | 15 | 0.87 | 0.80 | 0.87 |
-| Scenario-based reasoning | 20 | 0.70 | 0.68 | 0.80 |
-| Overall | 50 | 0.83 | 0.77 | 0.86 |
-
-Quiz generation was also evaluated for legal answer correctness, topic alignment, and JSON format compliance on generated multiple-choice questions.
-
-## Repository Structure
-
-```text
-RoadLawQA/
-├── backend/
-│   ├── build_index.py          # Build the Weaviate index
-│   ├── clean_and_split.py      # Parse and chunk legal documents
-│   ├── generator.py            # Gemini answer and quiz generation
-│   ├── prompts.py              # Prompt templates
-│   ├── rag_qa.py               # QA entry point
-│   ├── rag_quiz.py             # Quiz CLI
-│   ├── retriever_custom.py     # Hybrid retrieval and reranking
-│   └── test_retriever.py       # Retriever smoke test
-├── data/
-│   ├── raw/                    # Raw legal text files
-│   └── processed/              # Processed JSON chunks
-├── docker/
-│   └── docker-compose.yml      # Local Weaviate service
-├── frontend/
-│   ├── app.py                  # Streamlit application
-│   └── assets/                 # UI images
-├── .env.example                # Environment variable template
-├── .gitignore
-├── requirements.txt
-└── README.md
+```mermaid
+flowchart TD
+    U[Người dùng + lịch sử] --> API[Streamlit → FastAPI]
+    API --> R[Router: intent, ngữ cảnh, query expansion]
+    R -->|Giao tiếp hoặc ngoài phạm vi| T[Phản hồi theo phạm vi]
+    R -->|Câu hỏi luật| H[Weaviate hybrid: BM25 + vector]
+    H --> X[Reranker + tra dẫn chiếu có giới hạn]
+    X --> G[Sinh đáp án]
+    G --> V[Kiểm chứng nguồn và nội dung]
+    V --> A[Đáp án đã kiểm chứng, giới hạn hoặc hỏi rõ]
 ```
 
-## Setup
+| Thành phần | Triển khai |
+| --- | --- |
+| API / giao diện | FastAPI, Pydantic, Streamlit |
+| Truy xuất | Weaviate native hybrid, BM25 trên văn bản tách từ PyVi và vector |
+| Embedding | `Alibaba-NLP/gte-multilingual-base` |
+| Reranker | `BAAI/bge-reranker-v2-m3`, hỗ trợ CPU/CUDA/Apple MPS |
+| LLM | Adapter OpenAI/Gemini; provider và model chọn qua cấu hình |
+| Corpus phục vụ | 1.759 đơn vị cấu trúc, giữ dẫn nhập cha và lineage về nguồn |
+| Kiểm chứng | Kiểm citation/nguồn và đánh giá ngữ nghĩa; tối đa một lần sửa nháp |
 
-### 1. Create and activate a virtual environment
+[Thiết kế và các lựa chọn kỹ thuật](docs/ARCHITECTURE.md).
 
-Linux/macOS:
+## Chạy demo
+
+Các lệnh dưới đây dành cho **workspace đã có database/index và model cache**.
+Máy mới xem [hướng dẫn thiết lập và tài nguyên cần bàn giao](docs/SETUP.md).
+Chỉ clone repository chưa đủ để chạy toàn bộ demo.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+.venv/bin/python -m pip install -r requirements.txt
+docker start docker-weaviate-1
+.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-Windows:
+Trong terminal thứ hai, tại repository root:
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
+.venv/bin/python -m streamlit run frontend/app.py
 ```
 
-### 2. Install dependencies
+Mở `http://localhost:8501`; API docs tại `http://127.0.0.1:8000/docs`.
+Cấu hình provider/key trong `.env` theo [.env.example](.env.example).
+
+Có thể thử lần lượt “Chào bạn”, “Hiện nay, vượt đèn đỏ phạt bao nhiêu tiền?”,
+rồi “Xe máy”. Với câu hỏi pháp luật, mở phần nguồn để đối chiếu căn cứ.
+Chế độ **Kiểm tra truy xuất** không gọi LLM/router, nên không đại diện toàn bộ
+luồng chatbot có xử lý lịch sử và query expansion.
+
+## Dữ liệu và đánh giá
+
+Nguồn lõi gồm 49/VBHN-VPQH, 55/VBHN-VPQH và bản ghép kỹ thuật của
+168/2024/NĐ-CP với phần sửa đổi 238/2026/NĐ-CP. Bốn phạm vi về tuổi chịu xử
+phạt từ 90/VBHN-VPQH (2026) được bổ sung có review; không nhập toàn bộ văn bản.
+[Phạm vi, hiệu lực và provenance](docs/LEGAL_SCOPE.md).
+
+Kiểm tra trên workspace phát triển cho code `e38f086` ngày 14/10/2026:
+
+| Kiểm tra | Kết quả | Cách hiểu |
+| --- | --- | --- |
+| Test offline | 534 đạt | Kiểm hợp đồng và regression; không đo accuracy pháp lý |
+| Integration | 9 đạt | Weaviate/model thật; embedding CPU, reranker MPS |
+| Probe chatbot | 6 lượt trả lời, verification đạt; 1 lần sửa nháp | Câu đã biết, không phải bộ đánh giá độc lập |
+| Latency probe chatbot | Mean 19,62s; median 16,73s; khoảng 10,96–36,86s | Không gồm cold start; phụ thuộc câu hỏi và provider |
+
+Chưa có điểm full-50 cho toàn bộ chatbot hiện tại. Kết quả trên không chứng
+minh accuracy 100%; verifier cũng có thể sai. Hệ thống còn có thể thiếu nguồn,
+viết lệch query hoặc hỏi rõ chưa cần thiết. Các artifact chạy thật đang lưu
+local, chưa phát hành cùng repository.
+
+[Dataset, phương pháp và cách chạy evaluation](docs/EVALUATION_QUICKSTART.md).
+
+## Kiểm thử
 
 ```bash
-pip install -r requirements.txt
+.venv/bin/python -m pytest -q
+.venv/bin/python -m pytest tests/integration -m integration -q
 ```
 
-### 3. Configure environment variables
+Suite offline dùng fake cho provider/retriever, không gọi API trả phí. Một số
+kiểm tra corpus/provenance vẫn cần bundle cục bộ đã đóng băng; xem
+[tài nguyên kiểm thử](docs/SETUP.md#kiểm-tra-tài-nguyên). Integration cần
+Weaviate và model cache. API health chỉ kiểm tiến trình, không xác nhận index sẵn sàng.
 
-```bash
-cp .env.example .env
-```
+## Tổ chức repository
 
-Set your Gemini API key in `.env`:
+| Thư mục | Nội dung |
+| --- | --- |
+| `ai/` | Router, retrieval, LLM adapters, generation và verification |
+| `backend/`, `frontend/` | API, services và giao diện chatbot |
+| `ingestion/`, `data/` | Nguồn luật, review, corpus có phiên bản và builder |
+| `evaluation/`, `tests/` | Dataset, runner/scorer và kiểm thử |
+| `docs/` | [Tài liệu công khai](docs/README.md), protocol và hồ sơ nguồn |
 
-```bash
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+## Nguồn gốc và ghi công
 
-### 4. Start Weaviate
-
-```bash
-docker compose -f docker/docker-compose.yml up -d
-```
-
-For older Docker Compose installations:
-
-```bash
-docker-compose -f docker/docker-compose.yml up -d
-```
-
-### 5. Process data and build the index
-
-```bash
-python backend/clean_and_split.py
-python backend/build_index.py
-```
-
-### 6. Run the application
-
-Streamlit UI:
-
-```bash
-streamlit run frontend/app.py
-```
-
-CLI QA:
-
-```bash
-python backend/rag_qa.py
-```
-
-Quiz generation:
-
-```bash
-python backend/rag_quiz.py
-```
-
-Retriever test:
-
-```bash
-python backend/test_retriever.py
-```
-
-
-
-## Credits
-
-This repository is for the CS529 group project at UIT.
-
-- **Nguyen Thanh Tung:** implemented the core RAG pipeline, data processing, hybrid retrieval, reranking, answer generation, evaluation.
-- **Team members:** contributed to benchmark creation, quiz generation, demo web app development.
-
-## References
-
-- [Weaviate Documentation](https://weaviate.io/developers/weaviate)
-- [Gemini API Documentation](https://ai.google.dev/gemini-api/docs)
-- [Alibaba-NLP/gte-multilingual-base](https://huggingface.co/Alibaba-NLP/gte-multilingual-base)
-- [BAAI/bge-reranker-v2-m3](https://huggingface.co/BAAI/bge-reranker-v2-m3)
+Project kế thừa đồ án nhóm CS529 tại Trường Đại học Công nghệ Thông tin (UIT).
+Nguyễn Thanh Tùng thực hiện pipeline RAG chính, xử lý dữ liệu, hybrid retrieval,
+reranking, sinh đáp án và đánh giá. Các thành viên nhóm đóng góp bộ benchmark,
+quiz và ứng dụng demo của phiên bản đồ án. Bản hiện tại tập trung vào chatbot
+hỏi đáp; các kết quả của phiên bản đồ án không được gán cho pipeline mới.

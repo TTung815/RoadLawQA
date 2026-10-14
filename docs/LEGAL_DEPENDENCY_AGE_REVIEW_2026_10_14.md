@@ -4,7 +4,7 @@ Ngày 14/10/2026; cutoff 22/09/2026. Hồ sơ này được chuẩn bị trướ
 **Owner đã duyệt bổ sung phần cần thiết trong lượt tiếp theo cùng ngày;
 bốn phạm vi đã được nhập vào structured-law-v2.** Review kỹ thuật có AI hỗ trợ;
 đây là duyệt phạm vi nguồn, không phải owner đã chấm toàn bộ đáp án.
-Xem [triển khai và kiểm tra](ADMINISTRATIVE_AGE_INGESTION_2026_10_14.md).
+Xem [phạm vi đã nhập và registry](LEGAL_SCOPE.md#nguồn-lõi-và-dependency-gate).
 Đây là hồ sơ cụ thể để quyết định mở rộng phạm vi theo
 [dependency gate](LEGAL_SCOPE.md#nguồn-lõi-và-dependency-gate).
 
@@ -69,7 +69,7 @@ Việc đối chiếu này chỉ xác minh bốn phạm vi, không phải review
 
 ## Hồ sơ đã chuẩn bị và bước triển khai sau duyệt
 
-[candidate-review.json](../outputs/legal-dependency-review-20261014-v1/candidate-review.json)
+`outputs/legal-dependency-review-20261014-v1/candidate-review.json` (artifact local, không phát hành cùng Git)
 chứa nguyên văn bốn đoạn, context cha, vị trí trang, hash text, ngày hiệu lực
 ứng viên và giới hạn. PDF/text và biên nhận tải ở cùng thư mục; `downloads.json`
 giữ cả lần tải đầu không thành công, `canonical-download.json` ghi lần tải
