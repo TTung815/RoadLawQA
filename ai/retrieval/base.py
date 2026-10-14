@@ -26,7 +26,7 @@ class Retriever(ABC):
     """
 
     @abstractmethod
-    async def search(self, query: str, top_k: int = 5, *, retrieval_query: str | None = None) -> List[RetrievedChunk]:
+    async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None) -> List[RetrievedChunk]:
         """
         Asynchronously search for relevant chunks given a query.
 

@@ -68,7 +68,7 @@ class ChatService:
     @traced("answer")
     async def answer(
         self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
-        top_k: int = 5,
+        top_k: int = 10,
     ) -> AnswerResult:
         started = time.perf_counter()
         message = social_reply(current_query)

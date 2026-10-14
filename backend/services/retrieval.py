@@ -21,7 +21,7 @@ class HistoryAwareRetrievalService:
 
     async def retrieve(
         self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
-        top_k: int = 5,
+        top_k: int = 10,
     ) -> RetrievalResult:
         if top_k < 1:
             raise ValueError("top_k must be positive")

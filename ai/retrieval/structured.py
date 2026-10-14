@@ -137,7 +137,7 @@ class StructuredRetriever(Retriever):
                          **scores[u["id"]]) for u, rank in ordered[:top_k]]
 
     @traced("retrieval_search")
-    async def search(self, query: str, top_k: int = 5, *, retrieval_query: str | None = None):
+    async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None):
         return await asyncio.to_thread(self._search, query, top_k, retrieval_query)
 
     async def fetch_article(self, law: str, article_no: str):

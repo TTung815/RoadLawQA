@@ -237,3 +237,38 @@ async def test_cross_document_applicability_is_not_starved_by_sibling_sanctions(
     assert any(str(c.metadata.get('article_no')) == '56' and str(c.metadata.get('clause_no')) == '1'
                for c in result.chunks)
     assert len(result.chunks) <= 8
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('asked_for_points', [False, True])
+async def test_unrequested_points_gap_is_repaired_but_requested_gap_is_preserved(asked_for_points):
+    # Replays the reported limitation through real orchestration. Scripted
+    # judgments test repair/publication, not the LLM's interpretation of scope.
+    limitation = 'Nguồn được cung cấp chưa xác định việc trừ điểm giấy phép lái xe.'
+    first = {**draft('Quy tắc và hình thức xử lý theo nguồn.'),
+             'response_kind': 'partial', 'limitations': [limitation]}
+    question = ('Hành vi này bị xử lý thế nào và có bị trừ điểm không?' if asked_for_points
+                else 'Tôi say rượu thì có nên lái ô tô không?')
+    script = [
+        (DraftAnswer, first),
+        (SemanticVerification, {**semantic(1, complete=False),
+                                'response_appropriate': asked_for_points,
+                                'completeness_reason': 'Giới hạn phải gắn với ý được hỏi.'}),
+    ]
+    if not asked_for_points:
+        script += [(DraftAnswer, draft('Quy tắc áp dụng trực tiếp theo nguồn.')),
+                   (SemanticVerification, semantic(1))]
+    provider = ScriptedProvider(script)
+    retriever = ScriptedRetriever([[chunk('rule')]])
+    retrieval = LeanRetrievalService(QueryContextualizer(provider), retriever)
+    result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(question)
+    assert len(retriever.calls) == 1
+    assert result.status == ('partial_answer' if asked_for_points else 'answered')
+    assert result.limitations == ([limitation] if asked_for_points else [])
+    assert result.repair_attempts == (0 if asked_for_points else 1)
+    if not asked_for_points:
+        repair = provider.calls[2]['payload']
+        assert repair['previous_draft']['limitations'] == [limitation]
+        assert repair['verification_feedback']
+        assert repair['question'] == question
+        assert repair['chunks'] == provider.calls[0]['payload']['chunks']

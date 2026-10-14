@@ -67,7 +67,8 @@ Cấu hình provider/key trong `.env` theo [.env.example](.env.example).
 
 Có thể thử lần lượt “Chào bạn”, “Hiện nay, vượt đèn đỏ phạt bao nhiêu tiền?”,
 rồi “Xe máy”. Với câu hỏi pháp luật, mở phần nguồn để đối chiếu căn cứ.
-Chế độ **Kiểm tra truy xuất** không gọi LLM/router, nên không đại diện toàn bộ
+Trong thanh bên, mở **Dành cho nhà phát triển** để bật **Kiểm tra truy xuất**.
+Chế độ này không gọi LLM/router, nên không đại diện toàn bộ
 luồng chatbot có xử lý lịch sử và query expansion.
 
 ## Dữ liệu và đánh giá

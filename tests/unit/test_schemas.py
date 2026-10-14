@@ -22,6 +22,10 @@ def test_health_response_schema():
 
 
 def test_chat_request_validation():
+    from backend.schemas.retrieval import RetrievalRequest
+
+    assert ChatRequest(message="Quy tắc giao thông?").top_k == 10
+    assert RetrievalRequest(current_query="Quy tắc giao thông?").top_k == 10
     # Valid request
     req = ChatRequest(message="Vượt đèn đỏ phạt bao nhiêu?", top_k=5)
     assert req.message == "Vượt đèn đỏ phạt bao nhiêu?"

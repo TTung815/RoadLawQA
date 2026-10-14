@@ -238,7 +238,7 @@ async def test_history_is_contextualized_once_and_intent_survives_retry():
     assert provider.calls[0]["payload"] == {"current_query": current, "chat_history": history}
     assert result.original_query == current
     assert result.standalone_query == QUESTION
-    assert retriever.calls == [(QUESTION, 5), (REWRITTEN, 5)]
+    assert retriever.calls == [(QUESTION, 10), (REWRITTEN, 10)]
     assert all(term in result.rewritten_query for term in ("ô tô", "vượt đèn đỏ", "tước giấy phép lái xe"))
 
 
@@ -357,7 +357,7 @@ async def test_complementary_speed_evidence_is_graded_and_returned_together():
     assert [item['id'] for item in provider.calls[0]['payload']['chunks']] == ['monetary']
     assert [item['id'] for item in provider.calls[2]['payload']['chunks']] == ['monetary', 'license']
     assert provider.calls[2]['payload']['question'] == question
-    assert retriever.calls == [(question, 5), (rewritten, 5)]
+    assert retriever.calls == [(question, 10), (rewritten, 10)]
     assert result.chunks == [monetary, license]
     assert result.attempts[0].grade.sufficient is False
     assert result.attempts[1].grade.sufficient is True

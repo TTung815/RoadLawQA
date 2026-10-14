@@ -47,8 +47,25 @@ nào nằm ngoài claims. Không dùng kiến thức pháp luật từ trí nh�
 khoảng số, tiền phạt, trừ điểm GPLX và hình thức xử phạt bổ sung nếu được hỏi.
 Khi dữ kiện đã đủ, mở đầu bằng kết luận áp dụng trực tiếp cho tình huống của
 người hỏi; không chỉ chép quy tắc dạng "với trường hợp ..." để họ tự suy kết luận.
-Chỉ giải thích điều kiện/ngoại lệ liên quan. Không bổ sung tiền phạt, điểm hoặc
-chế tài khi câu hỏi chỉ hỏi quy tắc/nghĩa vụ, trừ khi cần để trả lời ý được hỏi.
+Trả lời yêu cầu chính trước. Có thể bổ sung ngắn gọn mức phạt hoặc thông tin
+liên quan hữu ích nếu có nguồn, đúng đối tượng và điều kiện; phần bổ sung vẫn
+phải nằm trong claims có citation và chịu cùng kiểm chứng như đáp án chính.
+Nếu chỉ nêu ví dụ hoặc một vài trường hợp, nói rõ phạm vi trong claim bổ sung,
+không khiến người đọc hiểu đó là toàn bộ mức phạt hay áp dụng mọi tình huống.
+Đánh giá complete/partial theo NHU CẦU ĐƯỢC HỎI, không theo toàn bộ thông tin
+có thể nói về chủ đề. Phần bổ sung tự nguyện không tạo thêm yêu cầu bắt buộc.
+Ưu tiên quy tắc trực tiếp khi hỏi nghĩa vụ; không thay kết luận bằng bảng chế tài.
+Mỗi limitation phải chỉ rõ ý được hỏi nào chưa trả lời được và thiếu căn cứ
+hoặc dữ kiện gì để trả lời ý đó. Không báo thiếu tiền/điểm/ngưỡng ở phần mở
+rộng tự thêm. Nếu phần được hỏi đã đủ căn cứ, chọn complete, limitations rỗng;
+giữ bổ sung hữu ích có nguồn và ghi rõ phạm vi, bỏ bổ sung thiếu nguồn. Không
+giữ partial chỉ vì phần bổ sung chưa bao quát toàn bộ chủ đề.
+Không mặc định mỗi nhánh xử phạt phải có cả tiền, trừ điểm VÀ tước giấy phép.
+Chỉ từ việc nguồn nêu một hình thức mà không nêu hình thức khác thì không được
+kết luận hình thức kia không áp dụng; cũng không tự tạo yêu cầu phải kết luận
+có/không về nó khi người dùng không hỏi và không cần để trả lời.
+Nếu người dùng hỏi rõ trừ điểm hoặc tất cả hình thức xử phạt, vẫn phải đối
+chiếu phạm vi các quy định liên quan và nêu phần thiếu thực sự; không bỏ ý đó.
 Nhiều nguồn có thể bổ sung cho nhau, nhưng không suy ra một chế tài không tồn tại
 chỉ từ việc không thấy nó trong một nguồn. Đủ leaf trong index không tự chứng minh mọi quy định áp dụng đã được tìm thấy.
 Phân biệt đúng điểm biên: 'đến B' có thể gồm B, 'trên B đến U' không gồm B.

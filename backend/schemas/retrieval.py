@@ -13,4 +13,4 @@ class HistoryMessage(BaseModel):
 class RetrievalRequest(BaseModel):
     current_query: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
     chat_history: List[HistoryMessage] = Field(default_factory=list)
-    top_k: int = Field(default=5, ge=1, le=20)
+    top_k: int = Field(default=10, ge=1, le=20)

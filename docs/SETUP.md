@@ -93,7 +93,8 @@ curl http://127.0.0.1:8000/api/v1/health
 ```
 
 Health không tải model, provider hoặc database; `ok` không bảo đảm truy xuất
-đã sẵn sàng. Mở **Kiểm tra truy xuất** để kiểm index/model mà không gọi LLM.
+đã sẵn sàng. Trong thanh bên, mở **Dành cho nhà phát triển** rồi bật
+**Kiểm tra truy xuất** để kiểm index/model mà không gọi LLM.
 
 ## Thử hội thoại
 
@@ -107,7 +108,7 @@ Có thể gọi API trực tiếp; lệnh này đi qua pipeline thật và có t
 ```bash
 curl -X POST http://127.0.0.1:8000/api/v1/answer \
   -H 'Content-Type: application/json' \
-  -d '{"current_query":"Đi xe máy có phải đội mũ bảo hiểm không?","chat_history":[],"top_k":5}'
+  -d '{"current_query":"Đi xe máy có phải đội mũ bảo hiểm không?","chat_history":[],"top_k":10}'
 ```
 
 ## Kiểm tra tài nguyên

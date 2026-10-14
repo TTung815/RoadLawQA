@@ -29,7 +29,7 @@ class PoolRetriever(Retriever):
     def __init__(self, batches: list[list[str]], chunks: dict[str, dict]):
         self.batches, self.chunks, self.position = batches, chunks, 0
 
-    async def search(self, query: str, top_k: int = 5) -> list[RetrievedChunk]:
+    async def search(self, query: str, top_k: int = 10) -> list[RetrievedChunk]:
         if self.position >= len(self.batches):
             return []
         batch = self.batches[self.position]

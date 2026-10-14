@@ -46,7 +46,16 @@ async def test_router_accepts_only_bounded_legal_expansion(intent, expansion, ex
 
 
 @pytest.mark.asyncio
-async def test_expanded_chat_keeps_followup_facts_for_generation_and_verification():
+@pytest.mark.parametrize("current,original,rewrite,history", [
+    ("Còn xe máy?", "Xe máy vượt đèn đỏ phạt bao nhiêu tiền?",
+     "Xe máy không chấp hành hiệu lệnh của đèn tín hiệu giao thông bị phạt bao nhiêu tiền?",
+     [{"role": "user", "content": "Ô tô vượt đèn đỏ phạt bao nhiêu tiền?"}]),
+    ("Vậy vi phạm thì bị phạt bao nhiêu", "Người say rượu lái xe máy bị phạt bao nhiêu?",
+     "Mức phạt tiền đối với người điều khiển xe mô tô, xe gắn máy có nồng độ cồn",
+     [{"role": "user", "content": "Người say rượu có được lái xe máy không?"},
+      {"role": "assistant", "content": "Không được điều khiển phương tiện khi có nồng độ cồn."}]),
+])
+async def test_expanded_chat_keeps_followup_facts_for_generation_and_verification(current, original, rewrite, history):
     from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
     from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
     from ai.agent.contextualizer import QueryContextualizer
@@ -55,10 +64,6 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
     from backend.services.lean_retrieval import LeanRetrievalService
     from tests.unit.test_grounded_answer import semantic
 
-    current = "Còn xe máy?"
-    original = "Xe máy vượt đèn đỏ phạt bao nhiêu tiền?"
-    rewrite = "Xe máy không chấp hành hiệu lệnh của đèn tín hiệu giao thông bị phạt bao nhiêu tiền?"
-    history = [{"role": "user", "content": "Ô tô vượt đèn đỏ phạt bao nhiêu tiền?"}]
     provider = ScriptedProvider([
         (ConversationDecision, {"intent": "legal", "standalone_query": original, "retrieval_query": rewrite}),
         (DraftAnswer, {"claims": [{"text": "Quy tắc theo nguồn.", "chunk_ids": ["rule"], "support_state": "positive_support"}]}),
@@ -75,7 +80,7 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
                           AnswerGenerator(provider), CitationVerifier(provider))
     result = await ChatService(lambda: legal, lambda: ConversationRouter(provider)).answer(current, history)
     assert result.status == "answered"
-    assert retriever.received == (original, rewrite, 5)
+    assert retriever.received == (original, rewrite, 10)
     assert result.retrieval.original_query == current
     assert result.retrieval.standalone_query == original
     assert result.retrieval.retrieval_queries == [original, rewrite]
@@ -109,7 +114,7 @@ async def test_original_and_rewrite_pools_share_one_rerank_budget(query):
 
     embedder, ranker = Embedder(), Ranker()
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)), embedder, ranker)
-    result = await retriever.search(query, retrieval_query=rewrite)
+    result = await retriever.search(query, top_k=5, retrieval_query=rewrite)
     assert len(calls) == 2 and len(ranker.pairs) == 20
     assert len({text for _, text in ranker.pairs}) == 20
     texts = {text for _, text in ranker.pairs}
@@ -151,7 +156,7 @@ async def test_explicit_frozen_backend_also_bounds_and_deduplicates_expansion():
     # Mapping is unrelated to candidate selection; inspect the rerank boundary.
     import unittest.mock
     with unittest.mock.patch("ai.retrieval.current_law.map_chunk", side_effect=lambda c, score: c):
-        results = await retriever.search("Câu hỏi gốc", retrieval_query="Diễn đạt tìm nguồn")
+        results = await retriever.search("Câu hỏi gốc", top_k=5, retrieval_query="Diễn đạt tìm nguồn")
     pairs = ranker.predict.call_args.args[0]
     assert len(pairs) == 20 and len({text for _, text in pairs}) == 20
     assert len(results) == 5 and retriever._candidates.call_count == 2

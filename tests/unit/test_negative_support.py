@@ -133,7 +133,7 @@ async def test_current_suspension_scope_remains_insufficient_with_complete_claus
     assert result.status == "insufficient_evidence"
     assert result.answer is None
     assert len(result.evidence_citations) == 4
-    assert retriever.calls == [(QUESTION, 5)]
+    assert retriever.calls == [(QUESTION, 10)]
     assert provider.calls == []
 
 

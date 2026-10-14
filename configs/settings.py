@@ -149,7 +149,7 @@ class Settings(LLMSettings):
     reranker_revision: str = "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
 
     # Retrieval Tuning
-    default_top_k: int = 5
+    default_top_k: int = 10
     candidate_multiplier: int = 4
 
     @model_validator(mode="after")

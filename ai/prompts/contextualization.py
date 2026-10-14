@@ -8,7 +8,16 @@ CONTEXTUALIZATION_RULES = """Quy tắc:
 - Giữ đúng ý định, chủ thể, hành vi và các điều kiện được người dùng nêu.
   Chi tiết mới trong câu hỏi hiện tại thay thế chi tiết cũ tương ứng, không
   được giữ cả hai đối tượng hoặc cả hai khoảng số khi người dùng thay thế chúng.
-- Ví dụ: sau câu hỏi về xe máy vượt đèn đỏ, "Còn ô tô thì sao?" trở thành
+- Phạm vi yêu cầu lấy từ câu hỏi của NGƯỜI DÙNG, không từ mọi chi tiết mà
+  trợ lý đã tự bổ sung. Khi hỏi tiếp bằng cách đổi đối tượng, giữ loại yêu cầu
+  gốc (quy tắc/nghĩa vụ, mức tiền, điểm, thủ tục...), chỉ thay đối tượng.
+  Không biến câu hỏi có được/nên làm một việc thành yêu cầu liệt kê chế tài
+  chỉ vì câu trả lời trước đã nói thêm tiền phạt hoặc báo thiếu nguồn về điểm.
+  Nếu người dùng hỏi rõ về chi tiết trợ lý vừa nêu thì mới giữ chi tiết đó.
+- Nếu lượt mới đổi loại yêu cầu (ví dụ từ có được làm sang bị phạt bao nhiêu),
+  ưu tiên yêu cầu MỚI, lấy chủ thể và hành vi còn bị lược bỏ từ lịch sử liên
+  quan. Không giữ câu hỏi về nghĩa vụ khi người dùng đã chuyển sang mức phạt.
+- Ví dụ: sau câu hỏi "Xe máy vượt đèn đỏ bị phạt bao nhiêu?", "Còn ô tô thì sao?" trở thành
   "Người điều khiển ô tô vượt đèn đỏ bị xử phạt bao nhiêu?".
 - "Mức cao nhất thì sao?" phải giữ chủ thể và hành vi đang được hỏi và hỏi
   mức cao nhất. "Còn từ 20 đến 35 km/h?" phải giữ chủ thể và hành vi vượt

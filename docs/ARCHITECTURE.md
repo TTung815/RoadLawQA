@@ -27,6 +27,12 @@ khác qua một lượt LLM router, trả:
 Help/social/ngoài phạm vi dùng mẫu server, không dẫn luật để giải thích khả
 năng bot. Mixed chỉ đưa phần giao thông vào RAG và thông báo giới hạn.
 Các câu ngắn như “Xe máy” có thể là follow-up khi lịch sử xác định được ý.
+Khi người dùng đổi đối tượng trong câu hỏi tiếp, router được hướng dẫn giữ
+loại yêu cầu gốc của người dùng. Chi tiết trợ lý tự thêm ở lượt trước không
+tự trở thành yêu cầu mới; expansion cũng phải giữ phạm vi đó.
+Nếu lượt mới hỏi rõ mức phạt, ưu tiên yêu cầu mới và giữ chủ thể/hành vi từ
+lịch sử. Expansion chuẩn hóa cả tên nhóm phương tiện và hành vi khi có cách
+diễn đạt pháp lý tương đương, giữ các thuộc tính phân biệt nhóm xe.
 
 Expansion đổi cách diễn đạt đời thường sang thuật ngữ tìm kiếm, không được
 bịa loại xe, tuổi, điều kiện hoặc mức phạt. Server bỏ bản rỗng, trùng, dài hơn
@@ -51,11 +57,12 @@ vector, alpha mặc định 0.5. Filter yêu cầu nguồn được công bố, 
 
 Một lượt truy xuất có tối đa hai view: câu hỏi độc lập và expansion hoặc
 facet câu hỏi chính/tuổi. Các pool được xen kẽ, khử trùng trong ngân sách
-20 ứng viên thường hoặc 32 khi hỏi đồng thời, tối đa 40. Locator văn bản/Điều
-minh thị trong câu hỏi độc lập có thể thêm tối đa 20 ứng viên.
+tối thiểu 20 ứng viên thường hoặc 32 khi hỏi đồng thời; ngân sách tăng theo
+`4 × top_k`, tối đa 40. Với `top_k=10`, ngân sách hybrid là 40 ứng viên.
+Locator văn bản/Điều minh thị trong câu hỏi độc lập có thể thêm tối đa 20 ứng viên.
 
-Rerank một pass, mặc định lấy top 5. Query rerank ưu tiên facet tuổi/câu hỏi
-chính, sau đó expansion được chấp nhận, cuối cùng là câu hỏi độc lập. Không
+Rerank một pass, mặc định lấy top 10 chunk chính (hoặc ít hơn nếu không đủ
+nguồn hợp lệ). Query rerank ưu tiên facet tuổi/câu hỏi chính, sau đó expansion được chấp nhận, cuối cùng là câu hỏi độc lập. Không
 nối lặp hai câu dài vào reranker. Batch 4 được sắp theo độ dài để giảm padding.
 
 Reranker có thể chạy trên MPS của Apple Silicon hoặc CUDA; embedding mặc định
@@ -71,6 +78,13 @@ tối đa hai phạm vi Điều, tám chunks thêm và 12.000 ký tự. Context 
 Trong request tới LLM, nguồn dùng alias ngắn; server ánh xạ alias chính xác
 về ID thật, không fuzzy-match ID model bịa. Generator sinh claims và citation;
 verifier kiểm nguồn/hiệu lực, con số và ngữ nghĩa hỗ trợ, gồm cả limitations.
+Generator và verifier đánh giá mức đầy đủ theo ý được hỏi. Cho phép bổ sung
+mức phạt hữu ích sau câu trả lời chính nếu có nguồn và ghi rõ điều kiện/phạm
+vi; mọi claim bổ sung vẫn phải qua kiểm chứng. Phần bổ sung không tự tạo thêm
+yêu cầu bắt buộc hoặc giả làm danh sách đầy đủ. Mỗi limitation phải liên quan đến ý chưa giải
+quyết hoặc điều kiện cần để giải quyết ý đó. Giới hạn về chế tài không được
+hỏi phải được sửa trong nháp, thay vì chỉ ẩn trên UI hoặc đổi nhãn thành công.
+Nếu người dùng hỏi rõ về điểm hay toàn bộ chế tài, vẫn phải giữ và kiểm ý đó.
 
 Khi nháp không đạt, cho phép sửa tối đa một lần trên cùng evidence rồi kiểm
 lại. API không công bố nháp vẫn bị chặn. Trạng thái gồm `answered`,

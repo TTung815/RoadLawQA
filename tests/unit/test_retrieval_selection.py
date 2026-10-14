@@ -28,6 +28,34 @@ def native_response(units):
 
 
 @pytest.mark.asyncio
+async def test_default_returns_ten_ranked_sources_with_bounded_candidates(units):
+    calls = []
+    pool = units[:50]
+
+    def hybrid(**kwargs):
+        calls.append(kwargs)
+        return native_response(pool[:kwargs["limit"]])
+
+    class Reranker:
+        def predict(self, pairs):
+            self.pairs = pairs
+            return list(range(len(pairs)))
+
+    ranker = Reranker()
+    retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)),
+                                    Embedder(), ranker)
+    result = await retriever.search("Quy tắc giao thông đường bộ")
+    assert len(calls) == 1 and calls[0]["limit"] == 40
+    assert len(ranker.pairs) == 40
+    assert [c.id for c in result] == [u["id"] for u in reversed(pool[30:40])]
+
+    # Explicit smaller requests still work without changing the serving default.
+    result = await retriever.search("Quy tắc giao thông đường bộ", top_k=3)
+    assert len(result) == 3
+    assert len(ranker.pairs) == 20
+
+
+@pytest.mark.asyncio
 async def test_second_simultaneous_action_survives_native_cutoff(units):
     # The actual red-light sanction was native rank 29, outside the former 20.
     target = next(u for u in units if "nd168-effective-as-of-2026-09-22-d6-k9-pb"
@@ -47,11 +75,11 @@ async def test_second_simultaneous_action_survives_native_cutoff(units):
     ranker = Reranker()
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)),
                                     Embedder(), ranker)
-    result = await retriever.search("Tôi lái ô tô vượt đèn đỏ và đồng thời sử dụng điện thoại.")
+    result = await retriever.search("Tôi lái ô tô vượt đèn đỏ và đồng thời sử dụng điện thoại.", top_k=5)
     assert target["id"] in {c.id for c in result}
     assert len(ranker.pairs) <= 40
     assert len(calls) == 1
-    await retriever.search("Tôi lái ô tô sử dụng điện thoại.")
+    await retriever.search("Tôi lái ô tô sử dụng điện thoại.", top_k=5)
     assert len(ranker.pairs) == 20
 
 
@@ -77,7 +105,7 @@ async def test_question_focus_keeps_scenario_and_recovers_speed_obligation(units
     embedder, ranker = Embedder(), Reranker()
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)),
                                     embedder, ranker)
-    result = await retriever.search(query)
+    result = await retriever.search(query, top_k=5)
     assert result[0].id == target["id"]
     assert embedder.queries == [query, focus]
     assert len(calls) == 2
@@ -138,6 +166,7 @@ def test_new_plans_lock_the_serving_selection_and_batch_settings(monkeypatch):
     monkeypatch.setenv("COMPOUND_CANDIDATE_LIMIT", "36")
     monkeypatch.setenv("RERANKER_BATCH_SIZE", "8")
     settings = default_settings()
+    assert settings.top_k == 10
     assert (settings.hybrid_candidate_limit, settings.compound_candidate_limit, settings.reranker_batch_size) == (24, 36, 8)
 
 
@@ -163,7 +192,7 @@ async def test_age_condition_survives_vehicle_owner_distraction_within_budget(un
 
     embedder, ranker = Embedder(), Ranker()
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)), embedder, ranker)
-    results = await retriever.search(query)
+    results = await retriever.search(query, top_k=5)
     assert target['id'] in {c.id for c in results}
     assert embedder.queries[0] == query
     assert len(calls) == 2 and len(ranker.pairs) == 20

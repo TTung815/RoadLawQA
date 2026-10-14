@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     """Initial chat request model."""
     message: str = Field(..., min_length=1, description="User legal query")
-    top_k: int = Field(default=5, ge=1, le=20, description="Number of chunks to retrieve")
+    top_k: int = Field(default=10, ge=1, le=20, description="Number of chunks to retrieve")
 
 
 class ChatResponse(BaseModel):

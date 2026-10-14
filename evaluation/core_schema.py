@@ -50,6 +50,7 @@ class RunSettings(LabelModel):
     max_transient_retries: int = Field(default=2, ge=0, le=5)
     embedding_revision: Text
     reranker_revision: Text
+    # Preserve omitted values in historical plans; new plans lock the serving default.
     top_k: int = Field(default=5, ge=1, le=20)
     max_attempts: int = Field(default=2, ge=1, le=2)
     expansion: StrictBool = True

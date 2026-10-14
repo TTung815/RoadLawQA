@@ -86,7 +86,7 @@ async def test_standalone_query_is_contextualized_only_when_history_exists(histo
         QueryContextualizer(provider), retriever,
     ).retrieve(query, history)
     assert provider.calls == ([{"current_query": query, "chat_history": history}] if history else [])
-    assert retriever.calls == [(query, 5)]
+    assert retriever.calls == [(query, 10)]
     assert result.standalone_query == query
 
 
@@ -147,7 +147,7 @@ async def test_no_history_is_executable_without_gemini_credentials():
     )
     result = await service.retrieve(query)
     assert result.standalone_query == query
-    assert retriever.calls == [(query, 5)]
+    assert retriever.calls == [(query, 10)]
 
 
 @pytest.mark.asyncio

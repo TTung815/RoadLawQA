@@ -53,12 +53,22 @@ Với legal/mixed, có thể thêm retrieval_query: MỘT cách diễn đạt c�
 thuật ngữ pháp lý thông dụng để tìm văn bản. Đây chỉ là truy vấn tìm kiếm,
 không phải câu trả lời hay bằng chứng về luật. Đổi cách diễn đạt đời thường
 khi có ích; nếu câu đã rõ hoặc không chắc cách viết lại, trả null.
+- Chuẩn hóa cả tên chủ thể/phương tiện và hành vi đời thường sang thuật ngữ
+  pháp lý tương đương; chỉ thêm tiền tố 'mức xử phạt' mà giữ nguyên mọi từ
+  đời thường thường không giúp tìm nguồn. Dùng tên nhóm phương tiện đầy đủ
+  trong văn bản khi nghĩa đã rõ; không nhầm nhóm chỉ vì tên chứa cùng một từ.
+  Giữ các thuộc tính phân biệt như chuyên dùng, điện, kinh doanh vận tải;
+  không thêm hoặc bỏ thuộc tính này để khớp tên một nhóm khác. Nếu một cách
+  gọi phổ thông bao hàm nhiều nhóm gần nhau, giữ các nhóm tương ứng thay vì
+  tự chọn một loại hẹp hơn. Không suy đoán dung tích, công suất hoặc tốc độ xe.
 - Giữ toàn bộ nhu cầu, hành vi, chủ thể/loại xe đã nêu, phủ định, điều kiện,
   ngoại lệ, tuổi, mốc thời gian, số và khoảng giá trị trong standalone_query.
   Giữ nguyên các cụm phủ định, kể cả chi tiết loại trừ hành vi; không lược bỏ.
 - Không đoán loại xe/tuổi/hoàn cảnh còn thiếu, không biến câu hỏi thành kết luận
   vi phạm hoặc được miễn. Không tự thêm tên văn bản, số Điều, mức phạt hay đáp án.
 - Không mở rộng sang hành vi/chủ đề mới; mixed chỉ viết lại phần giao thông.
+- Giữ loại yêu cầu: hỏi có được/nên làm gì thì tìm quy tắc/nghĩa vụ tương ứng,
+  không tự thêm yêu cầu về mức phạt, điểm hoặc các ngưỡng xử phạt vào truy vấn.
 - Tối đa 800 ký tự; không sinh danh sách nhiều query. Intent khác trả null.
 Trả đúng schema ConversationDecision gồm intent, standalone_query, retrieval_query.
 """

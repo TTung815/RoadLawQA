@@ -24,7 +24,7 @@ class LeanRetrievalService(HistoryAwareRetrievalService):
     @traced("retrieval")
     async def retrieve(self, current_query: str,
                        chat_history: Sequence[Mapping[str, str]] = (),
-                       top_k: int = 5, *, prepared_query: str | None = None,
+                       top_k: int = 10, *, prepared_query: str | None = None,
                        retrieval_query: str | None = None) -> AgenticRetrievalResult:
         if top_k < 1:
             raise ValueError("top_k must be positive")

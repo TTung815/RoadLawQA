@@ -59,7 +59,7 @@ def default_settings() -> RunSettings:
                        embedding_revision=snapshot["shadow_resources"]["embedding"]["revision"],
                        reranker_revision=llm.reranker_revision,
                        host=llm.weaviate_host, port=llm.weaviate_port, grpc_port=llm.weaviate_grpc_port,
-                       max_attempts=1, expansion=llm.structural_expansion_enabled)
+                       top_k=llm.default_top_k, max_attempts=1, expansion=llm.structural_expansion_enabled)
 
 
 def questions_for(suite: str, private_questions: Path | None = None, *, owner_reviewed: bool = False,

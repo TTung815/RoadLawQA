@@ -43,7 +43,7 @@ class LazyCurrentLawRetriever(Retriever):
                 self._retriever, self._client = load_current_retriever(settings)
             return self._retriever
 
-    async def search(self, query: str, top_k: int = 5, *, retrieval_query: str | None = None):
+    async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None):
         started = time.perf_counter()
         retriever = await asyncio.to_thread(self._load)
         record("resource_initialization", event="timing", duration_ms=(time.perf_counter() - started) * 1000)
@@ -156,7 +156,7 @@ class CurrentLawRetriever(Retriever):
         return [map_chunk(chunk, float(rank)) for ((chunk, _), rank) in ranked[:top_k]]
 
     @traced("retrieval_search")
-    async def search(self, query: str, top_k: int = 5, *, retrieval_query: str | None = None) -> list[RetrievedChunk]:
+    async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None) -> list[RetrievedChunk]:
         return await asyncio.to_thread(self._search, query, top_k, retrieval_query)
 
 

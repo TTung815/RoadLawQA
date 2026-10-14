@@ -69,7 +69,7 @@ async def test_standalone_api_query_with_history_invokes_contextualization(api_s
     assert response.status_code == 200
     assert response.json()["standalone_query"] == query
     assert len(llm_calls) == 1
-    assert retrieval_calls == [(query, 5, True)]
+    assert retrieval_calls == [(query, 10, True)]
 
 
 @pytest.mark.asyncio
@@ -81,7 +81,7 @@ async def test_api_query_without_history_skips_contextualization(api_setup):
     assert response.status_code == 200
     assert response.json()["standalone_query"] == query
     assert llm_calls == []
-    assert retrieval_calls == [(query, 5, True)]
+    assert retrieval_calls == [(query, 10, True)]
 
 
 @pytest.mark.asyncio

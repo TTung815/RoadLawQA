@@ -30,7 +30,7 @@ class AnswerService:
     @traced("answer")
     async def answer(
         self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
-        top_k: int = 5, *, prepared_query: str | None = None, retrieval_query: str | None = None,
+        top_k: int = 10, *, prepared_query: str | None = None, retrieval_query: str | None = None,
     ) -> AnswerResult:
         started = time.perf_counter()
         timings = AnswerTimings()

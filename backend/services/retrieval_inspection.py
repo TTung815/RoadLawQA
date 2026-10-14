@@ -7,7 +7,7 @@ from ai.diagnostics import PipelineError, TRACE
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
 
 
-async def inspect_retrieval(retriever, query: str, top_k: int = 5) -> dict:
+async def inspect_retrieval(retriever, query: str, top_k: int = 10) -> dict:
     trace = []
     token = TRACE.set(trace)
     started = time.perf_counter()

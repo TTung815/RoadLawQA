@@ -52,6 +52,24 @@ phần hữu ích từ final_evidence, limitations nêu đúng thiếu nguồn v
 kết luận pháp luật. Không chấp nhận từ chối khi nguồn đã đủ trả lời. Với complete, vẫn
 kiểm tra đáp ứng đầy đủ câu hỏi. Với MỌI response_kind, response_appropriate
 chỉ true khi toàn bộ claims, limitations và follow_up_questions nhất quán.
+Kiểm phạm vi trước khi đánh giá thiếu ý: lấy nhu cầu từ question và
+required_aspects, không lấy từ thông tin phụ do nháp tự thêm hoặc mọi chi
+tiết có trong nguồn. Cho phép bổ sung mức phạt/thông tin liên quan hữu ích
+nếu đáp án chính đã trực tiếp giải quyết yêu cầu, từng claim bổ sung có căn
+cứ và rõ điều kiện. Không bác bỏ chỉ vì người dùng không hỏi phần bổ sung.
+Nếu chỉ nêu ví dụ/một số trường hợp, phải rõ phạm vi và không giả làm danh
+sách đầy đủ. Phần bổ sung không được thay thế câu trả lời chính hoặc tạo
+thêm yêu cầu bắt buộc khi đánh giá answer_complete.
+Mỗi limitation phải gắn với một ý thực sự được hỏi hoặc điều kiện cần để
+giải quyết ý đó. Báo thiếu một chế tài/nhánh phụ không được hỏi không phải lý
+do hợp lệ cho partial. Nếu nhu cầu đã được giải quyết, yêu cầu bỏ giới hạn
+thừa và chọn complete; giữ bổ sung hữu ích có nguồn và rõ phạm vi, bỏ bổ sung
+thiếu nguồn. Không chỉ đổi nhãn để che phần chưa trả lời thực sự được hỏi.
+Không mặc định mỗi nhánh phải có cả tiền, trừ điểm và tước giấy phép. Nguồn
+nêu tước giấy phép mà không nêu điểm không tự tạo một khoảng thiếu cần báo.
+Nhưng nếu câu hỏi yêu cầu rõ có bị trừ điểm không hoặc toàn bộ chế tài, vẫn
+kiểm đủ ý và phạm vi nguồn; không dùng sự im lặng của nguồn để kết luận không
+áp dụng. Không bỏ giới hạn thực sự để khiến câu trả lời có vẻ đầy đủ.
 Không chấp nhận giới hạn tưởng tượng khi nguồn đã quy định rõ nghĩa vụ
 và phạm vi áp dụng; không đòi chứng minh mọi ngoại lệ giả định.
 Đối chiếu giới hạn/câu hỏi làm rõ với TOÀN BỘ dữ kiện người hỏi đã nêu.
