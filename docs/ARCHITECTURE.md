@@ -64,6 +64,10 @@ Locator văn bản/Điều minh thị trong câu hỏi độc lập có thể th
 Rerank một pass, mặc định lấy top 10 chunk chính (hoặc ít hơn nếu không đủ
 nguồn hợp lệ). Query rerank ưu tiên facet tuổi/câu hỏi chính, sau đó expansion được chấp nhận, cuối cùng là câu hỏi độc lập. Không
 nối lặp hai câu dài vào reranker. Batch 4 được sắp theo độ dài để giảm padding.
+Khi bật trace nội bộ, `retrieval_ranking` lưu thứ hạng từng view native,
+pool đã xen kẽ/khử trùng (kèm ID tra minh thị), toàn bộ thứ hạng và điểm sau
+rerank, cùng top-k được chọn. Dữ liệu này phục vụ đo trước–sau trên cùng pool;
+không trộn điểm hybrid giữa các view hoặc tính nguồn tra bổ sung như top-k.
 
 Reranker có thể chạy trên MPS của Apple Silicon hoặc CUDA; embedding mặc định
 CPU theo cấu hình đã đo trên Mac. Hybrid search chạy trong Weaviate trên CPU.
@@ -78,6 +82,11 @@ tối đa hai phạm vi Điều, tám chunks thêm và 12.000 ký tự. Context 
 Trong request tới LLM, nguồn dùng alias ngắn; server ánh xạ alias chính xác
 về ID thật, không fuzzy-match ID model bịa. Generator sinh claims và citation;
 verifier kiểm nguồn/hiệu lực, con số và ngữ nghĩa hỗ trợ, gồm cả limitations.
+Verifier kiểm ngoại lệ minh thị trong nguồn được dẫn như một phần phạm vi
+của claim, kể cả dẫn chiếu sang khoản khác. Claim quy tắc chung bỏ loại trừ
+làm rộng phạm vi phải bị chặn; claim đã giới hạn phạm vi hoặc tình huống đã
+loại trừ ngoại lệ thì không cần nhắc ngoại lệ không áp dụng. Đây vẫn là
+kiểm chứng bằng mô hình, không bảo đảm phát hiện mọi lỗi.
 Generator dùng `GeneratedAnswer` với trường `answer` có bốn nhánh schema:
 complete có claims nhưng không có giới hạn/câu hỏi làm rõ; partial có claims
 và ít nhất một giới hạn; clarification có giới hạn và câu hỏi; abstain chỉ

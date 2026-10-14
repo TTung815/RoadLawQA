@@ -40,3 +40,37 @@ async def test_verifier_requires_neighboring_action_only_when_asked(asks_other_a
         assert result.status == "failed" and result.answer_complete is False
     else:
         assert result.status == "passed" and result.answer_complete is True
+
+
+def pedestrian_exception_case(scope: str):
+    """Observed omission plus valid general and explicitly narrowed counterparts."""
+    units = load_bundle()["chunks"]
+    chunks = [map_unit(next(u for u in units if
+              f"nd168-effective-as-of-2026-09-22-{locator}" in u["metadata"]["source_processed_ids"]))
+              for locator in ("d10-k1-pb", "d10-k2-pa")]
+    question = "Người đi bộ không chấp hành hiệu lệnh đèn tín hiệu bị phạt bao nhiêu?"
+    text = "Người đi bộ không chấp hành hiệu lệnh đèn tín hiệu bị phạt 150.000–250.000 đồng"
+    if scope == "preserved":
+        text += ", trừ hành vi quy định tại điểm a khoản 2 Điều 10."
+    elif scope == "excluded_by_facts":
+        question = "Người đi bộ vượt đèn đỏ trên đường phố trong khu dân cư, không phải đường cao tốc, bị phạt bao nhiêu?"
+        text = "Trong tình huống bạn nêu, người đi bộ bị phạt 150.000–250.000 đồng."
+    elif scope != "omitted":
+        raise ValueError("Unknown exception probe")
+    draft = DraftAnswer(claims=[AnswerClaim(text=text, chunk_ids=[chunks[0].id],
+                                          support_state="positive_support")])
+    return question, draft, chunks
+
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+@pytest.mark.skipif(os.environ.get("ROADLAWQA_LIVE_LLM_TESTS") != "1",
+                    reason="Set ROADLAWQA_LIVE_LLM_TESTS=1 to allow billed provider calls")
+@pytest.mark.parametrize("scope", ["omitted", "preserved", "excluded_by_facts"])
+async def test_verifier_checks_explicit_exception_without_demanding_irrelevant_ones(scope):
+    question, draft, chunks = pedestrian_exception_case(scope)
+    result = await CitationVerifier(create_provider(Settings())).verify(question, draft, chunks)
+    if scope == "omitted":
+        assert result.status == "failed" and result.assessments[0].supported is False
+    else:
+        assert result.status == "passed" and result.semantic_valid is True

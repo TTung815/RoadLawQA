@@ -63,6 +63,17 @@ hiện tại. Không tái sử dụng bảng Recall/MRR/accuracy của ứng d�
 index mới. Scorer tự động hiện hỗ trợ các kiểm kỹ thuật cùng rubric facet/flags;
 review bốn nhãn gọn cần lưu riêng, không đổi tên thành điểm strict của scorer.
 
+Trace mới có sự kiện `retrieval_ranking`: thứ hạng từng view native, pool ứng
+viên sau xen kẽ/khử trùng và thêm locator, thứ hạng reranker trên toàn bộ pool,
+và top-k được chọn. So sánh reranker trước–sau trên cùng pool, ghi rõ thứ tự
+trước là thứ tự hợp nhất thực tế, không phải một bảng điểm hybrid chung.
+Nhãn gold dùng leaf frozen; cần ánh xạ qua `source_processed_ids` của chunk
+cấu trúc và phân biệt nguồn cần đủ theo facet với nguồn hỗ trợ thay thế.
+Recall theo nguồn tham chiếu không đo mọi nguồn có thể đúng. MRR/nDCG dùng
+nhãn nhị phân từ gold chỉ là proxy nếu chưa review relevance từng ứng viên;
+không coi mọi chunk ngoài gold là chắc chắn không liên quan. Báo cáo riêng
+top-k chính và evidence sau tra dẫn chiếu, không gộp chúng thành Recall@10.
+
 ## Chuẩn bị một lượt RAG mới
 
 Cần môi trường và artifact theo [SETUP.md](SETUP.md). Tạo thư mục mới cho mỗi

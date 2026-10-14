@@ -133,6 +133,16 @@ class StructuredRetriever(Retriever):
         if not all(math.isfinite(float(x)) for x in ranks):
             raise ValueError("non-finite reranker score")
         ordered = sorted(zip(units, ranks, strict=True), key=lambda x: float(x[1]), reverse=True)
+        # Internal evaluation trace only; preserve the actual pool before truncation.
+        # Multi-view scores are not comparable, so retain each view's native order.
+        record("retrieval_ranking", event="result", top_k=top_k,
+               native_views=[{"view": "original" if index == 0 else secondary_label,
+                              "chunk_ids": [u["id"] for u in pool]}
+                             for index, pool in enumerate(pools)],
+               candidate_ids=[u["id"] for u in units],
+               exact_lookup_ids=[u["id"] for u in units if scores[u["id"]].get("exact_lookup")],
+               reranked=[{"chunk_id": u["id"], "score": float(rank)} for u, rank in ordered],
+               selected_ids=[u["id"] for u, _ in ordered[:top_k]])
         return [map_unit(u, float(rank), rerank_query_view=focus_label if focus else secondary_label if expansion else "original",
                          **scores[u["id"]]) for u, rank in ordered[:top_k]]
 

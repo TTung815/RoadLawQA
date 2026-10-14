@@ -130,6 +130,40 @@ async def test_native_query_receives_separate_text_vector_and_filters(corpus):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("expansion", [None, "Quy định về mũ bảo hiểm"])
+async def test_ranking_trace_preserves_candidate_pool_and_native_views(corpus, expansion):
+    from ai.diagnostics import TRACE
+    units = [u for u in corpus if u['metadata']['publication_eligible']][:4]
+    pools = [units[:3], [units[2], units[3], units[0]]]
+    calls = []
+    def hybrid(**kwargs):
+        pool = pools[len(calls)]
+        calls.append(kwargs)
+        return SimpleNamespace(objects=[SimpleNamespace(properties=properties(u),
+            metadata=SimpleNamespace(score=.6, explain_score='hybrid')) for u in pool])
+    retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)),
+                                    Embedder(), Reranker())
+    trace = []
+    token = TRACE.set(trace)
+    try:
+        result = await retriever.search('Quy tắc đội mũ bảo hiểm', 2, retrieval_query=expansion)
+    finally:
+        TRACE.reset(token)
+    ranking, = [event for event in trace if event['stage'] == 'retrieval_ranking']
+    indices = [0, 2, 1, 3] if expansion else [0, 1, 2]
+    candidates = [units[i]['id'] for i in indices]
+    assert ranking['candidate_ids'] == candidates
+    assert ranking['native_views'] == [
+        {'view': 'original' if i == 0 else 'query_expansion', 'chunk_ids': [u['id'] for u in pool]}
+        for i, pool in enumerate(pools[:2 if expansion else 1])]
+    assert ranking['reranked'] == [
+        {'chunk_id': identity, 'score': float(i)} for i, identity in reversed(list(enumerate(candidates)))]
+    assert ranking['selected_ids'] == [c.id for c in result] == list(reversed(candidates))[:2]
+    assert ranking['exact_lookup_ids'] == []
+    assert len(ranking['reranked']) > len(result)
+
+
+@pytest.mark.asyncio
 async def test_native_rejects_changed_or_blocked_result(corpus):
     u=next(u for u in corpus if not u['metadata']['publication_eligible'])
     def hybrid(**kwargs):

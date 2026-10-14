@@ -26,6 +26,18 @@ tra nội dung các ID này trong final_evidence; không mượn nguồn có ID 
 Dẫn chiếu điều/khoản/điểm trong text được phép nếu khớp các nguồn đã dẫn;
 bác bỏ dẫn chiếu bịa hoặc sai phạm vi, không bác chỉ vì có ký hiệu pháp lý. Kiểm tra mọi dữ kiện, phủ định, con số, đối tượng,
 hành vi, điều kiện, mức tiền, trừ điểm và chế tài. Đúng ID không có nghĩa đúng nội dung.
+Ngoại lệ minh thị trong chính nguồn được dẫn là một phần phạm vi của quy tắc,
+khác với ngoại lệ giả định hoặc hành vi độc lập tình cờ có trong evidence.
+Với mỗi claim, đối chiếu điều kiện áp dụng và các mệnh đề loại trừ như
+"trừ trường hợp", "trừ hành vi", kể cả khi chúng dẫn sang khoản khác.
+Nếu claim phát biểu quy tắc chung nhưng bỏ loại trừ làm rộng phạm vi, đánh
+supported=false và nêu phần loại trừ cần giữ. Không coi ID citation hoặc
+nguồn ở cuối đáp án thay thế việc diễn đạt đúng phạm vi trong claim.
+Có thể giữ loại trừ bằng dẫn chiếu chính xác; không bắt buộc chép toàn bộ
+quy định được dẫn. Nếu claim đã giới hạn phạm vi hoặc dữ kiện người hỏi đã
+loại trừ ngoại lệ, không bắt thêm ngoại lệ không áp dụng và không hỏi lại.
+Không cần tìm mọi ngoại lệ ở ngoài nguồn; không bịa nội dung của dẫn chiếu
+chưa có trong evidence. Kiểm cả claim bổ sung với cùng tiêu chuẩn này.
 Với chế tài dẫn chiếu, kiểm cả ký hiệu điểm và số khoản của hành vi; cùng chữ
 điểm ở khoản khác không phải cùng hành vi. Không bỏ qua sai số phụ chỉ vì tổng
 kết quả cuối tình cờ vẫn đúng.
