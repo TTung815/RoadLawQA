@@ -67,7 +67,7 @@ lượt chạy. Đây là bộ đã biết, chưa phải held-out hoặc toàn l
 Candidate recall trung bình 93,93%; coverage facet sau tra dẫn chiếu 92,00%
 theo trung bình từng câu, hoặc 75/82 facet (91,46%) khi gộp các facet.
 
-Review **có AI hỗ trợ, đang chờ chủ dự án duyệt**: 44/50 đạt đủ ý và trạng thái;
+Review **có AI hỗ trợ, chủ dự án đã duyệt ngày 15/10/2026**: 44/50 đạt đủ ý và trạng thái;
 1 câu đủ nội dung nhưng trạng thái quá thận trọng (007); 4 thiếu ý (005/008/020/038);
 1 chưa trả lời (019). Điểm facet 77/82. Có 77/77 lượt citation hợp lệ về ID/text;
 review nội dung thấy citation hỗ trợ ở 49/49 câu có claims. Các tỷ lệ citation

@@ -78,21 +78,56 @@ Nguồn lõi gồm 49/VBHN-VPQH, 55/VBHN-VPQH và bản ghép kỹ thuật của
 phạt từ 90/VBHN-VPQH (2026) được bổ sung có review; không nhập toàn bộ văn bản.
 [Phạm vi, hiệu lực và provenance](docs/LEGAL_SCOPE.md).
 
-Kiểm tra trên workspace phát triển cho code `e38f086` ngày 14/10/2026:
+### Đánh giá RAG trên 50 câu (14/10/2026)
 
-| Kiểm tra | Kết quả | Cách hiểu |
-| --- | --- | --- |
-| Test offline | 534 đạt | Kiểm hợp đồng và regression; không đo accuracy pháp lý |
-| Integration | 9 đạt | Weaviate/model thật; embedding CPU, reranker MPS |
-| Probe chatbot | 6 lượt trả lời, verification đạt; 1 lần sửa nháp | Câu đã biết, không phải bộ đánh giá độc lập |
-| Latency probe chatbot | Mean 19,62s; median 16,73s; khoảng 10,96–36,86s | Không gồm cold start; phụ thuộc câu hỏi và provider |
+Bộ 50 câu có nhãn ground truth v2 do chủ dự án duyệt, gồm định nghĩa, mức
+phạt, trừ điểm, tình huống có điều kiện và câu cần hỏi rõ. Cấu hình: corpus
+cấu trúc v2, hybrid alpha 0.5, top 10 sau rerank, embedding CPU, reranker
+Apple MPS, OpenAI `gpt-6-luna` reasoning `medium`. Chạy 50/50, không lỗi kỹ thuật.
 
-Chưa có điểm full-50 cho toàn bộ chatbot hiện tại. Kết quả trên không chứng
-minh accuracy 100%; verifier cũng có thể sai. Hệ thống còn có thể thiếu nguồn,
-viết lệch query hoặc hỏi rõ chưa cần thiết. Các artifact chạy thật đang lưu
-local, chưa phát hành cùng repository.
+**Retrieval và reranker** — trung bình 50 câu, so trước/sau rerank trên cùng
+candidate pool; nhãn relevance là nguồn được gold dùng làm căn cứ:
 
-[Dataset, phương pháp và cách chạy evaluation](docs/EVALUATION_QUICKSTART.md).
+| Metric @10 | Trước rerank | Sau rerank |
+| --- | ---: | ---: |
+| HitRate | 98,00% | 98,00% |
+| Recall | 88,63% | 89,37% |
+| MRR | 0,7992 | 0,8740 |
+| nDCG | 0,7724 | 0,8291 |
+
+**Đáp án cuối** — chấm theo nghĩa, đối chiếu câu hỏi, nguồn và gold:
+
+| Phép đo | Kết quả |
+| --- | --- |
+| Đủ ý bắt buộc và đúng trạng thái trả lời | 44/50 (88%) |
+| Ý bắt buộc được đáp ứng | 77/82 (93,9%) |
+| Citation hợp lệ về ID/nội dung | 77/77 |
+| Factual P / R / F1 (claim-level, LLM judge) | 90,09% / 82,94% / 82,97% |
+| Faithfulness / Citation P / Citation R | 98,04% / 96,28% / 97,53% |
+| Latency RAG mean / median / p95 | 14,99s / 12,95s / 28,82s |
+
+Sáu câu chưa đạt có nguyên nhân đã khoanh vùng: bốn câu đúng mức tiền nhưng
+thiếu số điểm GPLX bị trừ vì nguồn trừ điểm không vào candidate pool; một câu
+có nguồn đúng ở hạng 1 trước rerank nhưng bị đẩy xuống hạng 28; một câu đủ
+nội dung nhưng gắn trạng thái `partial` thận trọng thừa. Hệ thống không bịa
+phần thiếu: các đáp án này nêu rõ giới hạn thay vì đoán mức phạt.
+
+Cách đọc kết quả:
+
+- Rubric 44/50 do review có AI hỗ trợ, chủ dự án đã duyệt ngày 15/10/2026.
+  Metric claim-level là điểm thô của LLM judge cùng họ model với generator,
+  chưa qua duyệt. Cả hai không phải nhãn của chuyên gia pháp luật.
+- Bộ 50 câu đã dùng trong quá trình phát triển; bộ held-out chưa được mở.
+- Evaluator đi thẳng vào pipeline RAG, chưa đo router, query expansion và
+  hội thoại nhiều lượt. Latency không gồm khởi tạo model.
+- Metric factual chấm theo toàn bộ reference: thông tin đúng nhưng ngoài
+  reference vẫn bị tính là FP.
+
+Suite offline hiện có 591 test đạt. Artifact chạy thật (plan khóa hash code,
+đáp án, trace, phiếu review) đang lưu local, chưa phát hành cùng repository.
+
+[Dataset, phương pháp và cách chạy evaluation](docs/EVALUATION_QUICKSTART.md) ·
+[định nghĩa metric claim-level](docs/GENERATION_EVALUATION.md).
 
 ## Kiểm thử
 
