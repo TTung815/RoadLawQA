@@ -119,10 +119,17 @@ curl -X POST http://127.0.0.1:8000/api/v1/answer \
 ```
 
 Test offline không gọi provider/mạng nhưng một số kiểm tra snapshot cần
-bundle đã đóng băng ngoài Git. Con số 534 test đạt được đo trên workspace
+bundle đã đóng băng ngoài Git. Con số 548 test đạt được đo trên workspace
 có đủ tài nguyên, chưa xác nhận full suite trên clone mới hoàn toàn.
 Integration cần Weaviate và cache model; database không chạy có thể khiến
 smoke test bị skip, không được tính skip thành passed.
+
+Regression phạm vi verifier cần gọi LLM thật, dùng provider/model trong
+`.env` và chỉ chạy khi bật riêng (hai trường hợp, có thể phát sinh phí):
+
+```bash
+ROADLAWQA_LIVE_LLM_TESTS=1 .venv/bin/python -m pytest tests/integration/test_verifier_scope.py -m integration -q
+```
 
 Kiểm checksum corpus/dataset khi đã có bộ tài nguyên provenance:
 

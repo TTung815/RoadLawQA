@@ -5,7 +5,15 @@ CITATION_VERIFICATION_PROMPT = """Kiểm chứng câu trả lời bằng dữ li
 Ngữ cảnh cha được khử trùng: context_ids trỏ tới shared_context trong cùng gói
 nguồn. Đối chiếu cả text và ngữ cảnh cha của nguồn; context_id không phải ID citation.
 Trả assessments, đúng một mục cho mỗi claim_index: supported, support_state và
-reason ngắn. Phân loại ĐỘC LẬP theo nghĩa của text, không tin nhãn generator:
+reason. Kiểm tra đầy đủ nhưng xuất kết quả ngắn: khi supported=true và
+support_state=positive_support, reason chỉ ghi "Đạt."; khi addressed=true,
+reason của range_assessment cũng chỉ ghi "Đạt.". Nếu answer_complete=true và
+response_appropriate=true, completeness_reason chỉ ghi "Đạt.".
+Với mục không đạt hoặc câu trả lời chưa đủ, viết một câu ngắn chỉ rõ lỗi/ý
+còn thiếu, gồm điều kiện, biên số hoặc nguồn liên quan khi cần để sửa nháp.
+Không chép lại claim, trích nguyên nguồn hay giải thích dài cho mục đã đạt.
+Định dạng ngắn không thay thế bất kỳ bước kiểm chứng nào dưới đây; không
+chọn đạt chỉ để rút ngắn đầu ra. Phân loại ĐỘC LẬP theo nghĩa của text, không tin nhãn generator:
 positive_support khi nhận định được nguồn hỗ trợ trực tiếp hoặc là áp dụng
 quy tắc/điều kiện/phạm vi rõ ràng; negative_support khi suy ra không áp dụng vì
 vắng nguồn; unknown khi chưa xác định. Chỉ positive_support được công bố.
@@ -54,7 +62,13 @@ kiểm tra đáp ứng đầy đủ câu hỏi. Với MỌI response_kind, respo
 chỉ true khi toàn bộ claims, limitations và follow_up_questions nhất quán.
 Kiểm phạm vi trước khi đánh giá thiếu ý: lấy nhu cầu từ question và
 required_aspects, không lấy từ thông tin phụ do nháp tự thêm hoặc mọi chi
-tiết có trong nguồn. Cho phép bổ sung mức phạt/thông tin liên quan hữu ích
+tiết có trong nguồn. Phân biệt nhánh điều kiện của hành vi đang hỏi với hành
+vi vi phạm độc lập khác trong cùng chủ đề/Điều. Không yêu cầu trả lời thêm
+hành vi độc lập chỉ vì final_evidence có quy định về nó. Chỉ coi hành vi đó
+là ý bắt buộc nếu câu hỏi nêu nó, yêu cầu liệt kê/tổng hợp các hành vi, hoặc
+nó là điều kiện cần để giải quyết tình huống. Khi người hỏi nêu nhiều hành
+vi, vẫn kiểm đầy đủ từng hành vi; không dùng quy tắc này để bỏ sót ý đã hỏi.
+Cho phép bổ sung mức phạt/thông tin liên quan hữu ích
 nếu đáp án chính đã trực tiếp giải quyết yêu cầu, từng claim bổ sung có căn
 cứ và rõ điều kiện. Không bác bỏ chỉ vì người dùng không hỏi phần bổ sung.
 Nếu chỉ nêu ví dụ/một số trường hợp, phải rõ phạm vi và không giả làm danh

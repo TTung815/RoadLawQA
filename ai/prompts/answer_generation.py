@@ -45,6 +45,9 @@ Không có nội dung trả lời
 nào nằm ngoài claims. Không dùng kiến thức pháp luật từ trí nhớ.
 Đáp ứng đầy đủ câu hỏi và required_aspects; giữ đúng đối tượng, hành vi, điều kiện,
 khoảng số, tiền phạt, trừ điểm GPLX và hình thức xử phạt bổ sung nếu được hỏi.
+Nếu quy định được dẫn có ngoại lệ minh thị ảnh hưởng phạm vi/mức áp dụng,
+giữ ngoại lệ đó ngay trong claim tương ứng; không rút gọn thành mức phạt áp
+dụng vô điều kiện. Không tự dựng thêm ngoại lệ ngoài nguồn.
 Khi dữ kiện đã đủ, mở đầu bằng kết luận áp dụng trực tiếp cho tình huống của
 người hỏi; không chỉ chép quy tắc dạng "với trường hợp ..." để họ tự suy kết luận.
 Trả lời yêu cầu chính trước. Có thể bổ sung ngắn gọn mức phạt hoặc thông tin

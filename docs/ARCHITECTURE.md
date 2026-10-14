@@ -85,6 +85,13 @@ yêu cầu bắt buộc hoặc giả làm danh sách đầy đủ. Mỗi limitat
 quyết hoặc điều kiện cần để giải quyết ý đó. Giới hạn về chế tài không được
 hỏi phải được sửa trong nháp, thay vì chỉ ẩn trên UI hoặc đổi nhãn thành công.
 Nếu người dùng hỏi rõ về điểm hay toàn bộ chế tài, vẫn phải giữ và kiểm ý đó.
+Hành vi khác cùng chủ đề trong evidence không tự trở thành ý bắt buộc; vẫn
+phải trả đủ khi người dùng hỏi nhiều hành vi. Generator giữ ngoại lệ minh
+thị ảnh hưởng phạm vi áp dụng ngay trong claim tương ứng.
+
+Verifier trả lý do ngắn `Đạt.` cho mục được hỗ trợ, giữ một câu giải thích
+cụ thể cho lỗi hoặc ý còn thiếu để sửa nháp. Mỗi claim vẫn được đánh giá
+riêng; định dạng gọn không bỏ kiểm nguồn, điều kiện, biên số hoặc giới hạn.
 
 Khi nháp không đạt, cho phép sửa tối đa một lần trên cùng evidence rồi kiểm
 lại. API không công bố nháp vẫn bị chặn. Trạng thái gồm `answered`,
