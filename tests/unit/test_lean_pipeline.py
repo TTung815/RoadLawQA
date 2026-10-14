@@ -2,7 +2,7 @@
 
 import pytest
 
-from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.contextualizer import ContextualizedQuery, QueryContextualizer
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
@@ -24,7 +24,7 @@ def draft(text='Quy tắc đúng theo nguồn.'):
 @pytest.mark.parametrize('history', [[], [{'role': 'user', 'content': 'Xe ô tô.'}]])
 async def test_default_runtime_calls_only_context_when_needed_generation_and_verification(history):
     script = [(ContextualizedQuery, {'standalone_query': 'Câu hỏi đủ ngữ cảnh.'})] if history else []
-    script += [(DraftAnswer, draft()), (SemanticVerification, semantic(1))]
+    script += [(GeneratedAnswer, draft()), (SemanticVerification, semantic(1))]
     provider = ScriptedProvider(script)
     retriever = ScriptedRetriever([[chunk('rule')]])
     runtime = CoreRuntime(provider, [], settings(max_attempts=1, expansion=False), retriever)
@@ -98,9 +98,9 @@ async def test_unnecessary_clarification_is_repaired_on_same_facts_and_evidence(
              'follow_up_questions': ['Xe chỉ có một hàng ghế hay nhiều hàng ghế?']}
     repaired = draft('Với tình huống đã nêu, trẻ không được ngồi cùng hàng ghế người lái và phải dùng thiết bị an toàn phù hợp.')
     provider = ScriptedProvider([
-        (DraftAnswer, first),
+        (GeneratedAnswer, first),
         (SemanticVerification, {**semantic(1, complete=False), 'response_appropriate': False}),
-        (DraftAnswer, repaired),
+        (GeneratedAnswer, repaired),
         (SemanticVerification, {**semantic(1), 'response_appropriate': repair_appropriate}),
     ])
     retriever = ScriptedRetriever([[chunk('rule')]])
@@ -128,7 +128,7 @@ async def test_genuinely_missing_scenario_fact_still_allows_clarification_withou
                 'response_kind': 'clarification',
                 'limitations': ['Chưa rõ mục đích sử dụng xe.'],
                 'follow_up_questions': ['Xe có kinh doanh vận tải hành khách không?']}
-    provider = ScriptedProvider([(DraftAnswer, response),
+    provider = ScriptedProvider([(GeneratedAnswer, response),
                                 (SemanticVerification, semantic(1, complete=False))])
     retrieval = LeanRetrievalService(QueryContextualizer(provider), ScriptedRetriever([[chunk('rule')]]))
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(
@@ -144,7 +144,7 @@ async def test_genuinely_missing_scenario_fact_still_allows_clarification_withou
 @pytest.mark.parametrize('appropriate', [True, False])
 async def test_abstention_requires_semantic_check_and_never_publishes_a_draft(appropriate):
     refusal = {'claims': [], 'response_kind': 'abstain', 'limitations': ['Thiếu quy tắc về tuổi chịu xử phạt.']}
-    provider = ScriptedProvider([(DraftAnswer, refusal), (SemanticVerification, {
+    provider = ScriptedProvider([(GeneratedAnswer, refusal), (SemanticVerification, {
         **semantic(0, complete=False), 'response_appropriate': appropriate})])
     retrieval = LeanRetrievalService(QueryContextualizer(provider), ScriptedRetriever([[chunk('rule')]]))
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider), max_answer_attempts=1).answer('?')
@@ -250,13 +250,13 @@ async def test_unrequested_points_gap_is_repaired_but_requested_gap_is_preserved
     question = ('Hành vi này bị xử lý thế nào và có bị trừ điểm không?' if asked_for_points
                 else 'Tôi say rượu thì có nên lái ô tô không?')
     script = [
-        (DraftAnswer, first),
+        (GeneratedAnswer, first),
         (SemanticVerification, {**semantic(1, complete=False),
                                 'response_appropriate': asked_for_points,
                                 'completeness_reason': 'Giới hạn phải gắn với ý được hỏi.'}),
     ]
     if not asked_for_points:
-        script += [(DraftAnswer, draft('Quy tắc áp dụng trực tiếp theo nguồn.')),
+        script += [(GeneratedAnswer, draft('Quy tắc áp dụng trực tiếp theo nguồn.')),
                    (SemanticVerification, semantic(1))]
     provider = ScriptedProvider(script)
     retriever = ScriptedRetriever([[chunk('rule')]])

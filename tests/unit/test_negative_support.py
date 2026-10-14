@@ -2,7 +2,7 @@
 
 import pytest
 
-from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.evidence_grader import EvidenceGrade
 from backend.services.answer import AnswerService
@@ -26,7 +26,7 @@ async def test_explicit_positive_sanction_can_be_published():
     retrieval, _, _, _ = make_service([(EvidenceGrade, grade("positive_support"))],
                                       [[source]], max_attempts=1)
     provider = ScriptedProvider([
-        (DraftAnswer, {"claims": [{"text": "Hành vi này bị tước giấy phép lái xe.",
+        (GeneratedAnswer, {"claims": [{"text": "Hành vi này bị tước giấy phép lái xe.",
                                   "chunk_ids": [source.id], "support_state": "positive_support"}]}),
         (SemanticVerification, semantic(1)),
     ])
@@ -82,7 +82,7 @@ async def test_fake_explicit_completeness_is_not_production_authority():
 async def test_generator_negative_or_unknown_claim_never_reaches_public_answer(state):
     retrieval, _, _, _ = make_service([(EvidenceGrade, grade("positive_support"))],
                                       [[chunk("source")]], max_attempts=1)
-    provider = ScriptedProvider([(DraftAnswer, {"claims": [
+    provider = ScriptedProvider([(GeneratedAnswer, {"claims": [
         {"text": NEGATIVE, "chunk_ids": ["source"], "support_state": state},
     ]})] * 2)
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(QUESTION)

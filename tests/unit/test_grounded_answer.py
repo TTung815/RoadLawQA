@@ -8,7 +8,7 @@ import sys
 import httpx
 import pytest
 
-from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.evidence_grader import EvidenceGrade
 from ai.agent.query_rewriter import RewrittenQuery
@@ -51,7 +51,7 @@ def qa_service(draft=DRAFT, verification=None, sufficient=True):
         draft = {"claims": [DRAFT["claims"][0]], "response_kind": "partial",
                  "limitations": ["Chưa đủ căn cứ xác định số điểm bị trừ."]}
         verification = {**semantic(1, complete=False), "response_appropriate": True}
-    script = [(DraftAnswer, draft)]
+    script = [(GeneratedAnswer, draft)]
     if verification is not False:
         script.append((SemanticVerification, semantic(len(draft["claims"])) if verification is None else verification))
     provider = ScriptedProvider(script)
@@ -71,7 +71,7 @@ async def test_sufficient_evidence_generates_and_verifies_server_rendered_citati
         "chunk_id": "money", "citation": "Test citation money"}
     assert "Căn cứ pháp lý: Test citation points" in result.answer.text
     assert [item.chunk_id for item in result.evidence_citations] == ["money", "points"]
-    assert [call["schema"] for call in provider.calls] == [DraftAnswer, SemanticVerification]
+    assert [call["schema"] for call in provider.calls] == [GeneratedAnswer, SemanticVerification]
     generation, verification = [call["payload"] for call in provider.calls]
     assert generation["question"] == verification["question"] == QUESTION
     assert generation["required_aspects"] == ["monetary_penalty", "license_points"]
@@ -156,7 +156,7 @@ async def test_complementary_retry_leaves_reach_generation_and_claim_verificatio
     ], [[chunk("money")], [chunk("points")]])
     draft = {"claims": [{"support_state": "positive_support", "text": "Có cả tiền phạt và hậu quả GPLX theo các nguồn.",
                          "chunk_ids": ["money", "points"]}]}
-    provider = ScriptedProvider([(DraftAnswer, draft), (SemanticVerification, semantic(1))])
+    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, semantic(1))])
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(QUESTION)
     assert result.status == "answered"
     assert result.retrieval.selected_attempt == 2
@@ -217,7 +217,7 @@ async def test_reproduced_upper_only_answer_fails_deterministically_for_missing_
 @pytest.mark.asyncio
 async def test_generation_receives_proven_point_boundary_and_open_upper_branch():
     question, evidence, proof = inclusive_range_evidence()
-    provider = ScriptedProvider([(DraftAnswer, {"claims": [
+    provider = ScriptedProvider([(GeneratedAnswer, {"claims": [
         {"support_state": "positive_support", "text": "Đúng 20: hậu quả A; trên 20 đến 35: hậu quả B.", "chunk_ids": ["lower", "upper"]}]})])
     await AnswerGenerator(provider).generate(question, evidence, ["threshold_range"], proof)
     branches = provider.calls[0]["payload"]["required_range"]["branches"]
@@ -241,7 +241,7 @@ async def test_real_qa_orchestration_carries_range_proof_to_both_llm_stages():
     response["range_assessments"] = [
         {"branch_index": index, "addressed": True, "reason": "Correct branch answered."}
         for index in [0, 1]]
-    provider = ScriptedProvider([(DraftAnswer, draft), (SemanticVerification, response)])
+    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, response)])
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(question)
     assert result.status == "answered"
     assert provider.calls[0]["payload"]["required_range"] == provider.calls[1]["payload"]["required_range"]
@@ -286,7 +286,7 @@ async def test_each_required_range_branch_needs_exactly_one_verifier_assessment(
 async def test_provider_and_retrieval_failures_propagate(stage):
     service, provider, grading, _ = qa_service()
     if stage == "generator":
-        provider.script[0] = (DraftAnswer, RuntimeError("generator unavailable"))
+        provider.script[0] = (GeneratedAnswer, RuntimeError("generator unavailable"))
     elif stage == "verifier":
         provider.script[1] = (SemanticVerification, RuntimeError("verifier unavailable"))
     else:
@@ -320,10 +320,9 @@ async def test_supported_claims_with_incomplete_answer_are_not_published():
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("draft", [
-    {"claims": []},
     {"claims": [{"support_state": "positive_support", "text": "Bị phạt theo nguồn.", "chunk_ids": ["money", "money"]}]},
 ])
-async def test_empty_draft_and_duplicate_id_fail_without_verifier(draft):
+async def test_duplicate_id_fails_without_semantic_verifier(draft):
     service, provider, _, _ = qa_service(draft, verification=False)
     result = await service.answer(QUESTION)
     assert result.verification.status == "failed"
@@ -355,7 +354,7 @@ async def test_answer_api_observable_success_and_insufficiency(sufficient):
 @pytest.mark.parametrize("stage", ["generator", "verifier"])
 async def test_answer_api_provider_failure_is_server_error_without_legal_answer(stage):
     service, provider, _, _ = qa_service()
-    index, schema = (0, DraftAnswer) if stage == "generator" else (1, SemanticVerification)
+    index, schema = (0, GeneratedAnswer) if stage == "generator" else (1, SemanticVerification)
     provider.script[index] = (schema, RuntimeError("provider unavailable"))
     app = create_app()
     app.dependency_overrides[get_chat_service] = lambda: service

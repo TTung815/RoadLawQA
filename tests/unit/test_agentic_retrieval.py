@@ -44,6 +44,10 @@ class ScriptedProvider(LLMProvider):
         assert response_schema is expected
         if isinstance(result, Exception):
             raise result
+        # Most orchestration fixtures use the flat diagnostic draft contract.
+        from ai.agent.answer_generator import GeneratedAnswer, DraftAnswer
+        if response_schema is GeneratedAnswer and "answer" not in result:
+            result = {"answer": DraftAnswer.model_validate(result).model_dump()}
         return response_schema(**result)
 
 

@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Sequence
 
-from ai.agent.answer_generator import DraftAnswer
+from ai.agent.answer_generator import GeneratedAnswer
 from ai.agent.citation_verifier import SemanticVerification
 from ai.agent.contextualizer import ContextualizedQuery
 from ai.agent.evidence_grader import EvidenceGrade
@@ -25,8 +25,8 @@ def schema_fixtures():
         (EvidenceGrade, {"coverage": [{"aspect": "subject_violation", "covered": False,
                                      "required": True, "support_state": "unknown"}],
                          "sufficient": False, "reason": "Diagnostic only; no legal evidence."}),
-        (DraftAnswer, {"claims": [{"text": "Compatibility diagnostic only.",
-                                   "chunk_ids": ["diagnostic-only"], "support_state": "unknown"}]}),
+        (GeneratedAnswer, {"answer": {"claims": [{"text": "Compatibility diagnostic only.",
+                                   "chunk_ids": ["diagnostic-only"], "support_state": "unknown"}]}}),
         (SemanticVerification, {"assessments": [{"claim_index": 0, "supported": False,
                                                 "reason": "No legal evidence.", "support_state": "unknown"}],
                                 "answer_complete": False, "completeness_reason": "Diagnostic only.",

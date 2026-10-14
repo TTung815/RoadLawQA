@@ -92,7 +92,7 @@ async def test_router_failure_is_sanitized_and_does_not_fall_through(monkeypatch
 @pytest.mark.asyncio
 @pytest.mark.parametrize("intent", ["legal", "mixed"])
 async def test_routing_reuses_resolved_query_without_second_contextualization(intent):
-    from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+    from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
     from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
     from ai.agent.contextualizer import QueryContextualizer
     from backend.services.answer import AnswerService
@@ -105,7 +105,7 @@ async def test_routing_reuses_resolved_query_without_second_contextualization(in
     history = [{"role": "user", "content": "Người lái xe máy có phải đội mũ bảo hiểm không?"}]
     provider = ScriptedProvider([
         (ConversationDecision, {"intent": intent, "standalone_query": resolved}),
-        (DraftAnswer, {"claims": [{"text": "Quy tắc theo nguồn.", "chunk_ids": ["rule"], "support_state": "positive_support"}]}),
+        (GeneratedAnswer, {"claims": [{"text": "Quy tắc theo nguồn.", "chunk_ids": ["rule"], "support_state": "positive_support"}]}),
         (SemanticVerification, semantic(1)),
     ])
     retriever = ScriptedRetriever([[chunk("rule")]])
@@ -116,6 +116,6 @@ async def test_routing_reuses_resolved_query_without_second_contextualization(in
     assert bool(result.limitations) == (intent == "mixed")
     assert result.retrieval.original_query == query and result.retrieval.standalone_query == resolved
     assert retriever.calls == [(resolved, 3)]
-    assert [c["schema"] for c in provider.calls] == [ConversationDecision, DraftAnswer, SemanticVerification]
+    assert [c["schema"] for c in provider.calls] == [ConversationDecision, GeneratedAnswer, SemanticVerification]
     assert provider.calls[0]["payload"]["chat_history"] == history
     assert provider.calls[1]["payload"]["question"] == resolved

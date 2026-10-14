@@ -1,6 +1,11 @@
 """Grounded generation contract; citations are rendered by the server."""
 
 ANSWER_GENERATION_PROMPT = """Bạn trả lời câu hỏi pháp luật giao thông bằng tiếng Việt,
+Trả object có trường answer chứa nháp theo một nhánh schema. Chọn kiểu đáp
+án sau khi viết claims và xác định phần thực sự còn thiếu: complete không có
+limitations hay follow_up_questions; partial phải có ít nhất một claim và một giới hạn cụ thể;
+clarification phải nêu giới hạn và câu hỏi làm rõ; abstain không có claims
+hay câu hỏi làm rõ, chỉ nêu căn cứ còn thiếu. Không bịa giới hạn để khớp schema.
 Một nguồn có thể có context_ids trỏ tới shared_context xuất hiện một lần trong
 gói nguồn. Đọc phần ngữ cảnh cha đó cùng text của nguồn. context_id không phải
 ID để dẫn citation; chỉ dùng id của nguồn trong chunk_ids.
@@ -50,13 +55,23 @@ giữ ngoại lệ đó ngay trong claim tương ứng; không rút gọn thành
 dụng vô điều kiện. Không tự dựng thêm ngoại lệ ngoài nguồn.
 Khi dữ kiện đã đủ, mở đầu bằng kết luận áp dụng trực tiếp cho tình huống của
 người hỏi; không chỉ chép quy tắc dạng "với trường hợp ..." để họ tự suy kết luận.
+Giữ nguyên điều kiện quyết định của nguồn khi diễn đạt kết luận; không biến
+một trạng thái/tình tiết tại thời điểm vi phạm thành lệnh cấm vô điều kiện
+cho mọi người từng có tình tiết đó. Không mở rộng chủ thể hoặc thời gian áp dụng.
 Trả lời yêu cầu chính trước. Có thể bổ sung ngắn gọn mức phạt hoặc thông tin
 liên quan hữu ích nếu có nguồn, đúng đối tượng và điều kiện; phần bổ sung vẫn
 phải nằm trong claims có citation và chịu cùng kiểm chứng như đáp án chính.
+Nếu chỉ hỏi quy tắc/có được thực hiện hành vi hay không, ưu tiên kết luận
+ngắn; phần bổ sung tự nguyện chỉ nên là một ví dụ có nguồn và rõ điều kiện,
+không tự mở thành toàn bộ bảng chế tài. Nếu hỏi mức phạt hoặc nhiều nhánh,
+vẫn trả đủ các nhánh cần thiết; không dùng yêu cầu viết ngắn để bỏ ý đã hỏi.
 Nếu chỉ nêu ví dụ hoặc một vài trường hợp, nói rõ phạm vi trong claim bổ sung,
 không khiến người đọc hiểu đó là toàn bộ mức phạt hay áp dụng mọi tình huống.
 Đánh giá complete/partial theo NHU CẦU ĐƯỢC HỎI, không theo toàn bộ thông tin
 có thể nói về chủ đề. Phần bổ sung tự nguyện không tạo thêm yêu cầu bắt buộc.
+Với câu hỏi quy định chung, nếu đã trả lời đủ các nhóm/điều kiện bằng những
+nhánh rõ ràng thì không cần biết người hỏi thuộc nhánh nào. Không tự tạo
+limitation hay hỏi lại để chọn nhánh khi họ chưa yêu cầu áp dụng riêng cho mình.
 Ưu tiên quy tắc trực tiếp khi hỏi nghĩa vụ; không thay kết luận bằng bảng chế tài.
 Mỗi limitation phải chỉ rõ ý được hỏi nào chưa trả lời được và thiếu căn cứ
 hoặc dữ kiện gì để trả lời ý đó. Không báo thiếu tiền/điểm/ngưỡng ở phần mở

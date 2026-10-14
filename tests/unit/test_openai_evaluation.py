@@ -195,7 +195,7 @@ async def test_openai_adapter_runs_v2_answer_pipeline_and_preserves_publication_
     draft = json.loads(json.dumps(DRAFT))
     if mode == "negative":
         draft["claims"][0]["support_state"] = "negative_support"
-    outputs = {"EvidenceGrade": COMPLETE, "DraftAnswer": draft,
+    outputs = {"EvidenceGrade": COMPLETE, "GeneratedAnswer": {"answer": draft},
                "SemanticVerification": semantic(2, supported=mode != "unsupported")}
     calls = []
     def handler(request):
@@ -211,11 +211,11 @@ async def test_openai_adapter_runs_v2_answer_pipeline_and_preserves_publication_
     service = AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider))
     result = await service.answer(QUESTION)
     assert result.status == status
-    expected = ["EvidenceGrade", "DraftAnswer"]
+    expected = ["EvidenceGrade", "GeneratedAnswer"]
     if mode != "negative":
         expected.append("SemanticVerification")
     if mode != "valid":
-        expected.append("DraftAnswer")
+        expected.append("GeneratedAnswer")
         if mode != "negative":
             expected.append("SemanticVerification")
     assert calls == expected

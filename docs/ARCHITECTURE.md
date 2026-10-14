@@ -78,6 +78,18 @@ tối đa hai phạm vi Điều, tám chunks thêm và 12.000 ký tự. Context 
 Trong request tới LLM, nguồn dùng alias ngắn; server ánh xạ alias chính xác
 về ID thật, không fuzzy-match ID model bịa. Generator sinh claims và citation;
 verifier kiểm nguồn/hiệu lực, con số và ngữ nghĩa hỗ trợ, gồm cả limitations.
+Generator dùng `GeneratedAnswer` với trường `answer` có bốn nhánh schema:
+complete có claims nhưng không có giới hạn/câu hỏi làm rõ; partial có claims
+và ít nhất một giới hạn; clarification có giới hạn và câu hỏi; abstain chỉ
+có giới hạn, không có claims/câu hỏi. Nội dung và phần thiếu được sinh trước
+khi chọn response_kind. Kết quả được chuyển về `DraftAnswer` phẳng để giữ
+hợp đồng API, verifier và trace hiện có. Không tự đổi nháp partial thành complete.
+Schema ngăn mâu thuẫn cấu trúc; giới hạn bịa hoặc nhận định sai vẫn phải bị
+verifier chặn. Provider trả sai cấu trúc thì API báo lỗi generation đã lọc,
+không công bố nháp hay tự thêm retry. Preflight kiểm schema generation mới.
+Nhánh schema được đặt trong object gốc theo
+[hợp đồng Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs#supported-schemas).
+
 Generator và verifier đánh giá mức đầy đủ theo ý được hỏi. Cho phép bổ sung
 mức phạt hữu ích sau câu trả lời chính nếu có nguồn và ghi rõ điều kiện/phạm
 vi; mọi claim bổ sung vẫn phải qua kiểm chứng. Phần bổ sung không tự tạo thêm
@@ -85,6 +97,9 @@ yêu cầu bắt buộc hoặc giả làm danh sách đầy đủ. Mỗi limitat
 quyết hoặc điều kiện cần để giải quyết ý đó. Giới hạn về chế tài không được
 hỏi phải được sửa trong nháp, thay vì chỉ ẩn trên UI hoặc đổi nhãn thành công.
 Nếu người dùng hỏi rõ về điểm hay toàn bộ chế tài, vẫn phải giữ và kiểm ý đó.
+Khi chỉ hỏi quy tắc, phần tự bổ sung ưu tiên một ví dụ ngắn có nguồn; câu hỏi
+mức phạt/nhiều nhánh vẫn cần đủ các nhánh được hỏi. Câu hỏi quy định chung đã
+được giải đáp theo từng nhóm không phải hỏi lại để chọn nhóm cho người dùng.
 Hành vi khác cùng chủ đề trong evidence không tự trở thành ý bắt buộc; vẫn
 phải trả đủ khi người dùng hỏi nhiều hành vi. Generator giữ ngoại lệ minh
 thị ảnh hưởng phạm vi áp dụng ngay trong claim tương ứng.

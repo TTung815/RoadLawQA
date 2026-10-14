@@ -31,6 +31,51 @@ class DraftAnswer(BaseModel):
     follow_up_questions: list[NonEmptyText] = Field(default_factory=list)
 
 
+class _GeneratedDraft(BaseModel):
+    # Emit the content and remaining gaps before choosing the response kind.
+    model_config = ConfigDict(extra="forbid")
+    claims: list[AnswerClaim]
+    limitations: list[NonEmptyText] = Field(default_factory=list)
+    follow_up_questions: list[NonEmptyText] = Field(default_factory=list)
+
+
+class CompleteAnswer(_GeneratedDraft):
+    claims: list[AnswerClaim] = Field(min_length=1)
+    response_kind: Literal["complete"] = "complete"
+    limitations: list[NonEmptyText] = Field(default_factory=list, max_length=0)
+    follow_up_questions: list[NonEmptyText] = Field(default_factory=list, max_length=0)
+
+
+class PartialAnswer(_GeneratedDraft):
+    claims: list[AnswerClaim] = Field(min_length=1)
+    response_kind: Literal["partial"] = "partial"
+    limitations: list[NonEmptyText] = Field(min_length=1)
+
+
+class ClarificationAnswer(_GeneratedDraft):
+    response_kind: Literal["clarification"] = "clarification"
+    limitations: list[NonEmptyText] = Field(min_length=1)
+    follow_up_questions: list[NonEmptyText] = Field(min_length=1)
+
+
+class AbstentionAnswer(_GeneratedDraft):
+    claims: list[AnswerClaim] = Field(max_length=0)
+    response_kind: Literal["abstain"] = "abstain"
+    limitations: list[NonEmptyText] = Field(min_length=1)
+    follow_up_questions: list[NonEmptyText] = Field(default_factory=list, max_length=0)
+
+
+class GeneratedAnswer(BaseModel):
+    """Constrain response shape at generation; semantic verification still follows.
+
+    Nest the alternatives because provider schemas require an object root.
+    Keep DraftAnswer as the flat internal/diagnostic contract, including old drafts.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+    answer: CompleteAnswer | PartialAnswer | ClarificationAnswer | AbstentionAnswer
+
+
 def required_range_branches(
     question: str, chunks: Sequence[RetrievedChunk], proof: RangeCoverage | None,
 ) -> dict | None:
@@ -76,9 +121,9 @@ class AnswerGenerator:
         result = await self._provider.generate_structured(
             [LLMMessage(role="system", content=ANSWER_GENERATION_PROMPT),
              LLMMessage(role="user", content=json.dumps(payload, ensure_ascii=False))],
-            response_schema=DraftAnswer, temperature=0.0,
+            response_schema=GeneratedAnswer, temperature=0.0,
         )
-        draft = DraftAnswer.model_validate(result)
+        draft = DraftAnswer.model_validate(GeneratedAnswer.model_validate(result).answer.model_dump())
         draft = DraftAnswer.model_validate(refs.translate(draft.model_dump(), decode=True))
         record("generation", event="draft", draft=draft.model_dump(mode="json"))
         return draft

@@ -119,7 +119,7 @@ curl -X POST http://127.0.0.1:8000/api/v1/answer \
 ```
 
 Test offline không gọi provider/mạng nhưng một số kiểm tra snapshot cần
-bundle đã đóng băng ngoài Git. Con số 548 test đạt được đo trên workspace
+bundle đã đóng băng ngoài Git. Con số 564 test đạt được đo trên workspace
 có đủ tài nguyên, chưa xác nhận full suite trên clone mới hoàn toàn.
 Integration cần Weaviate và cache model; database không chạy có thể khiến
 smoke test bị skip, không được tính skip thành passed.

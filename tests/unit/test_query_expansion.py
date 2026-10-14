@@ -56,7 +56,7 @@ async def test_router_accepts_only_bounded_legal_expansion(intent, expansion, ex
       {"role": "assistant", "content": "Không được điều khiển phương tiện khi có nồng độ cồn."}]),
 ])
 async def test_expanded_chat_keeps_followup_facts_for_generation_and_verification(current, original, rewrite, history):
-    from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+    from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
     from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
     from ai.agent.contextualizer import QueryContextualizer
     from backend.services.answer import AnswerService
@@ -66,7 +66,7 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
 
     provider = ScriptedProvider([
         (ConversationDecision, {"intent": "legal", "standalone_query": original, "retrieval_query": rewrite}),
-        (DraftAnswer, {"claims": [{"text": "Quy tắc theo nguồn.", "chunk_ids": ["rule"], "support_state": "positive_support"}]}),
+        (GeneratedAnswer, {"claims": [{"text": "Quy tắc theo nguồn.", "chunk_ids": ["rule"], "support_state": "positive_support"}]}),
         (SemanticVerification, semantic(1)),
     ])
 

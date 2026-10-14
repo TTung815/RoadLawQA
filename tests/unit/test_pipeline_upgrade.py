@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from ai.agent.answer_generator import AnswerGenerator, DraftAnswer
+from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.evidence import evidence_payload
 from ai.agent.evidence_grader import EvidenceGrade, EvidenceGrader
@@ -22,7 +22,7 @@ from tests.unit.test_grounded_answer import COMPLETE, QUESTION, qa_service, sema
 @pytest.mark.asyncio
 async def test_long_source_ids_round_trip_without_asking_model_to_copy_hashes():
     source = chunk('chunk_' + 'a' * 64)
-    provider = ScriptedProvider([(DraftAnswer, {'claims': [
+    provider = ScriptedProvider([(GeneratedAnswer, {'claims': [
         {'text': 'Quy tắc trong nguồn.', 'chunk_ids': ['source_1'], 'support_state': 'positive_support'}]})])
     draft = await AnswerGenerator(provider).generate('Quy tắc là gì?', [source])
     assert provider.calls[0]['payload']['chunks'][0]['id'] == 'source_1'
@@ -36,7 +36,7 @@ async def test_long_source_ids_round_trip_without_asking_model_to_copy_hashes():
 @pytest.mark.asyncio
 async def test_unknown_short_source_is_not_fuzzy_repaired():
     source = chunk('chunk_' + 'a' * 64)
-    provider = ScriptedProvider([(DraftAnswer, {'claims': [
+    provider = ScriptedProvider([(GeneratedAnswer, {'claims': [
         {'text': 'Quy tắc.', 'chunk_ids': ['source_99'], 'support_state': 'positive_support'}]})])
     draft = await AnswerGenerator(provider).generate('?', [source])
     verifier = ScriptedProvider([])
@@ -81,7 +81,7 @@ async def test_clarification_is_verified_and_does_not_claim_a_complete_answer():
     draft = {'claims': [], 'response_kind': 'clarification',
              'limitations': ['Chưa rõ vị trí dừng xe.'], 'follow_up_questions': ['Xe dừng ở làn nào?']}
     verdict = {**semantic(0, complete=False), 'response_appropriate': True}
-    provider = ScriptedProvider([(DraftAnswer, draft), (SemanticVerification, verdict)])
+    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, verdict)])
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer('?')
     assert result.status == 'needs_clarification'
     assert result.follow_up_questions == ['Xe dừng ở làn nào?']
@@ -218,7 +218,7 @@ async def test_verification_feedback_allows_only_one_repair_and_never_publishes_
                                       [[chunk('money'), chunk('points')]], max_attempts=1)
     broken = {'claims': [{'text': 'Kết luận có nguồn bịa.', 'chunk_ids': ['invented'],
                           'support_state': 'positive_support'}]}
-    script = [(DraftAnswer, broken), (DraftAnswer, DRAFT if fixed else broken)]
+    script = [(GeneratedAnswer, broken), (GeneratedAnswer, DRAFT if fixed else broken)]
     if fixed:
         script.append((SemanticVerification, semantic(2)))
     provider = ScriptedProvider(script)
@@ -241,7 +241,7 @@ async def test_uncertain_applicability_with_relevant_anchor_can_request_missing_
     retrieval, _, _, _ = make_service([(EvidenceGrade, grade)], [[chunk('rule')]], max_attempts=1)
     draft = {'claims': [], 'response_kind': 'clarification',
              'limitations': ['Chưa xác định nhiệm vụ của xe.'], 'follow_up_questions': ['Xe đang làm nhiệm vụ gì?']}
-    provider = ScriptedProvider([(DraftAnswer, draft), (SemanticVerification, {
+    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, {
         **semantic(0, complete=False), 'response_appropriate': True})])
     result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer('?')
     assert result.status == 'needs_clarification'
