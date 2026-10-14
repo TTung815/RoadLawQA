@@ -49,17 +49,51 @@ receipt, answer/trace từng câu và validation. Các file này đang giữ loc
 không phải link tải công khai. Lượt full-50 cũ có trước pipeline/index/router
 hiện tại; chưa có điểm full-50 cho toàn chatbot mới.
 
+## RAG 50 câu với nhãn v2 — 14/10/2026
+
+Lượt `rag-modules-v2-20261014-v1` chạy đủ 50 câu, không lỗi kỹ thuật,
+structured v2/top 10/alpha 0.5, embedding CPU, reranker MPS batch 4,
+OpenAI `gpt-6-luna` medium. Plan khóa 63 hash code; không đổi cấu hình trong
+lượt chạy. Đây là bộ đã biết, chưa phải held-out hoặc toàn luồng chatbot.
+
+| Metric @10, trung bình 50 câu | Trước rerank | Sau rerank |
+| --- | ---: | ---: |
+| HitRate | 98,00% | 98,00% |
+| Recall nguồn tham chiếu | 88,63% | 89,37% |
+| MRR | 0,7992 | 0,8740 |
+| nDCG nhị phân | 0,7724 | 0,8291 |
+
+Đây là so thứ hạng trên cùng pool, không phải chạy end-to-end khi tắt reranker.
+Candidate recall trung bình 93,93%; coverage facet sau tra dẫn chiếu 92,00%
+theo trung bình từng câu, hoặc 75/82 facet (91,46%) khi gộp các facet.
+
+Review **có AI hỗ trợ, đang chờ chủ dự án duyệt**: 44/50 đạt đủ ý và trạng thái;
+1 câu đủ nội dung nhưng trạng thái quá thận trọng (007); 4 thiếu ý (005/008/020/038);
+1 chưa trả lời (019). Điểm facet 77/82. Có 77/77 lượt citation hợp lệ về ID/text;
+review nội dung thấy citation hỗ trợ ở 49/49 câu có claims. Các tỷ lệ citation
+này không đo độ đầy đủ đáp án hoặc chứng minh accuracy trên câu hỏi mới.
+
+Latency mean 14,99s, median 12,95s, p95 28,82s; không gồm khởi tạo runtime.
+Generation mean 6,23s, rerank 4,52s, verification 4,04s. Có 102 logical LLM
+calls trong batch, 1 lần sửa nháp; 6 calls preflight tính riêng. Verifier cuối
+cùng passed cả 50 nhưng không đồng nghĩa cả 50 đáp án đạt đủ yêu cầu.
+
+Bốn câu thiếu điểm phạt không có nguồn cần thiết trong pool; câu 019 có nguồn
+đúng ở hạng 1 trước rerank nhưng xuống hạng 28. Vì vậy kết quả reranker cải
+thiện trung bình không bảo đảm cải thiện mọi câu. Artifact và phiếu duyệt
+được giữ local tại `outputs/evaluation/rag-modules-v2-20261014-v1/`.
+
 ## Các phép đo cần phân biệt
 
 | Thành phần | Đã có | Phép đo mở rộng phù hợp |
 | --- | --- | --- |
-| Retrieval | Kiểm nguồn tham chiếu, eligibility và latency | Recall@k/HitRate@k trên nhãn nguồn của corpus hiện hành |
-| Reranker | Regression nguồn sau rerank, timer và device | MRR/nDCG khi có nhãn relevance đủ rõ; so cùng candidate pool |
+| Retrieval | HitRate/Recall@1,5,10, coverage và latency trên reviewed v2 | Nhãn relevance rộng hơn các nguồn tham chiếu gold |
+| Reranker | MRR/nDCG nhị phân trước–sau trên cùng pool | Ablation end-to-end để đo tác động tới đáp án |
 | Generation/verification | Review claims/citation, completeness, trạng thái và repair | Đúng / thiếu ý / sai / chưa trả lời, kèm kiểm điều kiện áp dụng |
 | Hội thoại | Probe intent, follow-up và expansion | Accuracy intent, bảo toàn dữ kiện và thành công nhiều lượt |
 
-Cột cuối là hướng đo, không phải các chỉ số đã được tính đầy đủ cho phiên bản
-hiện tại. Không tái sử dụng bảng Recall/MRR/accuracy của ứng dụng cũ để mô tả
+Cột cuối là hướng đo tiếp, chưa có kết quả. Không tái sử dụng bảng
+Recall/MRR/accuracy của ứng dụng cũ để mô tả
 index mới. Scorer tự động hiện hỗ trợ các kiểm kỹ thuật cùng rubric facet/flags;
 review bốn nhãn gọn cần lưu riêng, không đổi tên thành điểm strict của scorer.
 
@@ -73,6 +107,15 @@ Recall theo nguồn tham chiếu không đo mọi nguồn có thể đúng. MRR/
 nhãn nhị phân từ gold chỉ là proxy nếu chưa review relevance từng ứng viên;
 không coi mọi chunk ngoài gold là chắc chắn không liên quan. Báo cáo riêng
 top-k chính và evidence sau tra dẫn chiếu, không gộp chúng thành Recall@10.
+
+`evaluation.module_scoring` chấm trace của suite `reviewed`, corpus structured:
+HitRate/Recall/MRR/nDCG nhị phân tại K=1,5,10, coverage facet, candidate recall,
+coverage sau tra dẫn chiếu và latency từng bước. Đây là so thứ hạng trước/sau
+trên cùng pool, chưa phải ablation câu trả lời khi tắt reranker. Nguồn chỉ phục
+vụ facet bổ sung không vào tập gold cần truy xuất. Recall tính hợp các nguồn
+tham chiếu; coverage facet giữ điều kiện all/any và nhóm thay thế. Bảng luôn
+ghi số câu có trace; trace thiếu là N/A. Verifier pass/repair là thống kê vận
+hành, chưa phải tỷ lệ phát hiện sai được gán nhãn độc lập.
 
 ## Chuẩn bị một lượt RAG mới
 
@@ -120,6 +163,7 @@ review, giữ result hash, reviewer và các facet keys, rồi chạy:
 
 ```bash
 .venv/bin/python -m evaluation.core_scoring score --run outputs/evaluation/next-run-v1/run --reviews outputs/evaluation/next-run-v1/review/reviews.jsonl --output outputs/evaluation/next-run-v1/report
+.venv/bin/python -m evaluation.module_scoring --run outputs/evaluation/next-run-v1/run --output outputs/evaluation/next-run-v1/modules
 ```
 
 Không có semantic reviews thì số liệu kỹ thuật chưa là điểm đúng nội dung.

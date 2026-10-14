@@ -33,7 +33,7 @@ def code_hashes() -> dict[str, str]:
     paths = [p for base in ("ai/agent", "ai/prompts", "ai/llm", "ai/retrieval", "backend/services", "backend/schemas")
              for p in (PROJECT_ROOT / base).glob("*.py")]
     paths += [PROJECT_ROOT / "evaluation" / name for name in
-              ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py", "revised_current_law_dataset.py")]
+              ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "module_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py", "revised_current_law_dataset.py")]
     paths += [PROTOCOL, PROJECT_ROOT / "ai/diagnostics.py", PROJECT_ROOT / "evaluation/snapshot.py"]
     paths += [PROJECT_ROOT / name for name in ("configs/settings.py", "backend/dependencies/retrieval.py",
                                               "backend/dependencies/answer.py", "ingestion/structured_corpus.py",

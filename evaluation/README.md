@@ -55,6 +55,8 @@ Giữ chúng nguyên vẹn. Thiết kế runtime hiện tại ở
 - `core_runner.py`: tạo plan, chạy bộ câu hỏi, checkpoint và lưu kết quả.
 - `diagnose.py`: debug 1–15 câu đã biết, lưu đáp án/trace theo từng câu.
 - `core_scoring.py`: gói review, đối chiếu nguồn và tổng hợp rubric hiện có.
+- `module_scoring.py`: HitRate/Recall/MRR/nDCG trước–sau rerank cùng pool,
+  coverage theo facet và latency; không gọi model hoặc truy xuất lại.
 - `llm_preflight.py`: kiểm provider/schema trước lượt chạy thật.
 - `*_dataset.py`, `phase3_design.py`, `current_law_snapshot.py`: build/verify
   dataset và corpus; các module có tên lịch sử vẫn là dependency cần dùng.
