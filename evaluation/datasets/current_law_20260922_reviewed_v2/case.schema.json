@@ -1,0 +1,588 @@
+{
+  "$defs": {
+    "AnswerFacet": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "rule",
+            "definition",
+            "money",
+            "license_points",
+            "additional_sanction",
+            "condition",
+            "exception",
+            "reasoning",
+            "temporal",
+            "uncertainty"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "support_state": {
+          "default": "unknown",
+          "enum": [
+            "positive_support",
+            "negative_support",
+            "unknown"
+          ],
+          "title": "Support State",
+          "type": "string"
+        },
+        "evidence_group_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Evidence Group Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "description"
+      ],
+      "title": "AnswerFacet",
+      "type": "object"
+    },
+    "EvidenceGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "match": {
+          "default": "all",
+          "enum": [
+            "all",
+            "any"
+          ],
+          "title": "Match",
+          "type": "string"
+        },
+        "references": {
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "minItems": 1,
+          "title": "References",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "references"
+      ],
+      "title": "EvidenceGroup",
+      "type": "object"
+    },
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "processed_id": {
+          "minLength": 1,
+          "title": "Processed Id",
+          "type": "string"
+        },
+        "runtime_id": {
+          "minLength": 1,
+          "title": "Runtime Id",
+          "type": "string"
+        },
+        "uuid": {
+          "minLength": 1,
+          "title": "Uuid",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "law": {
+          "minLength": 1,
+          "title": "Law",
+          "type": "string"
+        },
+        "article": {
+          "minLength": 1,
+          "title": "Article",
+          "type": "string"
+        },
+        "clause": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Clause"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Point"
+        },
+        "text_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Sha256",
+          "type": "string"
+        },
+        "role": {
+          "default": "support",
+          "enum": [
+            "support",
+            "context",
+            "contradicts_legacy"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "processed_id",
+        "runtime_id",
+        "uuid",
+        "citation",
+        "law",
+        "article",
+        "clause",
+        "point",
+        "text_sha256"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "Message": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "user",
+            "assistant"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "content": {
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "Message",
+      "type": "object"
+    },
+    "Publication": {
+      "additionalProperties": false,
+      "properties": {
+        "disposition": {
+          "enum": [
+            "publish",
+            "conditional",
+            "abstain"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "answered",
+              "partial_answer",
+              "needs_clarification",
+              "insufficient_evidence"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Statuses",
+          "type": "array"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "status_criteria": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "propertyNames": {
+            "enum": [
+              "answered",
+              "partial_answer",
+              "needs_clarification",
+              "insufficient_evidence"
+            ]
+          },
+          "title": "Status Criteria",
+          "type": "object"
+        }
+      },
+      "required": [
+        "disposition",
+        "allowed_statuses",
+        "rationale",
+        "status_criteria"
+      ],
+      "title": "Publication",
+      "type": "object"
+    },
+    "PublicationExpectation": {
+      "additionalProperties": false,
+      "properties": {
+        "disposition": {
+          "default": "unassigned",
+          "enum": [
+            "unassigned",
+            "publish",
+            "abstain",
+            "conditional"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "answered",
+              "insufficient_evidence",
+              "verification_failed"
+            ],
+            "type": "string"
+          },
+          "title": "Allowed Statuses",
+          "type": "array"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rationale"
+      ],
+      "title": "PublicationExpectation",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "default": "needs_review",
+          "enum": [
+            "needs_review",
+            "approved",
+            "excluded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer"
+        },
+        "reviewed_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewed On"
+        },
+        "notes": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "title": "Review",
+      "type": "object"
+    },
+    "RevisedGold": {
+      "additionalProperties": false,
+      "properties": {
+        "review": {
+          "$ref": "#/$defs/Review"
+        },
+        "reference_answer": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Answer"
+        },
+        "temporal_basis": {
+          "default": "unresolved",
+          "enum": [
+            "unresolved",
+            "frozen_corpus",
+            "explicit_date"
+          ],
+          "title": "Temporal Basis",
+          "type": "string"
+        },
+        "as_of_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of Date"
+        },
+        "evidence_groups": {
+          "items": {
+            "$ref": "#/$defs/EvidenceGroup"
+          },
+          "title": "Evidence Groups",
+          "type": "array"
+        },
+        "required_facets": {
+          "items": {
+            "$ref": "#/$defs/AnswerFacet"
+          },
+          "title": "Required Facets",
+          "type": "array"
+        },
+        "expected_coverage": {
+          "default": "unassigned",
+          "enum": [
+            "unassigned",
+            "sufficient",
+            "insufficient",
+            "conditional"
+          ],
+          "title": "Expected Coverage",
+          "type": "string"
+        },
+        "publication": {
+          "$ref": "#/$defs/Publication"
+        },
+        "external_evidence_needed": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "External Evidence Needed",
+          "type": "array"
+        },
+        "failure_categories": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Failure Categories",
+          "type": "array"
+        },
+        "technical_audit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TechnicalAudit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "publication"
+      ],
+      "title": "RevisedGold",
+      "type": "object"
+    },
+    "TechnicalAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "needs_revision",
+            "conditional",
+            "external_source_needed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "citation_status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "unsupported",
+            "external_source_needed"
+          ],
+          "title": "Citation Status",
+          "type": "string"
+        },
+        "audited_on": {
+          "format": "date",
+          "title": "Audited On",
+          "type": "string"
+        },
+        "scope": {
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "recommended_answer": {
+          "minLength": 1,
+          "title": "Recommended Answer",
+          "type": "string"
+        },
+        "recommended_coverage": {
+          "enum": [
+            "sufficient",
+            "insufficient",
+            "conditional"
+          ],
+          "title": "Recommended Coverage",
+          "type": "string"
+        },
+        "recommended_publication": {
+          "$ref": "#/$defs/PublicationExpectation"
+        },
+        "findings": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "external_sources": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "External Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "citation_status",
+        "audited_on",
+        "scope",
+        "recommended_answer",
+        "recommended_coverage",
+        "recommended_publication"
+      ],
+      "title": "TechnicalAudit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "query": {
+      "minLength": 1,
+      "title": "Query",
+      "type": "string"
+    },
+    "query_type": {
+      "enum": [
+        "factual",
+        "penalty",
+        "scenario"
+      ],
+      "title": "Query Type",
+      "type": "string"
+    },
+    "chat_history": {
+      "items": {
+        "$ref": "#/$defs/Message"
+      },
+      "title": "Chat History",
+      "type": "array"
+    },
+    "parent_case_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Parent Case Sha256",
+      "type": "string"
+    },
+    "gold": {
+      "$ref": "#/$defs/RevisedGold"
+    }
+  },
+  "required": [
+    "id",
+    "query",
+    "query_type",
+    "parent_case_sha256",
+    "gold"
+  ],
+  "title": "RevisedCase",
+  "type": "object"
+}

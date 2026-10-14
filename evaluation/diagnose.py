@@ -13,7 +13,7 @@ from ingestion.legal_registry import file_digest
 
 async def diagnose(plan_path: Path, preflight: Path, case_ids: list[str], output: Path):
     plan = load_plan(plan_path)
-    if plan.suite != "legacy":
+    if plan.suite not in {"legacy", "reviewed"}:
         raise ValueError("diagnostics only use known questions, never private held-out")
     if len(case_ids) != len(set(case_ids)) or not 1 <= len(case_ids) <= 15:
         raise ValueError("select 1–15 unique known cases")

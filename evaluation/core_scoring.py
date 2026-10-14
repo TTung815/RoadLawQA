@@ -12,6 +12,7 @@ from evaluation import current_law_dataset as corpus
 from evaluation import phase3_design as design
 from evaluation import reviewed_current_law_dataset as legacy
 from evaluation import reviewed_development_dataset as development
+from evaluation import revised_current_law_dataset as revised
 from evaluation.core_runner import verify_run, write_new
 from evaluation.core_schema import SemanticReview, SimpleGold, unique_records
 from evaluation.legacy_probe import runtime_id
@@ -26,6 +27,12 @@ def load_gold(plan, private_gold: Path | None = None) -> dict:
         result = {identity: {"reference_answer": g.reference_answer, "disposition": g.disposition,
                             "facets": g.required_facets, "gold": None, "stage": None,
                             "expected_citations": g.expected_citations} for identity, g in gold.items()}
+    elif plan.suite == "reviewed":
+        cases = revised.load_cases()
+        if (plan.dataset_version != revised.DATASET_ID or
+                file_digest(revised.DEFAULT_DIR / "manifest.json") != plan.dataset_binding):
+            raise ValueError("run/gold version mismatch")
+        result = {c.id: gold_view(c.gold) for c in cases}
     elif plan.suite == "legacy":
         cases = legacy.require_reviewed_scoring()
         if file_digest(legacy.DEFAULT_DIR / "manifest.json") != plan.dataset_binding:
@@ -112,7 +119,8 @@ def deterministic_checks(record: dict, item: dict, chunks: dict, aliases: dict) 
 def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | None = None) -> dict:
     plan, records = verify_run(run_dir)
     gold = load_gold(plan, private_gold)
-    chunks = {c["id"]: c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"]}
+    chunks = revised.source_chunks() if plan.suite == "reviewed" else {
+        c["id"]: c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"]}
     if output_dir.exists():
         raise FileExistsError("review packet exists; do not overwrite reviewer decisions")
     templates, lines = [], ["# Phiếu chấm nội dung", "", "0 = sai/thiếu; 0.5 = thiếu chi tiết không quyết định, không claim sai; 1 = đúng/đủ.",
@@ -124,6 +132,8 @@ def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | Non
                           "facet_scores": {key: None for key in item["facets"]} if question.mode == "end_to_end" else {},
                           "citation_support": None, "safe_publication": None, "refusal_appropriate": None,
                           "rewrite_preserved": None, "notes": None})
+        if plan.suite == "reviewed":
+            templates[-1]["response_appropriate"] = None
         lines.extend([f"## {question.id} — {question.mode}", "", question.current_query, "",
                       f"History: {json.dumps([m.model_dump() for m in question.chat_history], ensure_ascii=False)}", "",
                       "### Câu trả lời thực tế", ""])
@@ -135,6 +145,9 @@ def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | Non
         lines.extend("- Cần làm rõ: " + value for value in actual.get("follow_up_questions", []))
         lines.extend(["", f"Gold ({item['disposition']}): {item['reference_answer']}", "", "Required facets:", ""])
         lines.extend(f"- {key}: {value}" for key, value in item["facets"].items())
+        if plan.suite == "reviewed":
+            lines.extend(["", "Tiêu chí trạng thái (response_appropriate):", ""])
+            lines.extend(f"- {key}: {value}" for key, value in item["gold"].publication.status_criteria.items())
         references = [ref.processed_id for group in item["gold"].evidence_groups for ref in group.references] if item["gold"] else []
         if item["expected_citations"]:
             lines.extend(["", "Expected citations: " + "; ".join(item["expected_citations"])])
@@ -161,7 +174,8 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
     reviews = unique_records([SemanticReview.model_validate_json(line) for line in reviews_path.read_text().splitlines() if line.strip()]) if reviews_path else {}
     if not set(reviews) <= set(gold):
         raise ValueError("review contains unknown IDs")
-    chunks = {c["id"]: c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"]}
+    chunks = revised.source_chunks() if plan.suite == "reviewed" else {
+        c["id"]: c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"]}
     aliases = {runtime_id(chunk): identity for identity, chunk in chunks.items()}
     if plan.settings.retrieval_backend == "structured":
         from ingestion.structured_corpus import load_bundle
@@ -188,6 +202,8 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
               "limitations": ["Internal owner-reviewed small datasets; no domain-wide or production claim.",
                               "Answer/citation semantic correctness requires reviews; unreviewed is pending.",
                               "Citation membership and evidence recall are not semantic correctness."]}
+    if plan.suite == "reviewed":
+        result["rubric_version"] = "owner-reviewed-v2-conditional-responses"
     for mode, rows in groups.items():
         total, errors = len(rows), sum(r["error"] is not None for r, _, _, _ in rows)
         report = {"cases": total, "pipeline_errors": rate(errors, total),
@@ -221,8 +237,16 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
                         ((published_claims(r) or (r["output"] or {}).get("status") == "answered") and v.citation_support is not None or
                          not published_claims(r) and (r["output"] or {}).get("status") != "answered" and v.refusal_appropriate is not None)]
             passed = 0
+            if plan.suite == "reviewed":
+                assessed = [(r, i, v, c) for r, i, v, c in assessed if v.response_appropriate is not None]
             for r, i, v, c in assessed:
                 if r["error"] is not None or not all(score == 1 for score in v.facet_scores.values()) or not v.safe_publication or c["blocked_source_publication"]:
+                    continue
+                if plan.suite == "reviewed":
+                    if (v.response_appropriate is True
+                            and r["output"].get("status") in i["gold"].publication.allowed_statuses
+                            and v.citation_support is True and c["citation_validity"]["value"] == 1):
+                        passed += 1
                     continue
                 is_answer = r["output"].get("status") == "answered"
                 if is_answer and i["disposition"] != "abstain" and v.citation_support and c["citation_validity"]["value"] == 1:

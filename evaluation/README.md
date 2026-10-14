@@ -9,12 +9,26 @@ những thư mục mang tên draft không phải các lượt model cũ.
 
 | Bộ | Đáp án tham chiếu dễ đọc | Dữ liệu máy đọc |
 | --- | --- | --- |
-| 50 câu đã biết | [REVIEWED.md](datasets/current_law_20260922_reviewed_v1/REVIEWED.md) | [cases.jsonl](datasets/current_law_20260922_reviewed_v1/cases.jsonl) |
+| 50 câu đã biết — nhãn v2 hiện hành | [REVIEWED.md](datasets/current_law_20260922_reviewed_v2/REVIEWED.md) | [cases.jsonl](datasets/current_law_20260922_reviewed_v2/cases.jsonl) |
 | Development 54 đơn vị | [REVIEWED.md](datasets/current_law_20260922_development_reviewed_v1/REVIEWED.md) | [cases.jsonl](datasets/current_law_20260922_development_reviewed_v1/cases.jsonl) |
 
 Gold của 50 gồm câu hỏi, đáp án tham chiếu, citation/evidence và điều kiện chấm.
 Gold không phải đáp án model. Development gồm 12 QA, 7 coverage, 1 rewrite và
 34 guard; không cộng thành 54 câu end-to-end. Held-out 9 được giữ ngoài repo.
+
+Nhãn v2 được chủ dự án duyệt ngày 14/10/2026 sau review có AI hỗ trợ:
+9 câu sửa nhãn/nội dung, 7 câu tinh chỉnh, 34 câu giữ nội dung. Có 45 câu
+publish và 5 conditional; không có câu abstain nên không dùng riêng bộ này
+đo khả năng từ chối. Câu hỏi 007/013/033 được làm rõ; không áp nhãn mới lên
+kết quả cũ rồi coi đó là lượt chạy mới. Chi tiết ở
+[README của bộ v2](datasets/current_law_20260922_reviewed_v2/README.md).
+
+Runner dùng `--suite reviewed` cho v2; `--suite legacy` vẫn trỏ đúng bản v1
+frozen. Bộ v1 và development 54 giữ nguyên. Kiểm tra offline:
+
+```bash
+.venv/bin/python -m evaluation.revised_current_law_dataset verify
+```
 
 ## Vì sao còn các thư mục cha?
 
@@ -22,6 +36,7 @@ Verifier tái dựng artifact từ đầu vào và so checksum, theo chuỗi:
 
 ```text
 historical_50 → current_law_20260922 → current_law_20260922_reviewed_v1
+                                       ├→ current_law_20260922_reviewed_v2
                                        ↓
                      current_law_20260922_phase3_design_v1
                                        ↓

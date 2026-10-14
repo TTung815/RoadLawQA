@@ -13,8 +13,8 @@ Nguồn xuất hiện trong top-k hoặc trạng thái `answered` không tự ch
 | Held-out 9 | Giữ riêng ngoài workspace | Chỉ mở sau khi chốt cấu hình, không dùng tuning |
 
 [Bản đồ dataset và provenance](../evaluation/README.md).
-Tên suite `legacy` của runner trỏ tới **reviewed 50 hiện hành**, không chạy ứng
-dụng V1. Các bộ draft/history và năm protocol là dependency checksum, không
+Tên suite `reviewed` trỏ tới **reviewed 50 v2 hiện hành**; `legacy` giữ nhãn
+reviewed v1 cho lịch sử, không chạy ứng dụng V1. Các bộ draft/history và năm protocol là dependency checksum, không
 xóa chỉ vì tên có chữ draft hoặc phiên bản cũ.
 
 Evaluator pháp luật chạy `AnswerService`/`LeanRetrievalService`, không qua
@@ -81,7 +81,7 @@ code/settings; không ghi đè kết quả cũ. Các lệnh preflight và `--liv
 provider thật, có thể phát sinh chi phí theo tài khoản đang cấu hình.
 
 ```bash
-.venv/bin/python -m evaluation.core_runner prepare --suite legacy --output outputs/evaluation/next-run-v1/plan.json
+.venv/bin/python -m evaluation.core_runner prepare --suite reviewed --output outputs/evaluation/next-run-v1/plan.json
 .venv/bin/python -m evaluation.llm_preflight --plan outputs/evaluation/next-run-v1/plan.json --output outputs/evaluation/next-run-v1/preflight.json
 ```
 
@@ -123,6 +123,13 @@ review, giữ result hash, reviewer và các facet keys, rồi chạy:
 ```
 
 Không có semantic reviews thì số liệu kỹ thuật chưa là điểm đúng nội dung.
+Với nhãn v2, điền thêm `response_appropriate` theo tiêu chí trạng thái trong
+gói review. `null` là chưa chấm; chỉ chọn true khi trả lời theo điều kiện,
+hỏi rõ hoặc trả lời một phần phù hợp yêu cầu và dữ kiện của câu. Trạng thái
+được cho phép không tự tạo điểm pass: vẫn cần đủ mọi facet bắt buộc, citation
+đúng và được nguồn hỗ trợ, công bố an toàn. Facet bổ sung không tính vào mẫu
+số completeness, nhưng nếu model nói thêm sai thì vẫn chấm sai nội dung.
+Rubric này chỉ áp dụng suite `reviewed`, không đổi điểm lịch sử của v1.
 Giữ exception/timeout trong tổng số câu; không loại bỏ trường hợp lỗi để tăng
 điểm. Chấm tương đương về nghĩa, đồng thời kiểm chủ thể, điều kiện, con số,
 hiệu lực và nguồn hỗ trợ. Nếu gold có vấn đề, ghi nhận riêng thay vì sửa bản frozen.

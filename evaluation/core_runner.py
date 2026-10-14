@@ -12,6 +12,7 @@ from typing import Callable, Sequence
 from evaluation import current_law_dataset as corpus
 from evaluation import reviewed_current_law_dataset as legacy
 from evaluation import reviewed_development_dataset as development
+from evaluation import revised_current_law_dataset as revised
 from evaluation.core_schema import Question, RunPlan, RunSettings, unique_records
 from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST, verify_frozen_snapshot
 from evaluation.snapshot import digest
@@ -32,7 +33,7 @@ def code_hashes() -> dict[str, str]:
     paths = [p for base in ("ai/agent", "ai/prompts", "ai/llm", "ai/retrieval", "backend/services", "backend/schemas")
              for p in (PROJECT_ROOT / base).glob("*.py")]
     paths += [PROJECT_ROOT / "evaluation" / name for name in
-              ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py")]
+              ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py", "revised_current_law_dataset.py")]
     paths += [PROTOCOL, PROJECT_ROOT / "ai/diagnostics.py", PROJECT_ROOT / "evaluation/snapshot.py"]
     paths += [PROJECT_ROOT / name for name in ("configs/settings.py", "backend/dependencies/retrieval.py",
                                               "backend/dependencies/answer.py", "ingestion/structured_corpus.py",
@@ -75,6 +76,10 @@ def questions_for(suite: str, private_questions: Path | None = None, *, owner_re
         return questions, file_digest(private_questions), dataset_version
     if private_questions is not None:
         raise ValueError("internal suites use their reviewed frozen datasets")
+    if suite == "reviewed":
+        cases = revised.load_cases()
+        questions = [Question(id=c.id, current_query=c.query, chat_history=c.chat_history) for c in cases]
+        return questions, file_digest(revised.DEFAULT_DIR / "manifest.json"), revised.DATASET_ID
     if suite == "legacy":
         cases = legacy.require_reviewed_scoring()
         questions = [Question(id=c.id, current_query=c.query, chat_history=c.chat_history) for c in cases]
@@ -267,7 +272,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     lock = actions.add_parser("settings")
     lock.add_argument("--output", type=Path, required=True)
     prepare = actions.add_parser("prepare")
-    prepare.add_argument("--suite", choices=["legacy", "development", "held_out"], required=True)
+    prepare.add_argument("--suite", choices=["reviewed", "legacy", "development", "held_out"], required=True)
     prepare.add_argument("--output", type=Path, required=True)
     prepare.add_argument("--settings", type=Path)
     prepare.add_argument("--questions", type=Path)

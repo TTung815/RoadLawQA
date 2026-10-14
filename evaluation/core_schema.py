@@ -9,7 +9,7 @@ from pydantic import Field, StrictBool, model_validator
 from evaluation.dataset_schema import LabelModel, Message, SHA256, Text
 
 
-Suite = Literal["legacy", "development", "held_out"]
+Suite = Literal["legacy", "reviewed", "development", "held_out"]
 Mode = Literal["end_to_end", "fixed_evidence", "rewrite_probe", "publication_guard_probe"]
 
 
@@ -105,6 +105,8 @@ class SemanticReview(LabelModel):
     safe_publication: StrictBool | None = None
     refusal_appropriate: StrictBool | None = None
     rewrite_preserved: StrictBool | None = None
+    # Required for a v2 full-pass decision; null means not reviewed yet.
+    response_appropriate: StrictBool | None = None
     notes: Text
 
 
