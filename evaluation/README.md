@@ -60,6 +60,12 @@ Giữ chúng nguyên vẹn. Thiết kế runtime hiện tại ở
 - `generation_scoring.py`: chấm lại đáp án đã lưu bằng LLM judge; Factual
   Precision/Recall/F1, Faithfulness, Answer Relevancy và Citation Precision/Recall.
   [Phương pháp và giới hạn](../docs/GENERATION_EVALUATION.md); có phí API riêng.
+- `retrieval_ablation.py`: BM25, dense và hybrid theo alpha, trước/sau rerank,
+  trên đường tìm kiếm thật của serving; không gọi LLM.
+- `answer_judge.py`: rubric judge cho accuracy và hallucination trên đáp án cuối
+  hoặc nháp đầu; nhãn suy ra bằng code, đo đồng thuận/kappa với nhãn người.
+- `e2e_report.py`: gộp các lượt chạy, kết quả judge và metric từng bước thành
+  một bảng so sánh cấu hình.
 - `llm_preflight.py`: kiểm provider/schema trước lượt chạy thật.
 - `*_dataset.py`, `phase3_design.py`, `current_law_snapshot.py`: build/verify
   dataset và corpus; các module có tên lịch sử vẫn là dependency cần dùng.

@@ -23,79 +23,65 @@ nhưng không đo routing và expansion trong chatbot. Muốn đánh giá trải
 hội thoại, phải kiểm riêng API `/api/v1/answer`, bao gồm cả lịch sử và intent.
 Preflight hiện kiểm provider và năm schema RAG; chưa kiểm schema router.
 
-## Kết quả đã xác minh cho code e38f086
+## Kết quả hiện hành — 15/10/2026
 
-Đo trên workspace phát triển ngày 14/10/2026, MacBook M3 Pro; embedding CPU,
-reranker MPS, OpenAI `gpt-6-luna`, reasoning `medium`.
+Bảng retrieval và end-to-end nằm ở [README](../README.md#đánh-giá-trên-benchmark-50-câu-15102026).
+Các lượt dùng commit `0ab680e`, structured v2, top 10, alpha 0.5, embedding CPU,
+reranker MPS batch 4, OpenAI `gpt-6-luna` medium; plan khóa hash code, preflight
+6/6. Artifact giữ local:
 
-| Kiểm tra | Kết quả |
+| Thư mục `outputs/evaluation/` | Nội dung |
 | --- | --- |
-| Offline suite | 534 passed, 9 integration deselected |
-| Integration riêng | 9 passed trên Weaviate/model thật |
-| Router probe | 7 tin nhắn, kiểm phạm vi/phủ định/khoảng tuổi/khoảng tốc độ |
-| Chatbot probe | 6 lượt answered và verification passed, 1 lượt repair |
-| Calls | 27 logical calls: 7 router-only + 20 cho sáu lượt chatbot |
-| Latency chatbot | Mean 19,62s; median 16,73s; min–max 10,96–36,86s |
-| Đối chiếu artifact | 61 hash plan, 43 lượt nguồn và 19 lượt citation của claims |
+| `groundtruth-audit-20261015-v1/` | Rà lại 50 đáp án tham chiếu với nguyên văn nguồn |
+| `retrieval-ablation-20261015-v1/` | BM25 / dense / hybrid α 0–1, trước và sau rerank, không gọi LLM |
+| `judge-validation-20261015-v1/` | Rubric judge chấm lại 50 đáp án 14/10: đồng thuận 92%, kappa 0,71 |
+| `e2e-full-20261015-v1/`, `e2e-norerank-20261015-v1/` | Hai lượt 50 câu, judge đáp án cuối và nháp đầu, metric claim-level |
+| `e2e-ablation-20261015-v1/` | Bảng tổng hợp, rà tay các câu judge đánh lỗi và quyết định duyệt |
+| `rag-modules-v2-20261014-v1/` | Lượt trước sửa lỗi, nhãn người 44/50 đã duyệt |
 
-Sáu lượt gồm câu tín hiệu giao thông chung và hỏi tiếp loại xe, quai mũ bảo
-hiểm, nhiều hành vi đồng thời, tốc độ khi vượt xe và tuổi chịu xử phạt.
-Đây là các câu đã dùng để chẩn đoán; review có AI hỗ trợ, chưa phải đánh giá
-độc lập. Thời gian không gồm khởi tạo model/database. Verifier có thể sai.
-Không diễn giải kết quả thành accuracy 100% hoặc cam kết latency dưới 20 giây.
+Judge dùng cùng họ model với generator và chấm khắt khe hơn người; chấm lại
+cùng nội dung đổi nhãn khoảng 5%. Vì vậy chênh 1–2 câu giữa hai cấu hình chưa
+đủ kết luận. Số chính trong README là nhãn sau rà tay đã duyệt; điểm thô của
+judge được ghi kèm.
 
-Artifact gốc: `outputs/diagnostics/query-expansion-20261014-v2/` chứa plan,
-receipt, answer/trace từng câu và validation. Các file này đang giữ local,
-không phải link tải công khai. Lượt full-50 cũ có trước pipeline/index/router
-hiện tại; chưa có điểm full-50 cho toàn chatbot mới.
+## Ablation và chấm end-to-end
 
-## RAG 50 câu với nhãn v2 — 14/10/2026
+Retrieval ablation, không gọi LLM:
 
-Lượt `rag-modules-v2-20261014-v1` chạy đủ 50 câu, không lỗi kỹ thuật,
-structured v2/top 10/alpha 0.5, embedding CPU, reranker MPS batch 4,
-OpenAI `gpt-6-luna` medium. Plan khóa 63 hash code; không đổi cấu hình trong
-lượt chạy. Đây là bộ đã biết, chưa phải held-out hoặc toàn luồng chatbot.
+```bash
+.venv/bin/python -m evaluation.retrieval_ablation --output outputs/evaluation/retrieval-ablation-next --alphas 0,0.25,0.5,0.75,1
+```
 
-| Metric @10, trung bình 50 câu | Trước rerank | Sau rerank |
-| --- | ---: | ---: |
-| HitRate | 98,00% | 98,00% |
-| Recall nguồn tham chiếu | 88,63% | 89,37% |
-| MRR | 0,7992 | 0,8740 |
-| nDCG nhị phân | 0,7724 | 0,8291 |
+Plan không reranker: sao settings bằng `core_runner settings`, đặt
+`"rerank": false`, rồi `prepare`/preflight/run như một lượt thường. Chấm bằng
+rubric judge (có gọi LLM), kiểm judge với nhãn người và gộp bảng:
 
-Đây là so thứ hạng trên cùng pool, không phải chạy end-to-end khi tắt reranker.
-Candidate recall trung bình 93,93%; coverage facet sau tra dẫn chiếu 92,00%
-theo trung bình từng câu, hoặc 75/82 facet (91,46%) khi gộp các facet.
+```bash
+.venv/bin/python -m evaluation.answer_judge --run outputs/evaluation/next-run-v1/run --output outputs/evaluation/next-run-v1/judge-final --which final --live
+.venv/bin/python -m evaluation.answer_judge --run outputs/evaluation/next-run-v1/run --output outputs/evaluation/next-run-v1/judge-draft --which draft --live
+.venv/bin/python -m evaluation.answer_judge --run outputs/evaluation/rag-modules-v2-20261014-v1/run --output outputs/evaluation/judge-check --reviews outputs/evaluation/rag-modules-v2-20261014-v1/review/reviews_ai.jsonl --live
+.venv/bin/python -m evaluation.e2e_report --row "Đầy đủ" outputs/evaluation/next-run-v1/run outputs/evaluation/next-run-v1/judge-final --output outputs/evaluation/next-report
+```
 
-Review **có AI hỗ trợ, chủ dự án đã duyệt ngày 15/10/2026**: 44/50 đạt đủ ý và trạng thái;
-1 câu đủ nội dung nhưng trạng thái quá thận trọng (007); 4 thiếu ý (005/008/020/038);
-1 chưa trả lời (019). Điểm facet 77/82. Có 77/77 lượt citation hợp lệ về ID/text;
-review nội dung thấy citation hỗ trợ ở 49/49 câu có claims. Các tỷ lệ citation
-này không đo độ đầy đủ đáp án hoặc chứng minh accuracy trên câu hỏi mới.
-
-Latency mean 14,99s, median 12,95s, p95 28,82s; không gồm khởi tạo runtime.
-Generation mean 6,23s, rerank 4,52s, verification 4,04s. Có 102 logical LLM
-calls trong batch, 1 lần sửa nháp; 6 calls preflight tính riêng. Verifier cuối
-cùng passed cả 50 nhưng không đồng nghĩa cả 50 đáp án đạt đủ yêu cầu.
-
-Bốn câu thiếu điểm phạt không có nguồn cần thiết trong pool; câu 019 có nguồn
-đúng ở hạng 1 trước rerank nhưng xuống hạng 28. Vì vậy kết quả reranker cải
-thiện trung bình không bảo đảm cải thiện mọi câu. Artifact và phiếu duyệt
-được giữ local tại `outputs/evaluation/rag-modules-v2-20261014-v1/`.
+Judge chấm từng ý bắt buộc 0 / 0,5 / 1, trích nguyên văn nhận định sai và chỉ
+ra claim có citation không hỗ trợ; code suy ra nhãn `correct`, `status_issue`,
+`incomplete`, `not_answered` hoặc `hallucinated`. `--which draft` chấm nháp đầu
+trước verifier; khi lượt chạy không có lần sửa nào, nháp và đáp án cuối trùng
+nhau nên chênh lệch chỉ phản ánh dao động của judge.
 
 ## Các phép đo cần phân biệt
 
 Để chấm các metric generation riêng trên đáp án đã lưu, xem
 [GENERATION_EVALUATION.md](GENERATION_EVALUATION.md). Scorer này có lời gọi
-LLM judge và kết quả riêng; điểm rubric 44/50 ở trên không phải Factual F1
+LLM judge và kết quả riêng; accuracy theo rubric không phải Factual F1
 hoặc Faithfulness. Không cần chạy lại retrieval/generation để chấm bổ sung.
 
 | Thành phần | Đã có | Phép đo mở rộng phù hợp |
 | --- | --- | --- |
-| Retrieval | HitRate/Recall@1,5,10, coverage và latency trên reviewed v2 | Nhãn relevance rộng hơn các nguồn tham chiếu gold |
-| Reranker | MRR/nDCG nhị phân trước–sau trên cùng pool | Ablation end-to-end để đo tác động tới đáp án |
-| Generation | Factual P/R/F1, Faithfulness, Answer Relevancy, Citation P/R bằng LLM judge; review rubric riêng | Owner duyệt các judgment và kiểm trên held-out sau chốt cấu hình |
-| Verification | Pass/fail, repair và latency | Độ chính xác phát hiện lỗi trên bộ nhãn độc lập |
+| Retrieval | Recall@1,5,10, MRR, nDCG; ablation BM25/dense/hybrid; coverage và latency | Nhãn relevance rộng hơn các nguồn tham chiếu gold |
+| Reranker | Trước–sau trên cùng pool; ablation end-to-end có/không rerank | Nhiều câu hơn để kiểm định có ý nghĩa thống kê |
+| Generation | Accuracy, hallucination (rubric judge đã kiểm với nhãn người); Faithfulness, Citation P/R, Factual F1 | Judge khác họ model để giảm thiên lệch |
+| Verification | Pass/fail, repair, nháp đầu so với đáp án cuối | Bộ nháp cài lỗi để đo tỷ lệ phát hiện |
 | Hội thoại | Probe intent, follow-up và expansion | Accuracy intent, bảo toàn dữ kiện và thành công nhiều lượt |
 
 Cột cuối là hướng đo tiếp, chưa có kết quả. Không tái sử dụng bảng

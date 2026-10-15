@@ -78,53 +78,71 @@ Nguồn lõi gồm 49/VBHN-VPQH, 55/VBHN-VPQH và bản ghép kỹ thuật của
 phạt từ 90/VBHN-VPQH (2026) được bổ sung có review; không nhập toàn bộ văn bản.
 [Phạm vi, hiệu lực và provenance](docs/LEGAL_SCOPE.md).
 
-### Đánh giá RAG trên 50 câu (14/10/2026)
+### Đánh giá trên benchmark 50 câu (15/10/2026)
 
-Bộ 50 câu có nhãn ground truth v2 do chủ dự án duyệt, gồm định nghĩa, mức
-phạt, trừ điểm, tình huống có điều kiện và câu cần hỏi rõ. Cấu hình: corpus
-cấu trúc v2, hybrid alpha 0.5, top 10 sau rerank, embedding CPU, reranker
-Apple MPS, OpenAI `gpt-6-luna` reasoning `medium`. Chạy 50/50, không lỗi kỹ thuật.
+Benchmark gồm 50 câu hỏi dùng trong quá trình phát triển: 19 tình huống,
+16 câu mức phạt, 15 câu định nghĩa/tra cứu; 5 câu có điều kiện cần giữ nhánh
+hoặc hỏi rõ. Ground truth (đáp án tham chiếu, ý bắt buộc, nguồn căn cứ) do chủ
+dự án duyệt và đã được đối chiếu lại với nguyên văn luật. Cấu hình: corpus cấu
+trúc v2, top 10, embedding CPU, reranker `bge-reranker-v2-m3` trên Apple MPS,
+OpenAI `gpt-6-luna` reasoning `medium`. Mỗi lượt có plan khóa hash code.
 
-**Retrieval và reranker** — trung bình 50 câu, so trước/sau rerank trên cùng
-candidate pool; nhãn relevance là nguồn được gold dùng làm căn cứ:
+**Retrieval** — không gọi LLM; relevance là các nguồn gold bắt buộc:
 
-| Metric @10 | Trước rerank | Sau rerank |
-| --- | ---: | ---: |
-| HitRate | 98,00% | 98,00% |
-| Recall | 88,63% | 89,37% |
-| MRR | 0,7992 | 0,8740 |
-| nDCG | 0,7724 | 0,8291 |
+| Retrieval | Recall@5 | Recall@10 | MRR@10 | nDCG@10 |
+| --- | ---: | ---: | ---: | ---: |
+| BM25 | 0,741 | 0,781 | 0,628 | 0,634 |
+| Dense (vector) | 0,756 | 0,820 | 0,746 | 0,714 |
+| Hybrid α=0.5 | 0,831 | 0,886 | 0,799 | 0,772 |
+| BM25 + rerank | 0,830 | 0,880 | 0,869 | 0,818 |
+| Dense + rerank | 0,844 | 0,914 | 0,881 | 0,840 |
+| **Hybrid α=0.5 + rerank** | **0,844** | **0,914** | **0,881** | **0,839** |
 
-**Đáp án cuối** — chấm theo nghĩa, đối chiếu câu hỏi, nguồn và gold:
+Hybrid tốt nhất khi chưa rerank (Recall@10 0,886 so với 0,781 của BM25 và
+0,820 của dense). Reranker tăng mọi cấu hình, rõ nhất ở MRR. Tra dẫn chiếu có
+giới hạn nâng độ phủ ý bắt buộc của evidence từ 0,893 (top 10) lên 0,98.
 
-| Phép đo | Kết quả |
-| --- | --- |
-| Đủ ý bắt buộc và đúng trạng thái trả lời | 44/50 (88%) |
-| Ý bắt buộc được đáp ứng | 77/82 (93,9%) |
-| Citation hợp lệ về ID/nội dung | 77/77 |
-| Factual P / R / F1 (claim-level, LLM judge) | 90,09% / 82,94% / 82,97% |
-| Faithfulness / Citation P / Citation R | 98,04% / 96,28% / 97,53% |
-| Latency RAG mean / median / p95 | 14,99s / 12,95s / 28,82s |
+**End-to-end** — đáp án cuối, chấm theo nghĩa với từng ý bắt buộc:
 
-Sáu câu chưa đạt có nguyên nhân đã khoanh vùng: bốn câu đúng mức tiền nhưng
-thiếu số điểm GPLX bị trừ vì nguồn trừ điểm không vào candidate pool; một câu
-có nguồn đúng ở hạng 1 trước rerank nhưng bị đẩy xuống hạng 28; một câu đủ
-nội dung nhưng gắn trạng thái `partial` thận trọng thừa. Hệ thống không bịa
-phần thiếu: các đáp án này nêu rõ giới hạn thay vì đoán mức phạt.
+| Cấu hình | Accuracy | Hallucination | Faithfulness | Citation P / R | Latency p50 / p95 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Trước sửa lỗi 14/10 | 88% (44/50) | 0% | 98,0% | 96,3% / 97,5% | 12,9s / 28,8s |
+| Không reranker | 90% (45/50) | 4% (2/50) | — | — | 7,5s / 50,5s |
+| **Hệ thống đầy đủ** | **96% (48/50)** | **0% (0/50)** | **97,5%** | **92,1% / 97,5%** | **11,7s / 29,3s** |
 
-Cách đọc kết quả:
+- **Accuracy:** câu trả lời đúng và đủ mọi ý bắt buộc, có nguồn hỗ trợ và
+  đúng trạng thái (trả lời / hỏi rõ). Khoảng tin cậy 95% của hệ thống đầy đủ:
+  86,5–98,9%.
+- **Hallucination:** có ít nhất một nhận định sai, hoặc trích nguồn không hỗ
+  trợ nhận định đó (định nghĩa của Magesh et al., Stanford). 0/50 tương ứng
+  cận trên khoảng tin cậy 95% là 7,1%.
+- **Faithfulness, Citation P/R:** chấm theo từng nhận định, kiểu RAGAS/ALCE;
+  hệ thống đầy đủ đo được 48/50 câu (2 lỗi của judge).
+- **Cách chấm:** một LLM judge chấm từng ý bắt buộc, liệt kê nhận định sai
+  và citation không hỗ trợ; nhãn được suy ra bằng code. Trước khi dùng, judge
+  được kiểm trên 50 nhãn người: đồng thuận 92%, Cohen's kappa 0,71, judge chấm
+  khắt khe hơn người. Các câu judge đánh lỗi được rà tay và chủ dự án duyệt.
+  Theo điểm thô của judge, ba dòng lần lượt là 80% / 82% / 92% accuracy.
 
-- Rubric 44/50 do review có AI hỗ trợ, chủ dự án đã duyệt ngày 15/10/2026.
-  Metric claim-level là điểm thô của LLM judge cùng họ model với generator,
-  chưa qua duyệt. Cả hai không phải nhãn của chuyên gia pháp luật.
-- Bộ 50 câu đã dùng trong quá trình phát triển; bộ held-out chưa được mở.
-- Evaluator đi thẳng vào pipeline RAG, chưa đo router, query expansion và
-  hội thoại nhiều lượt. Latency không gồm khởi tạo model.
-- Metric factual chấm theo toàn bộ reference: thông tin đúng nhưng ngoài
-  reference vẫn bị tính là FP.
+**Đóng góp từng module:**
 
-Suite offline hiện có 591 test đạt. Artifact chạy thật (plan khóa hash code,
-đáp án, trace, phiếu review) đang lưu local, chưa phát hành cùng repository.
+- **Sửa lỗi chọn nguồn và verifier (15/10):** 88% → 96%. Bốn câu thiếu số
+  điểm GPLX bị trừ nay lấy đủ nguồn trừ điểm; câu có trẻ em là hành khách
+  không còn bị reranker đẩy nguồn đúng từ hạng 1 xuống 28.
+- **Reranker:** bỏ reranker thì p50 nhanh hơn 4,2s, nhưng accuracy giảm 6
+  điểm %, xuất hiện 2 hallucination do trích sai nguồn, phải sửa nháp 4 lần
+  và p95 tăng lên 50s. Có 4 câu chỉ đúng khi có reranker, 1 câu ngược lại.
+- **Verifier:** ở cấu hình không reranker, verifier sửa 2 câu sai trạng thái
+  và chặn 1 nháp không đạt kiểm chứng trước khi công bố. Ở hệ thống đầy đủ,
+  mọi nháp đầu đều đạt nên verifier không phải sửa.
+
+Câu còn lại chưa đạt ở hệ thống đầy đủ: 007 đủ nội dung nhưng gắn trạng thái
+`partial` thận trọng thừa; 016 thiếu nhắc quy tắc chung "chỉ được chở một người".
+
+Giới hạn: judge cùng họ model với generator; ground truth do chủ dự án duyệt,
+không phải chuyên gia pháp luật; evaluator gọi thẳng pipeline RAG nên chưa đo
+router, query expansion và hội thoại nhiều lượt; latency không gồm khởi tạo
+model. Suite offline có 608 test đạt. Artifact chạy thật đang lưu local.
 
 [Dataset, phương pháp và cách chạy evaluation](docs/EVALUATION_QUICKSTART.md) ·
 [định nghĩa metric claim-level](docs/GENERATION_EVALUATION.md).
