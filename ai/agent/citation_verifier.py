@@ -16,6 +16,7 @@ from ai.retrieval.base import RetrievedChunk
 from ai.agent.evidence import SourceReferences, publishable_chunk
 from ai.diagnostics import traced
 
+PASS_REASON = "Đạt."
 
 class ClaimAssessment(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -43,6 +44,13 @@ class SemanticVerification(BaseModel):
     completeness_reason: NonEmptyText
     range_assessments: list[RangeAssessment] = Field(default_factory=list)
     response_appropriate: StrictBool = False
+    # Separate from completeness_reason: one verdict can pass while the other fails.
+    response_reason: NonEmptyText = PASS_REASON
+
+
+def _failure_reason(reason: str, fallback: str) -> str:
+    """Repair feedback must name a problem, never the pass marker of a failed check."""
+    return fallback if reason.strip().rstrip(".").casefold() == PASS_REASON.rstrip(".").casefold() else reason
 
 
 class CitationVerification(BaseModel):
@@ -158,9 +166,14 @@ class CitationVerifier:
         adequate = semantic.response_appropriate and (
             semantic.answer_complete if draft.response_kind == "complete" else True)
         if not semantic.response_appropriate:
-            issues.append("Unsupported limitations or clarification questions: " + semantic.completeness_reason)
+            issues.append("Unsupported limitations or clarification questions: " + _failure_reason(
+                semantic.response_reason,
+                "Kiểm lại từng giới hạn/câu hỏi làm rõ: giữ cái gắn với ý thực sự được hỏi và "
+                "có căn cứ; nếu nhu cầu đã được trả lời đủ, bỏ giới hạn thừa và chọn complete."))
         if draft.response_kind == "complete" and not semantic.answer_complete:
-            issues.append("Incomplete answer: " + semantic.completeness_reason)
+            issues.append("Incomplete answer: " + _failure_reason(
+                semantic.completeness_reason,
+                "Câu trả lời chưa đáp ứng đủ ý được hỏi; bổ sung từ final_evidence hoặc nêu giới hạn."))
         return CitationVerification(
             status="passed" if supported and adequate and range_complete else "failed",
             provenance_valid=True, semantic_valid=supported,

@@ -58,6 +58,28 @@ async def test_owner_sanction_expands_cross_law_license_conditions(corpus):
     assert '55-vbhn-vpqh-d56-k1-pa' in included
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize('anchors, points_leaf', [
+    # Observed top 10 of reviewed 005 and 020: whole referenced clauses (khoản
+    # 11, 7, 9) filled the lookup budget before the license-points leaf that
+    # names the retrieved violation point.
+    (['d6-k5-ph', 'd7-k4-pđ', 'd6-k12', 'd20-k5-pm', 'd18-k9-pb', 'd6-k10-pa',
+      'd6-k2-pđ', 'd6-k3-pb', 'd6-k3-pk', 'd6-k8'], 'd6-k16-pb'),
+    (['d6-k11-pđ', 'd6-k7-pc', 'd6-k5-pd', 'd20-k8', 'd6-k9-pd', 'd6-k6-pb',
+      'd6-k5-pi', 'd6-k4-pe', 'd6-k5-pn', 'd21-k9'], 'd6-k16-pd'),
+])
+async def test_points_leaf_naming_a_retrieved_violation_precedes_referenced_clauses(corpus, anchors, points_leaf):
+    from ai.retrieval.neighborhood import LegalNeighborhoodExpander
+    prefix = 'nd168-effective-as-of-2026-09-22-'
+    by_leaf = {u['metadata']['source_processed_ids'][0]: u for u in corpus}
+    retriever = StructuredRetriever(corpus, None, None, None)
+    selection = await LegalNeighborhoodExpander(retriever.fetch_article).expand_references(
+        [map_unit(by_leaf[prefix + leaf]) for leaf in anchors])
+    included = {x for c in selection.chunks for x in c.metadata['source_processed_ids']}
+    assert prefix + points_leaf in included
+    assert len(selection.chunks) <= 8 and selection.added_characters <= 12000
+
+
 def test_parent_introductions_are_not_clipped_and_not_duplicated(corpus):
     source = read_json(DEFAULT_OUTPUT)["chunks"]
     nodes, _ = source_contexts(source)

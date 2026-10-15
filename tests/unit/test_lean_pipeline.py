@@ -82,6 +82,23 @@ async def test_complete_claims_with_imagined_limitations_are_blocked():
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize('reasons, expected', [
+    ({'completeness_reason': 'Đạt.', 'response_reason': 'Giới hạn về mẫu thiết bị không được hỏi.'},
+     'Giới hạn về mẫu thiết bị không được hỏi.'),
+    # Observed 007: the only reason was the pass marker of the other verdict.
+    ({'completeness_reason': 'Đạt.'}, 'bỏ giới hạn thừa'),
+])
+async def test_failed_response_check_never_sends_pass_marker_as_repair_feedback(reasons, expected):
+    payload = {**semantic(1), 'answer_complete': True, 'response_appropriate': False, **reasons}
+    provider = ScriptedProvider([(SemanticVerification, payload)])
+    answer = DraftAnswer(**{**draft('Quy tắc có nguồn.'), 'response_kind': 'partial',
+                            'limitations': ['Nguồn không nêu mẫu thiết bị cụ thể.']})
+    result = await CitationVerifier(provider).verify('?', answer, [chunk('rule')])
+    issue, = result.issues
+    assert result.status == 'failed' and expected in issue and not issue.endswith(': Đạt.')
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize('repair_appropriate', [True, False])
 async def test_unnecessary_clarification_is_repaired_on_same_facts_and_evidence(repair_appropriate):
     # Replay the observed unnecessary seating-layout question, without claiming

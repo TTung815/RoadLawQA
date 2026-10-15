@@ -75,14 +75,21 @@ class StructuredRetriever(Retriever):
         compound = bool(re.search(r"\b(?:đồng thời|cùng lúc)\b|\bvừa\b.+\bvừa\b", query, re.I))
         count = min(max(top_k * 4, self.compound_candidate_limit if compound else self.candidate_limit), 40)
         age_focus = age_penalty_focus(query)
-        focus = age_focus or question_focus(query)
+        temporal_focus = question_focus(query)
+        focus = age_focus or temporal_focus
         focus_label = "age_penalty" if age_focus else "question_focus"
         expansion, reason = checked_expansion(query, retrieval_query)
         # Keep age coverage in the same second view, never add a third search.
         secondary = (expansion + "\n" + age_focus if age_focus else expansion) if expansion else focus
         secondary_label = "query_expansion" if expansion else focus_label
         queries = [query, secondary] if secondary else [query]
-        ranking_query = focus or rerank_question(query, expansion)
+        question_label = ("question_focus" if temporal_focus else
+                          "query_expansion" if expansion else "original")
+        ranking_views = [(question_label, temporal_focus or rerank_question(query, expansion))]
+        if age_focus:
+            # The age condition is a separate facet, not a replacement for the
+            # question: a child may be a passenger rather than the offender.
+            ranking_views.append(("age_penalty", age_focus))
         started = time.perf_counter()
         vectors = self.embedder.encode(queries, normalize_embeddings=True)
         record("query_embedding", event="timing", duration_ms=(time.perf_counter() - started) * 1000)
@@ -126,13 +133,29 @@ class StructuredRetriever(Retriever):
         # At most 40 hybrid + 20 explicit candidates, one bounded rerank pass.
         units = list(candidates.values())
         started = time.perf_counter()
-        ranks = self.reranker.predict([[ranking_query, u["embedding_text"]] for u in units])
+        # One reranker call over the same pool; an age facet adds one pair per candidate.
+        ranks = self.reranker.predict([[ranking_query, u["embedding_text"]]
+                                       for _, ranking_query in ranking_views for u in units])
         record("rerank", event="timing", duration_ms=(time.perf_counter() - started) * 1000,
-               candidates=len(units), compound_query=compound, question_focus=bool(focus),
-               age_penalty_focus=bool(age_focus))
+               candidates=len(units), compound_query=compound, question_focus=bool(temporal_focus),
+               age_penalty_focus=bool(age_focus), ranking_views=len(ranking_views))
         if not all(math.isfinite(float(x)) for x in ranks):
             raise ValueError("non-finite reranker score")
-        ordered = sorted(zip(units, ranks, strict=True), key=lambda x: float(x[1]), reverse=True)
+        view_orders = []
+        for index, (label, _) in enumerate(ranking_views):
+            view_scores = ranks[index * len(units):(index + 1) * len(units)]
+            view_orders.append([(u, float(score), label) for u, score in sorted(
+                zip(units, view_scores, strict=True), key=lambda x: float(x[1]), reverse=True)])
+        # Interleave facet rankings so each keeps top-k slots; the age condition
+        # leads because it decides whether any sanction applies. Scores from
+        # different queries are not compared with each other.
+        ordered, placed = [], set()
+        for position in range(len(units)):
+            for order in reversed(view_orders):
+                unit, score, label = order[position]
+                if unit["id"] not in placed:
+                    placed.add(unit["id"])
+                    ordered.append((unit, score, label))
         # Internal evaluation trace only; preserve the actual pool before truncation.
         # Multi-view scores are not comparable, so retain each view's native order.
         record("retrieval_ranking", event="result", top_k=top_k,
@@ -141,10 +164,12 @@ class StructuredRetriever(Retriever):
                              for index, pool in enumerate(pools)],
                candidate_ids=[u["id"] for u in units],
                exact_lookup_ids=[u["id"] for u in units if scores[u["id"]].get("exact_lookup")],
-               reranked=[{"chunk_id": u["id"], "score": float(rank)} for u, rank in ordered],
-               selected_ids=[u["id"] for u, _ in ordered[:top_k]])
-        return [map_unit(u, float(rank), rerank_query_view=focus_label if focus else secondary_label if expansion else "original",
-                         **scores[u["id"]]) for u, rank in ordered[:top_k]]
+               reranked=[{"chunk_id": u["id"], "score": rank} for u, rank, _ in ordered],
+               rerank_views=[{"view": order[0][2], "chunk_ids": [u["id"] for u, _, _ in order]}
+                             for order in view_orders],
+               selected_ids=[u["id"] for u, _, _ in ordered[:top_k]])
+        return [map_unit(u, rank, rerank_query_view=label, **scores[u["id"]])
+                for u, rank, label in ordered[:top_k]]
 
     @traced("retrieval_search")
     async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None):

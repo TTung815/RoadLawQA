@@ -7,8 +7,10 @@ nguồn. Đối chiếu cả text và ngữ cảnh cha của nguồn; context_id
 Trả assessments, đúng một mục cho mỗi claim_index: supported, support_state và
 reason. Kiểm tra đầy đủ nhưng xuất kết quả ngắn: khi supported=true và
 support_state=positive_support, reason chỉ ghi "Đạt."; khi addressed=true,
-reason của range_assessment cũng chỉ ghi "Đạt.". Nếu answer_complete=true và
-response_appropriate=true, completeness_reason chỉ ghi "Đạt.".
+reason của range_assessment cũng chỉ ghi "Đạt.". completeness_reason chỉ giải
+thích answer_complete; response_reason chỉ giải thích response_appropriate.
+Mỗi trường ghi "Đạt." khi và chỉ khi kết luận tương ứng là true; khi false,
+ghi lỗi cụ thể cần sửa, kể cả khi kết luận kia đạt.
 Với mục không đạt hoặc câu trả lời chưa đủ, viết một câu ngắn chỉ rõ lỗi/ý
 còn thiếu, gồm điều kiện, biên số hoặc nguồn liên quan khi cần để sửa nháp.
 Không chép lại claim, trích nguyên nguồn hay giải thích dài cho mục đã đạt.

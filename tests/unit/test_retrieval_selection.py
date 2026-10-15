@@ -195,8 +195,44 @@ async def test_age_condition_survives_vehicle_owner_distraction_within_budget(un
     results = await retriever.search(query, top_k=5)
     assert target['id'] in {c.id for c in results}
     assert embedder.queries[0] == query
-    assert len(calls) == 2 and len(ranker.pairs) == 20
+    # One reranker call scores the same 20 candidates for question and age facet.
+    assert len(calls) == 2 and len(ranker.pairs) == 40
+    assert {q for q, _ in ranker.pairs} == {query, focus}
+    assert len({text for _, text in ranker.pairs}) == 20
+    assert next(c for c in results if c.id == target['id']).metadata['rerank_query_view'] == 'age_penalty'
+
+
+@pytest.mark.asyncio
+async def test_child_passenger_penalty_keeps_question_ranking_beside_age_facet(units):
+    # Observed 019: "trẻ em" were passengers, yet reranking only by the age
+    # condition pushed the sanction from native rank 1 to rank 28.
+    from evaluation.core_runner import questions_for
+    from ai.retrieval.structured import age_penalty_focus
+    query = next(q.current_query for q in questions_for('reviewed')[0] if q.id == 'current_law_019')
+    focus = age_penalty_focus(query)
+    assert focus
+    sanction = next(u for u in units if u['metadata']['document_id'].startswith('nd168')
+                    and (u['metadata']['article_no'], u['metadata']['clause_no'], u['metadata']['point']) == ('27', '3', 'b'))
+    age_rules = [u for u in units if u['metadata']['document_id'].startswith('90-vbhn')]
+    pool = [sanction, *age_rules, *[u for u in units if u['metadata']['document_id'].startswith('nd168')
+                                   and u['id'] != sanction['id']][:20]]
+
+    def hybrid(**kwargs):
+        return native_response(pool[:kwargs['limit']])
+
+    class Ranker:
+        def predict(self, pairs):
+            # Each facet prefers its own sources; the age facet ranks the sanction last.
+            return [(1.0 if text == sanction['embedding_text'] else .2) if q == query else
+                    (.9 if any(text == u['embedding_text'] for u in age_rules) else
+                     0.0 if text == sanction['embedding_text'] else .1)
+                    for q, text in pairs]
+
+    retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)), Embedder(), Ranker())
+    results = await retriever.search(query, top_k=5)
+    # Facets alternate (age condition first), so the question's best source keeps slot 2.
     assert results[0].metadata['rerank_query_view'] == 'age_penalty'
+    assert results[1].id == sanction['id'] and results[1].metadata['rerank_query_view'] == 'original'
 
 
 @pytest.mark.parametrize('query', [

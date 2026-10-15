@@ -115,16 +115,19 @@ async def test_original_and_rewrite_pools_share_one_rerank_budget(query):
     embedder, ranker = Embedder(), Ranker()
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)), embedder, ranker)
     result = await retriever.search(query, top_k=5, retrieval_query=rewrite)
-    assert len(calls) == 2 and len(ranker.pairs) == 20
+    from ai.retrieval.structured import age_penalty_focus
+    focus = age_penalty_focus(query)
+    # The age facet scores the same 20 candidates in the same reranker call.
+    assert len(calls) == 2 and len(ranker.pairs) == (40 if focus else 20)
     assert len({text for _, text in ranker.pairs}) == 20
     texts = {text for _, text in ranker.pairs}
     assert all(unit["embedding_text"] in texts for unit in original_pool[:10])
     assert rewritten_pool[1]["embedding_text"] in texts
     assert embedder.queries[0] == query and rewrite in embedder.queries[1]
-    from ai.retrieval.structured import age_penalty_focus
-    focus = age_penalty_focus(query)
-    assert all(q == (focus or rewrite) for q, _ in ranker.pairs)
-    assert all(c.metadata["rerank_query_view"] == ("age_penalty" if focus else "query_expansion") for c in result)
+    assert {q for q, _ in ranker.pairs} == ({rewrite, focus} if focus else {rewrite})
+    # With identical facet orders, deduplication credits the leading facet.
+    assert all(c.metadata["rerank_query_view"] == ("age_penalty" if focus else "query_expansion")
+               for c in result)
     assert len(result) == 5
 
 

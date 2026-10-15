@@ -70,7 +70,9 @@ async def test_age_dependency_support_and_explicit_exclusion_are_retrievable(liv
     from ai.retrieval.neighborhood import LegalNeighborhoodExpander
     questions, _, _ = questions_for('legacy')
     question = next(q for q in questions if q.id == 'current_law_043')
-    results = await live_retriever.search(question.current_query, top_k=5)
+    # Serving default top 10: the age facet now shares slots with the question
+    # facet (observed 019), so five slots cannot hold both age sources.
+    results = await live_retriever.search(question.current_query, top_k=10)
     expanded = await LegalNeighborhoodExpander(live_retriever.fetch_article).expand_references(results)
     included = {source for chunk in [*results, *expanded.chunks]
                 for source in chunk.metadata['source_processed_ids']}

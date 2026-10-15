@@ -277,27 +277,57 @@ class LegalNeighborhoodExpander:
             # articles, whose long clauses can otherwise consume the budget.
             any(scope[0].casefold() in law.casefold() for law, _ in local),
         ))[:self.max_scopes]
+        fetched_by_scope = {}
         for law, article in scopes:
             fetched = [c for c in await self._fetch_article(law, article)
                        if publishable_chunk(c) and str(c.metadata.get('article_no') or '') == article
                        and law.casefold() in str(c.metadata.get('law') or '').casefold()]
             if len({c.metadata.get('law') for c in fetched}) > 1:
                 fetched = []
+            fetched_by_scope[(law, article)] = sorted(fetched, key=self._order)
             result.scopes.append(LegalScope(law=law, article_no=article,
                 anchor_chunk_ids=list(dict.fromkeys([i for _, i in requests[(law, article)]] +
                                                     [c.id for c in local[(law, article)]])),
                 candidate_count=len(fetched)))
-            for clause in dict.fromkeys(c for c, _ in requests[(law, article)]):
-                add_group(sorted([c for c in fetched if clause is None or
-                                  str(c.metadata.get('clause_no') or '') == clause or
-                                  c.metadata.get('granularity') == 'article'], key=self._order))
-            for candidate in sorted(fetched, key=self._order):
+
+        def is_consequence(chunk):
+            head = str(chunk.metadata.get('clause_head') or '').casefold()
+            return 'trừ điểm' in head or 'xử phạt bổ sung' in head
+
+        def add_referenced(scope):
+            for clause in dict.fromkeys(c for c, _ in requests[scope]):
+                add_group([c for c in fetched_by_scope[scope] if clause is None or
+                           str(c.metadata.get('clause_no') or '') == clause or
+                           c.metadata.get('granularity') == 'article'])
+
+        def cross_document(scope):
+            return not any(scope[0].casefold() in law.casefold() for law, _ in local)
+
+        # Budget order: cross-document applicability conditions, then the
+        # point-level points/additional-sanction leaves naming a retrieved
+        # violation (short and specific, in rank order), then other explicit
+        # references, whose whole clauses can otherwise consume the budget.
+        for scope in fetched_by_scope:
+            if scope in requests and cross_document(scope):
+                add_referenced(scope)
+        for anchor in anchors:
+            scope = (str(anchor.metadata.get('law') or '').strip(),
+                     str(anchor.metadata.get('article_no') or '').strip())
+            if publishable_chunk(anchor) and scope in fetched_by_scope:
+                for candidate in fetched_by_scope[scope]:
+                    if is_consequence(candidate) and _same_article_reference(candidate.text, anchor):
+                        add_group([candidate])
+        for scope in fetched_by_scope:
+            if scope in requests and not cross_document(scope):
+                add_referenced(scope)
+        for (law, article), fetched in fetched_by_scope.items():
+            for candidate in fetched:
                 head = str(candidate.metadata.get('clause_head') or '').casefold()
-                if ('trừ điểm' in head or 'xử phạt bổ sung' in head) and any(
+                if is_consequence(candidate) and any(
                         _same_article_reference(candidate.text, a) for a in local[(law, article)]):
-                    add_group([candidate])
-                elif not any(term in (head + ' ' + candidate.text.casefold())
-                             for term in ('phạt tiền', 'trừ điểm', 'tước quyền')):
+                    continue
+                if not any(term in (head + ' ' + candidate.text.casefold())
+                           for term in ('phạt tiền', 'trừ điểm', 'tước quyền')):
                     # Reverse links in scope/condition rules may use compressed
                     # point lists. Clause overlap retrieves a candidate, not proof
                     # that a particular point or vehicle qualifies.
