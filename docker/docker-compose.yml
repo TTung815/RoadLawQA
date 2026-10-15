@@ -19,7 +19,7 @@ services:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'none'
-      GRPC_PORT: '50051'  # <--- QUAN TRỌNG: THÊM DÒNG NÀY ĐỂ BẬT gRPC
+      GRPC_PORT: '50051'
     volumes:
       - weaviate_data:/var/lib/weaviate
     command:

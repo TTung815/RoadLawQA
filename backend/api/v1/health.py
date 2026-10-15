@@ -13,11 +13,11 @@ router = APIRouter(tags=["Health"])
 async def get_health() -> HealthResponse:
     """
     Application liveness health check.
-    Does NOT connect to Weaviate, Gemini, or load PyTorch models.
+    Does NOT connect to Weaviate, an LLM provider, or load PyTorch models.
     """
     return HealthResponse(
         status="ok",
-        app="VietLaw-Agent",
+        app="RoadLawQA",
         version="2.0.0",
     )
 

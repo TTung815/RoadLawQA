@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-AI Core Package for VietLaw-Agent
+AI core: chat pipeline, agents, retrieval and LLM adapters.
 """
 

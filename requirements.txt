@@ -21,11 +21,11 @@ numpy==1.26.4
 # Web Interface
 streamlit==1.41.1
 
-# API & Backend (V2 Foundation)
+# API & Backend
 fastapi>=0.115.0
 uvicorn>=0.32.0
 httpx>=0.27.0
 
-# Testing (V2 Foundation)
+# Testing
 pytest>=8.0.0
 pytest-asyncio>=0.24.0

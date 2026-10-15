@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 class HealthResponse(BaseModel):
     """Liveness health check response model."""
     status: str = "ok"
-    app: str = "VietLaw-Agent"
+    app: str = "RoadLawQA"
     version: str = "2.0.0"
 
 

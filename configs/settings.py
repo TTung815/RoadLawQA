@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Application Settings & Configuration Module (Additive for V2 Foundation)
+Application settings, read from the environment and the project .env.
 Does not require GEMINI_API_KEY at import time.
 """
 import os
@@ -15,7 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 class AppSettings(BaseModel):
     """Liveness app configuration, independent of retrieval resources."""
     # App
-    app_name: str = "VietLaw-Agent"
+    app_name: str = "RoadLawQA"
     app_version: str = "2.0.0"
     debug: bool = False
 

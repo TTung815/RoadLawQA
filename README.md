@@ -1,197 +1,133 @@
 # RoadLawQA
 
-Chatbot hỏi đáp luật giao thông đường bộ Việt Nam sử dụng Retrieval-Augmented
-Generation (RAG). Hệ thống xử lý câu hỏi theo ngữ cảnh hội thoại, tìm nguồn luật,
-sinh đáp án và kiểm chứng nội dung cùng citation trước khi trả cho người dùng.
+Chatbot hỏi đáp luật giao thông đường bộ Việt Nam dựa trên Retrieval-Augmented
+Generation (RAG). Mỗi câu trả lời dẫn đến Điều/Khoản/Điểm cụ thể và được kiểm
+chứng với nguồn luật trước khi hiển thị; khi chưa đủ căn cứ, hệ thống trả lời
+một phần, hỏi lại hoặc nêu rõ giới hạn thay vì đoán.
 
-Project được phát triển từ đồ án nhóm thành portfolio cá nhân về AI/LLM.
-Phạm vi dữ liệu hiện tại là pháp luật tại **22/09/2026**, không phải dịch vụ
-cập nhật pháp luật theo thời gian thực.
+Dữ liệu pháp luật có hiệu lực tại **22/09/2026**.
 
-## Hệ thống làm được gì?
+## Legal Sources
 
-- Hỏi về quy tắc giao thông, mức phạt và tình huống có điều kiện trong corpus.
-- Hiểu câu hỏi tiếp nối, trả lời lời chào/câu hỏi cách dùng và giới hạn chủ đề.
-- Lưu nhiều cuộc trò chuyện (SQLite): mở lại chat cũ từ thanh bên, giữ chat đang mở khi tải lại trang.
-- Viết lại truy vấn tìm nguồn ngay trong lượt router khi cần; giữ câu hỏi
-  độc lập để sinh và kiểm chứng đáp án.
-- Trích dẫn văn bản, Điều/Khoản/Điểm cùng nội dung nguồn có xuống dòng.
-- Trả lời một phần, hỏi làm rõ hoặc báo thiếu căn cứ khi chưa đủ nguồn.
-- Kiểm tra riêng nguồn truy xuất và thời gian từng bước trong giao diện.
+| Văn bản | Nội dung |
+| --- | --- |
+| 49/VBHN-VPQH | Luật Đường bộ (văn bản hợp nhất) |
+| 55/VBHN-VPQH | Luật Trật tự, an toàn giao thông đường bộ (văn bản hợp nhất) |
+| 168/2024/NĐ-CP, sửa đổi bởi 238/2026/NĐ-CP | Xử phạt vi phạm hành chính, trừ và phục hồi điểm giấy phép lái xe |
+| 90/VBHN-VPQH (2026) | Luật Xử lý vi phạm hành chính, chỉ các quy định về độ tuổi chịu xử phạt |
 
-## Kiến trúc
+Corpus gồm 1.759 đơn vị Điều/Khoản/Điểm, giữ dẫn nhập của điều cha và nguồn
+gốc từng đơn vị. [Phạm vi và quy tắc trích dẫn](docs/LEGAL_SCOPE.md).
+
+## Features
+
+- Hỏi về quy tắc giao thông, mức phạt, trừ điểm GPLX và tình huống có điều kiện.
+- Hiểu câu hỏi tiếp nối trong hội thoại, ví dụ "Còn xe máy thì sao?".
+- Trích dẫn Điều/Khoản/Điểm kèm nguyên văn nguồn để đối chiếu.
+- Lưu nhiều cuộc trò chuyện; mở lại từ thanh bên như ChatGPT.
+
+## Architecture
 
 ```mermaid
 flowchart TD
-    U[Người dùng + lịch sử] --> API[Streamlit → FastAPI]
-    API --> R[Router: intent, ngữ cảnh, query expansion]
-    R -->|Giao tiếp hoặc ngoài phạm vi| T[Phản hồi theo phạm vi]
-    R -->|Câu hỏi luật| H[Weaviate hybrid: BM25 + vector]
-    H --> X[Reranker + tra dẫn chiếu có giới hạn]
-    X --> G[Sinh đáp án]
-    G --> V[Kiểm chứng nguồn và nội dung]
-    V --> A[Đáp án đã kiểm chứng, giới hạn hoặc hỏi rõ]
+    U[User + history] --> API[Streamlit UI → FastAPI]
+    API --> R[Router: intent + query rewriting]
+    R -->|Chit-chat / out of scope| T[Template reply]
+    R -->|Legal question| H[Weaviate hybrid search: BM25 + vector]
+    H --> X[Reranker + bounded reference lookup]
+    X --> G[Answer generation]
+    G --> V[Citation verification]
+    V -->|Failed, repair once| G
+    V --> A[Verified answer / clarification / limitation]
 ```
 
-| Thành phần | Triển khai |
+| Component | Technology |
 | --- | --- |
-| API / giao diện | FastAPI, Pydantic, Streamlit |
-| Truy xuất | Weaviate native hybrid, BM25 trên văn bản tách từ PyVi và vector |
+| API / UI | FastAPI, Pydantic, Streamlit |
+| Retrieval | Weaviate native hybrid search (BM25 + vector, α = 0.5), top 10 |
 | Embedding | `Alibaba-NLP/gte-multilingual-base` |
-| Reranker | `BAAI/bge-reranker-v2-m3`, hỗ trợ CPU/CUDA/Apple MPS |
-| LLM | Adapter OpenAI/Gemini; provider và model chọn qua cấu hình |
-| Corpus phục vụ | 1.759 đơn vị cấu trúc, giữ dẫn nhập cha và lineage về nguồn |
-| Kiểm chứng | Kiểm citation/nguồn và đánh giá ngữ nghĩa; tối đa một lần sửa nháp |
+| Reranker | `BAAI/bge-reranker-v2-m3` (CPU / CUDA / Apple MPS) |
+| LLM | OpenAI hoặc Gemini, chọn qua cấu hình |
+| Storage | SQLite cho lịch sử hội thoại |
+| Deployment | Docker Compose |
 
-[Thiết kế và các lựa chọn kỹ thuật](docs/ARCHITECTURE.md).
+[Thiết kế chi tiết](docs/ARCHITECTURE.md).
 
-## Chạy demo
+## Quick Start
 
-**Máy mới (Docker):** tạo `.env` từ [.env.example](.env.example) và điền API
-key, rồi chuẩn bị model/index một lần và chạy cả hệ thống
-([chi tiết](docs/SETUP.md#máy-mới-chạy-bằng-docker)):
+**Docker** (máy mới). Tạo `.env` từ [.env.example](.env.example) và điền API
+key, chuẩn bị model và index một lần, rồi chạy cả hệ thống:
 
 ```bash
+cp .env.example .env
 docker compose --env-file .env -f docker/docker-compose.yml run --rm bootstrap
 docker compose --env-file .env -f docker/docker-compose.yml up -d --build
 ```
 
-Mở `http://localhost:8501`. Trong Docker, model chạy bằng CPU.
+Mở `http://localhost:8501`.
 
-**Môi trường phát triển (`.venv`)**, khi đã có index và model cache:
+**Local development** (đã có index và model cache):
 
 ```bash
-.venv/bin/python -m pip install -r requirements.txt
-docker start docker-weaviate-1
 .venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
-```
-
-Trong terminal thứ hai, tại repository root:
-
-```bash
 .venv/bin/python -m streamlit run frontend/app.py
 ```
 
-Mở `http://localhost:8501`; API docs tại `http://127.0.0.1:8000/docs`.
-Khi API khởi động, index và model được nạp chạy nền (khoảng 15 giây trên Mac M3);
-`GET /api/v1/ready` trả `"warmup": "done"` khi đã sẵn sàng.
-Cấu hình provider/key trong `.env` theo [.env.example](.env.example).
+Chạy hai lệnh trong hai terminal. API docs tại `http://127.0.0.1:8000/docs`.
+[Cài đặt, cấu hình và Docker](docs/SETUP.md).
 
-Có thể thử lần lượt “Chào bạn”, “Hiện nay, vượt đèn đỏ phạt bao nhiêu tiền?”,
-rồi “Xe máy”. Với câu hỏi pháp luật, mở phần nguồn để đối chiếu căn cứ.
-Trong thanh bên, mở **Dành cho nhà phát triển** để bật **Kiểm tra truy xuất**.
-Chế độ này không gọi LLM/router, nên không đại diện toàn bộ
-luồng chatbot có xử lý lịch sử và query expansion.
+## Evaluation
 
-Trên máy đã có index, Docker chỉ cần lệnh `up` ở trên
-([Chạy bằng Docker](docs/SETUP.md#chạy-bằng-docker)).
+[Benchmark 50 câu](evaluation/datasets/current_law_20260922_reviewed_v2/REVIEWED.md):
+19 tình huống, 16 câu mức phạt, 15 câu định nghĩa/tra cứu. Mỗi câu có đáp án
+tham chiếu, các ý bắt buộc và nguồn căn cứ.
 
-## Dữ liệu và đánh giá
+**Retrieval** (không gọi LLM):
 
-Nguồn lõi gồm 49/VBHN-VPQH, 55/VBHN-VPQH và bản ghép kỹ thuật của
-168/2024/NĐ-CP với phần sửa đổi 238/2026/NĐ-CP. Bốn phạm vi về tuổi chịu xử
-phạt từ 90/VBHN-VPQH (2026) được bổ sung có review; không nhập toàn bộ văn bản.
-[Phạm vi, hiệu lực và provenance](docs/LEGAL_SCOPE.md).
-
-### Đánh giá trên benchmark 50 câu (15/10/2026)
-
-Benchmark gồm 50 câu hỏi dùng trong quá trình phát triển: 19 tình huống,
-16 câu mức phạt, 15 câu định nghĩa/tra cứu; 5 câu có điều kiện cần giữ nhánh
-hoặc hỏi rõ. Ground truth (đáp án tham chiếu, ý bắt buộc, nguồn căn cứ) do chủ
-dự án duyệt và đã được đối chiếu lại với nguyên văn luật. Cấu hình: corpus cấu
-trúc v2, top 10, embedding CPU, reranker `bge-reranker-v2-m3` trên Apple MPS,
-OpenAI `gpt-6-luna` reasoning `medium`. Mỗi lượt có plan khóa hash code.
-
-**Retrieval** — không gọi LLM; relevance là các nguồn gold bắt buộc:
-
-| Retrieval | Recall@5 | Recall@10 | MRR@10 | nDCG@10 |
+| Method | Recall@5 | Recall@10 | MRR@10 | nDCG@10 |
 | --- | ---: | ---: | ---: | ---: |
 | BM25 | 0,741 | 0,781 | 0,628 | 0,634 |
 | Dense (vector) | 0,756 | 0,820 | 0,746 | 0,714 |
-| Hybrid α=0.5 | 0,831 | 0,886 | 0,799 | 0,772 |
+| Hybrid | 0,831 | 0,886 | 0,799 | 0,772 |
 | BM25 + rerank | 0,830 | 0,880 | 0,869 | 0,818 |
 | Dense + rerank | 0,844 | 0,914 | 0,881 | 0,840 |
-| **Hybrid α=0.5 + rerank** | **0,844** | **0,914** | **0,881** | **0,839** |
+| **Hybrid + rerank** | **0,844** | **0,914** | **0,881** | **0,839** |
 
-Hybrid tốt nhất khi chưa rerank (Recall@10 0,886 so với 0,781 của BM25 và
-0,820 của dense). Reranker tăng mọi cấu hình, rõ nhất ở MRR. Tra dẫn chiếu có
-giới hạn nâng độ phủ ý bắt buộc của evidence từ 0,893 (top 10) lên 0,98.
+**End-to-end:**
 
-**End-to-end** — đáp án cuối, chấm theo nghĩa với từng ý bắt buộc:
-
-| Cấu hình | Accuracy | Hallucination | Faithfulness | Citation P / R | Latency p50 / p95 |
+| Configuration | Accuracy | Hallucination | Faithfulness | Citation P / R | Latency p50 / p95 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Trước sửa lỗi 14/10 | 88% (44/50) | 0% | 98,0% | 96,3% / 97,5% | 12,9s / 28,8s |
-| Không reranker | 90% (45/50) | 4% (2/50) | — | — | 7,5s / 50,5s |
-| **Hệ thống đầy đủ** | **96% (48/50)** | **0% (0/50)** | **97,5%** | **92,1% / 97,5%** | **11,7s / 29,3s** |
+| Baseline | 88% | 0% | 98,0% | 96,3% / 97,5% | 12,9s / 28,8s |
+| Without reranker | 90% | 4% | — | — | 7,5s / 50,5s |
+| **Full system** | **96%** | **0%** | **97,5%** | **92,1% / 97,5%** | **11,7s / 29,3s** |
 
-- **Accuracy:** câu trả lời đúng và đủ mọi ý bắt buộc, có nguồn hỗ trợ và
-  đúng trạng thái (trả lời / hỏi rõ). Khoảng tin cậy 95% của hệ thống đầy đủ:
-  86,5–98,9%.
-- **Hallucination:** có ít nhất một nhận định sai, hoặc trích nguồn không hỗ
-  trợ nhận định đó (định nghĩa của Magesh et al., Stanford). 0/50 tương ứng
-  cận trên khoảng tin cậy 95% là 7,1%.
-- **Faithfulness, Citation P/R:** chấm theo từng nhận định, kiểu RAGAS/ALCE;
-  hệ thống đầy đủ đo được 48/50 câu (2 lỗi của judge).
-- **Cách chấm:** một LLM judge chấm từng ý bắt buộc, liệt kê nhận định sai
-  và citation không hỗ trợ; nhãn được suy ra bằng code. Trước khi dùng, judge
-  được kiểm trên 50 nhãn người: đồng thuận 92%, Cohen's kappa 0,71, judge chấm
-  khắt khe hơn người. Các câu judge đánh lỗi được rà tay và chủ dự án duyệt.
-  Theo điểm thô của judge, ba dòng lần lượt là 80% / 82% / 92% accuracy.
+Baseline là hệ thống trước khi sửa lỗi chọn nguồn và verifier. Accuracy và
+Hallucination chấm bằng LLM judge đã kiểm với nhãn người (đồng thuận 92%,
+Cohen's κ = 0,71). [Metric, phương pháp và cách chạy](docs/EVALUATION_QUICKSTART.md).
 
-**Đóng góp từng module:**
+## Project Structure
 
-- **Sửa lỗi chọn nguồn và verifier (15/10):** 88% → 96%. Bốn câu thiếu số
-  điểm GPLX bị trừ nay lấy đủ nguồn trừ điểm; câu có trẻ em là hành khách
-  không còn bị reranker đẩy nguồn đúng từ hạng 1 xuống 28.
-- **Reranker:** bỏ reranker thì p50 nhanh hơn 4,2s, nhưng accuracy giảm 6
-  điểm %, xuất hiện 2 hallucination do trích sai nguồn, phải sửa nháp 4 lần
-  và p95 tăng lên 50s. Có 4 câu chỉ đúng khi có reranker, 1 câu ngược lại.
-- **Verifier:** ở cấu hình không reranker, verifier sửa 2 câu sai trạng thái
-  và chặn 1 nháp không đạt kiểm chứng trước khi công bố. Ở hệ thống đầy đủ,
-  mọi nháp đầu đều đạt nên verifier không phải sửa.
+| Directory | Description |
+| --- | --- |
+| `ai/pipeline/` | Luồng chatbot: router → retrieval → generation → verification |
+| `ai/agent/`, `ai/retrieval/`, `ai/llm/`, `ai/prompts/` | Router, generator, verifier; hybrid search và rerank; adapter OpenAI/Gemini; prompt |
+| `backend/` | FastAPI: route, dependency, lưu hội thoại, warm-up |
+| `frontend/` | Streamlit: bố cục, HTTP client, trạng thái, hiển thị |
+| `ingestion/`, `data/` | Văn bản luật, review nguồn, corpus và dựng index |
+| `evaluation/` | Benchmark, runner, LLM judge, ablation ([chi tiết](evaluation/README.md)) |
+| `docker/`, `Dockerfile` | Docker Compose cho Weaviate, API và UI |
 
-Câu còn lại chưa đạt ở hệ thống đầy đủ: 007 đủ nội dung nhưng gắn trạng thái
-`partial` thận trọng thừa; 016 thiếu nhắc quy tắc chung "chỉ được chở một người".
-
-Giới hạn: judge cùng họ model với generator; ground truth do chủ dự án duyệt,
-không phải chuyên gia pháp luật; evaluator gọi thẳng pipeline RAG nên chưa đo
-router, query expansion và hội thoại nhiều lượt; latency không gồm khởi tạo
-model. Suite offline có 608 test đạt. Artifact chạy thật đang lưu local.
-
-[Dataset, phương pháp và cách chạy evaluation](docs/EVALUATION_QUICKSTART.md) ·
-[định nghĩa metric claim-level](docs/GENERATION_EVALUATION.md).
-
-## Kiểm thử
+## Testing
 
 ```bash
 .venv/bin/python -m pytest -q
 .venv/bin/python -m pytest tests/integration -m integration -q
 ```
 
-Suite offline dùng fake cho provider/retriever, không gọi API trả phí. Một số
-kiểm tra corpus/provenance vẫn cần bundle cục bộ đã đóng băng; xem
-[tài nguyên kiểm thử](docs/SETUP.md#kiểm-tra-tài-nguyên). Integration cần
-Weaviate và model cache. API health chỉ kiểm tiến trình, không xác nhận index sẵn sàng.
+Test offline dùng fake cho LLM và retriever, không cần mạng hay API key.
+Integration test cần Weaviate và model cache.
 
-## Tổ chức repository
+## Acknowledgements
 
-| Thư mục | Nội dung |
-| --- | --- |
-| `ai/pipeline/` | Luồng chatbot: router → retrieval → sinh đáp án → kiểm chứng |
-| `ai/agent/`, `ai/retrieval/`, `ai/llm/`, `ai/prompts/` | Từng thành phần: router/generator/verifier, hybrid search và rerank, adapter OpenAI/Gemini, prompt |
-| `backend/` | FastAPI: route, dependency, lưu hội thoại SQLite, warm-up |
-| `frontend/` | Streamlit: bố cục, client HTTP, trạng thái và hiển thị |
-| `ingestion/`, `data/` | Nguồn luật, review, corpus có phiên bản và builder |
-| `evaluation/`, `tests/` | Benchmark, runner/scorer, ablation, judge và kiểm thử |
-| `docs/` | [Tài liệu](docs/README.md): kiến trúc, cài đặt, phạm vi nguồn, đánh giá |
-
-Chi tiết các tầng và chiều phụ thuộc ở [ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
-## Nguồn gốc và ghi công
-
-Project kế thừa đồ án nhóm CS529 tại Trường Đại học Công nghệ Thông tin (UIT).
-Nguyễn Thanh Tùng thực hiện pipeline RAG chính, xử lý dữ liệu, hybrid retrieval,
-reranking, sinh đáp án và đánh giá. Các thành viên nhóm đóng góp bộ benchmark,
-quiz và ứng dụng demo của phiên bản đồ án. Bản hiện tại tập trung vào chatbot
-hỏi đáp; các kết quả của phiên bản đồ án không được gán cho pipeline mới.
+Phiên bản đầu của RoadLawQA là đồ án nhóm môn CS529, Trường Đại học Công nghệ
+Thông tin (UIT). Phiên bản hiện tại do Nguyễn Thanh Tùng xây dựng lại.

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-FastAPI Application Entrypoint for VietLaw-Agent V2
+FastAPI application entrypoint for RoadLawQA.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,7 +44,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
         version=settings.app_version,
-        description="VietLaw-Agent - AI Assistant for Vietnamese Road Traffic Law",
+        description="RAG chatbot for Vietnamese road traffic law",
         debug=settings.debug,
         lifespan=lifespan,
     )

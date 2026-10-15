@@ -12,11 +12,11 @@ from configs.settings import Settings, get_settings
 def test_health_response_schema():
     health = HealthResponse()
     assert health.status == "ok"
-    assert health.app == "VietLaw-Agent"
+    assert health.app == "RoadLawQA"
     assert health.version == "2.0.0"
 
     data = health.model_dump()
-    assert data == {"status": "ok", "app": "VietLaw-Agent", "version": "2.0.0"}
+    assert data == {"status": "ok", "app": "RoadLawQA", "version": "2.0.0"}
 
 
 def test_retrieval_request_validation():
@@ -31,7 +31,7 @@ def test_settings_does_not_require_gemini_key():
     # Explicitly instantiate settings without GEMINI_API_KEY
     settings = Settings(gemini_api_key=None)
     assert settings.gemini_api_key is None
-    assert settings.app_name == "VietLaw-Agent"
+    assert settings.app_name == "RoadLawQA"
     assert settings.weaviate_collection == "LawStructured20260922V2"
 
     global_s = get_settings()

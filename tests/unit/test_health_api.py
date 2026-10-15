@@ -22,7 +22,7 @@ async def test_health_endpoint():
 
     payload = response.json()
     assert payload["status"] == "ok"
-    assert payload["app"] == "VietLaw-Agent"
+    assert payload["app"] == "RoadLawQA"
     assert payload["version"] == "2.0.0"
 
 

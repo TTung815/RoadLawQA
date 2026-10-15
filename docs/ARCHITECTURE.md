@@ -1,11 +1,11 @@
-# Kiến trúc RoadLawQA
+# Architecture
 
-## Ranh giới các thành phần
+## Layers
 
-Các tầng phụ thuộc một chiều, tầng dưới không import tầng trên:
+Phụ thuộc một chiều, tầng dưới không import tầng trên:
 
 ```text
-frontend (Streamlit)  ──HTTP──►  backend (FastAPI: API, dependencies, lưu hội thoại)
+frontend (Streamlit)  ──HTTP──►  backend (FastAPI: routes, dependencies, conversation store)
                                      │
                                      ▼
                         ai/pipeline (chat → retrieval → answer)
@@ -13,170 +13,112 @@ frontend (Streamlit)  ──HTTP──►  backend (FastAPI: API, dependencies, 
                     ┌────────────────┼────────────────┐
                     ▼                ▼                ▼
                ai/agent         ai/retrieval        ai/llm
-       (router, generator,   (hybrid, rerank,   (OpenAI/Gemini)
-          verifier)           tra dẫn chiếu)
+       (router, generator,   (hybrid search,    (OpenAI/Gemini)
+          verifier)         rerank, lookup)
                                      │
                                      ▼
                          ingestion (corpus, index)
 ```
 
-`ai/` không import `backend/` hay `evaluation/`; evaluation chạy đúng pipeline
-mà API dùng. Streamlit chỉ gọi HTTP API. FastAPI khởi tạo provider, model và
-database khi cần; `/api/v1/health` không tải tài nguyên. `LLMProvider` và
-`Retriever` là các hợp đồng thay thế provider/backend.
+`ai/` không import `backend/` hay `evaluation/`, nên evaluation chạy đúng
+pipeline mà API dùng. `LLMProvider` và `Retriever` là interface để thay
+provider hoặc backend truy xuất.
 
-| Thành phần | Mã nguồn |
+| Component | Source |
 | --- | --- |
-| Pipeline chatbot | [chat.py](../ai/pipeline/chat.py) (xã giao, router), [retrieval.py](../ai/pipeline/retrieval.py), [answer.py](../ai/pipeline/answer.py), [results.py](../ai/pipeline/results.py) (kết quả trả về) |
-| Router, sinh và kiểm chứng | [conversation_router.py](../ai/agent/conversation_router.py), [answer_generator.py](../ai/agent/answer_generator.py), [citation_verifier.py](../ai/agent/citation_verifier.py) |
-| Truy xuất | [structured.py](../ai/retrieval/structured.py), [neighborhood.py](../ai/retrieval/neighborhood.py), [runtime.py](../ai/retrieval/runtime.py) (nạp lazy/warm-up) |
-| Thiết bị và batching | [devices.py](../ai/retrieval/devices.py), [reranking.py](../ai/retrieval/reranking.py) |
-| API | [main.py](../backend/main.py), [api/v1/](../backend/api/v1/), [dependencies/](../backend/dependencies/), [conversations.py](../backend/services/conversations.py) (SQLite) |
-| Giao diện | [app.py](../frontend/app.py) (bố cục), [client.py](../frontend/client.py) (HTTP), [state.py](../frontend/state.py) (trạng thái), [views.py](../frontend/views.py) (hiển thị) |
-| Nguồn cấu trúc và index | [structured_corpus.py](../ingestion/structured_corpus.py), [structured_index.py](../ingestion/structured_index.py), [bootstrap.py](../ingestion/bootstrap.py) (máy mới: tải model, dựng index) |
+| Chat pipeline | [chat.py](../ai/pipeline/chat.py), [retrieval.py](../ai/pipeline/retrieval.py), [answer.py](../ai/pipeline/answer.py), [results.py](../ai/pipeline/results.py) |
+| Router, generator, verifier | [conversation_router.py](../ai/agent/conversation_router.py), [answer_generator.py](../ai/agent/answer_generator.py), [citation_verifier.py](../ai/agent/citation_verifier.py) |
+| Retrieval | [structured.py](../ai/retrieval/structured.py), [neighborhood.py](../ai/retrieval/neighborhood.py), [reranking.py](../ai/retrieval/reranking.py), [runtime.py](../ai/retrieval/runtime.py) |
+| API | [main.py](../backend/main.py), [api/v1/](../backend/api/v1/), [dependencies/](../backend/dependencies/), [conversations.py](../backend/services/conversations.py) |
+| UI | [app.py](../frontend/app.py), [client.py](../frontend/client.py), [state.py](../frontend/state.py), [views.py](../frontend/views.py) |
+| Corpus and index | [structured_corpus.py](../ingestion/structured_corpus.py), [structured_index.py](../ingestion/structured_index.py), [bootstrap.py](../ingestion/bootstrap.py) |
 
-## Hội thoại và query expansion
+## Request Flow
 
-Lời chào/cảm ơn/câu hỏi khả năng khớp mẫu đơn giản có thể trả ngay. Tin nhắn
-khác qua một lượt LLM router, trả:
+### 1. Routing
 
-- `intent`: legal, mixed, help, social, out_of_scope hoặc clarify.
-- `standalone_query`: câu hỏi độc lập, giải quyết tham chiếu từ lịch sử.
-- `retrieval_query`: một cách diễn đạt bổ sung để tìm nguồn, hoặc null.
+Lời chào hoặc cảm ơn khớp mẫu được trả lời ngay, không gọi LLM. Tin nhắn khác
+qua một lượt LLM router (reasoning `low`), trả về:
 
-Help/social/ngoài phạm vi dùng mẫu server, không dẫn luật để giải thích khả
-năng bot. Mixed chỉ đưa phần giao thông vào RAG và thông báo giới hạn.
-Các câu ngắn như “Xe máy” có thể là follow-up khi lịch sử xác định được ý.
-Khi người dùng đổi đối tượng trong câu hỏi tiếp, router được hướng dẫn giữ
-loại yêu cầu gốc của người dùng. Chi tiết trợ lý tự thêm ở lượt trước không
-tự trở thành yêu cầu mới; expansion cũng phải giữ phạm vi đó.
-Nếu lượt mới hỏi rõ mức phạt, ưu tiên yêu cầu mới và giữ chủ thể/hành vi từ
-lịch sử. Expansion chuẩn hóa cả tên nhóm phương tiện và hành vi khi có cách
-diễn đạt pháp lý tương đương, giữ các thuộc tính phân biệt nhóm xe.
+- `intent`: `legal`, `mixed`, `help`, `social`, `out_of_scope` hoặc `clarify`.
+- `standalone_query`: câu hỏi độc lập, đã giải quyết tham chiếu tới lịch sử
+  (ví dụ "Xe máy" → câu hỏi đầy đủ về xe máy).
+- `retrieval_query`: cách diễn đạt bằng thuật ngữ pháp lý để tìm nguồn, hoặc null.
 
-Expansion đổi cách diễn đạt đời thường sang thuật ngữ tìm kiếm, không được
-bịa loại xe, tuổi, điều kiện hoặc mức phạt. Server bỏ bản rỗng, trùng, dài hơn
-800 ký tự, đổi tập số hoặc làm mất cụm phủ định ngắn. Câu đã có view câu hỏi
-chính từ dẫn nhập thời gian giữ view đó. Đây là guard bảo thủ, có thể bỏ cả
-paraphrase hợp lệ và không chứng minh tương đương ngữ nghĩa.
+Câu ngoài phạm vi hoặc hỏi cách dùng nhận phản hồi mẫu. Câu `mixed` chỉ đưa
+phần giao thông vào RAG. Server bỏ `retrieval_query` nếu rỗng, dài hơn 800 ký
+tự, đổi các con số hoặc làm mất phủ định. `standalone_query` luôn là câu dùng
+để sinh và kiểm chứng đáp án.
 
-Câu hỏi độc lập luôn dùng cho generation, verification và tra dẫn chiếu.
-Expansion không phải nguồn luật. Không có bảng ánh xạ riêng cho từng lỗi
-benchmark, cũng không gọi thêm một LLM để sửa expansion bị loại.
+### 2. Retrieval
 
-## Corpus và truy xuất
+Corpus `structured-law-v2` có 1.759 đơn vị Điều/Khoản/Điểm, mỗi đơn vị giữ
+dẫn nhập của điều cha. Weaviate kết hợp BM25 trên văn bản tách từ (PyVi) với
+vector search, α = 0.5, chỉ trên nguồn được công bố và có hiệu lực.
 
-Corpus frozen có 2.531 leaf chunk làm căn cứ provenance/gold. Corpus phục vụ
-`structured-law-v2` có 1.759 đơn vị: 1.755 từ nguồn lõi và bốn phạm vi luật bổ
-sung. Dẫn nhập cha được giữ; `source_processed_ids` nối về nguồn tham chiếu.
-Mười nguồn chưa đủ điều kiện công bố vẫn bị chặn. [Phạm vi nguồn](LEGAL_SCOPE.md).
+- Tối đa hai view truy vấn: câu hỏi độc lập và `retrieval_query` (hoặc view
+  về độ tuổi chịu xử phạt). Các pool được xen kẽ và khử trùng.
+- Ngân sách ứng viên: 20 (câu hỏi đơn) hoặc 32 (câu hỏi kép), tăng theo
+  `4 × top_k`, tối đa 40. Điều/văn bản được nêu tên trong câu hỏi thêm tối đa
+  20 ứng viên.
+- Reranker `bge-reranker-v2-m3` chấm một lượt, lấy top 10; batch sắp theo độ
+  dài để giảm padding.
 
-Weaviate `LawStructured20260922V2` kết hợp BM25 trên `lexical_text` với query
-vector, alpha mặc định 0.5. Filter yêu cầu nguồn được công bố, có hiệu lực và
-đúng cutoff trước khi chọn ứng viên.
+### 3. Reference Lookup
 
-Một lượt truy xuất có tối đa hai view: câu hỏi độc lập và expansion hoặc
-facet câu hỏi chính/tuổi. Các pool được xen kẽ, khử trùng trong ngân sách
-tối thiểu 20 ứng viên thường hoặc 32 khi hỏi đồng thời; ngân sách tăng theo
-`4 × top_k`, tối đa 40. Với `top_k=10`, ngân sách hybrid là 40 ứng viên.
-Locator văn bản/Điều minh thị trong câu hỏi độc lập có thể thêm tối đa 20 ứng viên.
+Bổ sung các điều khoản được dẫn chiếu minh thị (ví dụ "trừ trường hợp quy định
+tại khoản 3"), có giới hạn: tối đa 8 chunk và 12.000 ký tự. Thứ tự ưu tiên:
+dẫn chiếu sang văn bản khác → điểm trừ điểm/xử phạt bổ sung nêu tên điểm đã
+truy xuất → dẫn chiếu trong cùng văn bản → quy tắc xử phạt nhiều hành vi.
 
-Rerank một pass, mặc định lấy top 10 chunk chính (hoặc ít hơn nếu không đủ
-nguồn hợp lệ). Query rerank ưu tiên facet tuổi/câu hỏi chính, sau đó expansion được chấp nhận, cuối cùng là câu hỏi độc lập. Không
-nối lặp hai câu dài vào reranker. Batch 4 được sắp theo độ dài để giảm padding.
-Khi bật trace nội bộ, `retrieval_ranking` lưu thứ hạng từng view native,
-pool đã xen kẽ/khử trùng (kèm ID tra minh thị), toàn bộ thứ hạng và điểm sau
-rerank, cùng top-k được chọn. Dữ liệu này phục vụ đo trước–sau trên cùng pool;
-không trộn điểm hybrid giữa các view hoặc tính nguồn tra bổ sung như top-k.
+### 4. Generation
 
-Reranker có thể chạy trên MPS của Apple Silicon hoặc CUDA; embedding mặc định
-CPU theo cấu hình đã đo trên Mac. Hybrid search chạy trong Weaviate trên CPU.
-LLM OpenAI/Gemini gọi qua API, không chạy trên CPU/GPU của Mac.
+Nguồn được gửi tới LLM bằng alias ngắn; server ánh xạ alias về ID thật và
+không fuzzy-match ID do model bịa. Generator trả structured output với bốn
+loại câu trả lời:
 
-## Dẫn chiếu, sinh đáp án và kiểm chứng
+| Loại | Nội dung |
+| --- | --- |
+| `complete` | Các nhận định kèm citation |
+| `partial` | Nhận định và ít nhất một giới hạn |
+| `clarification` | Giới hạn và câu hỏi làm rõ |
+| `abstain` | Chỉ giới hạn, không có nhận định |
 
-Sau retrieval, tra dẫn chiếu minh thị có giới hạn bổ sung điều kiện áp dụng:
-tối đa hai phạm vi Điều, tám chunks thêm và 12.000 ký tự. Context cha trùng
-được gửi một lần. Cơ chế này không lấy mọi khoản gần nhau để coi là evidence.
+Ngoại lệ minh thị ảnh hưởng phạm vi áp dụng được giữ ngay trong nhận định.
 
-Trong request tới LLM, nguồn dùng alias ngắn; server ánh xạ alias chính xác
-về ID thật, không fuzzy-match ID model bịa. Generator sinh claims và citation;
-verifier kiểm nguồn/hiệu lực, con số và ngữ nghĩa hỗ trợ, gồm cả limitations.
-Verifier kiểm ngoại lệ minh thị trong nguồn được dẫn như một phần phạm vi
-của claim, kể cả dẫn chiếu sang khoản khác. Claim quy tắc chung bỏ loại trừ
-làm rộng phạm vi phải bị chặn; claim đã giới hạn phạm vi hoặc tình huống đã
-loại trừ ngoại lệ thì không cần nhắc ngoại lệ không áp dụng. Đây vẫn là
-kiểm chứng bằng mô hình, không bảo đảm phát hiện mọi lỗi.
-Generator dùng `GeneratedAnswer` với trường `answer` có bốn nhánh schema:
-complete có claims nhưng không có giới hạn/câu hỏi làm rõ; partial có claims
-và ít nhất một giới hạn; clarification có giới hạn và câu hỏi; abstain chỉ
-có giới hạn, không có claims/câu hỏi. Nội dung và phần thiếu được sinh trước
-khi chọn response_kind. Kết quả được chuyển về `DraftAnswer` phẳng để giữ
-hợp đồng API, verifier và trace hiện có. Không tự đổi nháp partial thành complete.
-Schema ngăn mâu thuẫn cấu trúc; giới hạn bịa hoặc nhận định sai vẫn phải bị
-verifier chặn. Provider trả sai cấu trúc thì API báo lỗi generation đã lọc,
-không công bố nháp hay tự thêm retry. Preflight kiểm schema generation mới.
-Nhánh schema được đặt trong object gốc theo
-[hợp đồng Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs#supported-schemas).
+### 5. Verification
 
-Generator và verifier đánh giá mức đầy đủ theo ý được hỏi. Cho phép bổ sung
-mức phạt hữu ích sau câu trả lời chính nếu có nguồn và ghi rõ điều kiện/phạm
-vi; mọi claim bổ sung vẫn phải qua kiểm chứng. Phần bổ sung không tự tạo thêm
-yêu cầu bắt buộc hoặc giả làm danh sách đầy đủ. Mỗi limitation phải liên quan đến ý chưa giải
-quyết hoặc điều kiện cần để giải quyết ý đó. Giới hạn về chế tài không được
-hỏi phải được sửa trong nháp, thay vì chỉ ẩn trên UI hoặc đổi nhãn thành công.
-Nếu người dùng hỏi rõ về điểm hay toàn bộ chế tài, vẫn phải giữ và kiểm ý đó.
-Khi chỉ hỏi quy tắc, phần tự bổ sung ưu tiên một ví dụ ngắn có nguồn; câu hỏi
-mức phạt/nhiều nhánh vẫn cần đủ các nhánh được hỏi. Câu hỏi quy định chung đã
-được giải đáp theo từng nhóm không phải hỏi lại để chọn nhóm cho người dùng.
-Hành vi khác cùng chủ đề trong evidence không tự trở thành ý bắt buộc; vẫn
-phải trả đủ khi người dùng hỏi nhiều hành vi. Generator giữ ngoại lệ minh
-thị ảnh hưởng phạm vi áp dụng ngay trong claim tương ứng.
+Verifier kiểm từng nhận định: nguồn có hỗ trợ không, có hiệu lực không, con số
+và điều kiện có đúng không, giới hạn có liên quan không. Mức đầy đủ
+(`completeness_reason`) và trạng thái trả lời (`response_reason`) được đánh
+giá riêng. Nháp không đạt được sửa tối đa một lần trên cùng evidence rồi kiểm
+lại; nháp vẫn không đạt thì không được công bố.
 
-Verifier trả lý do ngắn `Đạt.` cho mục được hỗ trợ, giữ một câu giải thích
-cụ thể cho lỗi hoặc ý còn thiếu để sửa nháp. Mỗi claim vẫn được đánh giá
-riêng; định dạng gọn không bỏ kiểm nguồn, điều kiện, biên số hoặc giới hạn.
+Trạng thái trả về: `answered`, `partial_answer`, `needs_clarification`,
+`insufficient_evidence`, `verification_failed`, `conversational`, `out_of_scope`.
 
-Khi nháp không đạt, cho phép sửa tối đa một lần trên cùng evidence rồi kiểm
-lại. API không công bố nháp vẫn bị chặn. Trạng thái gồm `answered`,
-`partial_answer`, `needs_clarification`, `insufficient_evidence`,
-`verification_failed`, `conversational` và `out_of_scope`.
+Thiếu nguồn không chứng minh hành vi không bị phạt; hệ thống trả lời có điều
+kiện hoặc nêu giới hạn thay vì kết luận phủ định.
 
-Thiếu nguồn không chứng minh không có chế tài. Có thể trả lời có điều kiện
-hoặc một phần đã kiểm chứng; không biến nguồn chưa rõ phạm vi áp dụng thành
-kết luận chắc chắn. Verifier vẫn là thành phần có thể sai, không phải chứng
-minh pháp lý hình thức.
+## LLM Calls
 
-## Calls và diagnostics
+Một câu hỏi luật dùng ba lời gọi LLM: router, generation, verification; sửa
+nháp thêm hai lời gọi. Lời chào khớp mẫu không gọi LLM. Router dùng reasoning
+`low`: trên 10 lượt thử, kết quả giống `medium` nhưng nhanh hơn khoảng 0,9s.
 
-Câu luật qua chatbot thường dùng ba logical calls: router, generation,
-verification. Sửa nháp thêm hai calls. Lời chào khớp mẫu không gọi LLM;
-help/ngoài phạm vi qua router thường dùng một call. Retry lỗi provider có
-ngân sách riêng, nên logical calls không bằng mọi HTTP request thực tế.
+API chỉ trả nội dung đã kiểm chứng và lỗi đã lọc; không log API key, request
+thô hay nội dung exception.
 
-`retrieval_query` ghi expansion đã chấp nhận; `retrieval_queries` ghi câu hỏi
-độc lập và expansion. `ranked_chunk_ids` là top-k sau rerank, `chunks` thêm các
-nguồn tra dẫn chiếu, mô tả trong `structural_expansion`. Trace native ghi view
-thực tế kể cả facet. `routing_ms` gồm xử lý lịch sử và expansion. Router dùng
-reasoning `low` (`ROUTER_REASONING_EFFORT`): trên 10 lượt probe, phân loại và câu
-hỏi viết lại giống `medium` nhưng nhanh hơn khoảng 0,9s; `none` làm hỏng câu hỏi tiếp.
-
-API trả lỗi đã lọc. Diagnostics offline có thể giữ draft để debug, nhưng không
-lưu API key hoặc request thô tới provider.
-
-## API và evaluation
+## API
 
 | Endpoint | Mục đích |
 | --- | --- |
-| `POST /api/v1/answer` | Toàn chatbot, nhận query/history/top-k |
-| `GET /api/v1/ready` | Model/index đã nạp chưa và trạng thái warm-up; không tự nạp |
-| `GET/POST /api/v1/conversations` | Liệt kê (mới nhất trước) / tạo cuộc trò chuyện |
-| `GET/PATCH/DELETE /api/v1/conversations/{id}` | Mở kèm tin nhắn và kết quả đã lưu / đổi tên / xóa |
-| `POST /api/v1/conversations/{id}/messages` | Gửi tin nhắn: API đọc lịch sử đã lưu, chạy chatbot, lưu câu hỏi và trả lời |
-| `POST /api/v1/retrieve/inspect` | Truy xuất câu độc lập, không LLM/router; history bị từ chối |
-| `POST /api/v1/retrieve` | Retrieval với contextualization khi có lịch sử |
-| `POST /api/v1/retrieve/evidence` | Retrieval đầy đủ của chatbot: hybrid/rerank và tra dẫn chiếu, không sinh đáp án |
-
-Evaluator RAG dùng cùng service luật/retriever nhưng không chạy router chatbot.
-Điểm/latency evaluator không đại diện toàn bộ trải nghiệm hội thoại.
-[Phương pháp đánh giá](EVALUATION_QUICKSTART.md).
+| `POST /api/v1/answer` | Toàn bộ chatbot: query, history, top-k |
+| `GET/POST /api/v1/conversations` | Liệt kê / tạo cuộc trò chuyện |
+| `GET/PATCH/DELETE /api/v1/conversations/{id}` | Mở / đổi tên / xóa |
+| `POST /api/v1/conversations/{id}/messages` | Gửi tin nhắn; API đọc lịch sử đã lưu và lưu cả hai lượt |
+| `POST /api/v1/retrieve` | Truy xuất, viết lại câu hỏi theo lịch sử khi có |
+| `POST /api/v1/retrieve/inspect` | Chỉ truy xuất câu độc lập, không gọi LLM |
+| `POST /api/v1/retrieve/evidence` | Truy xuất, rerank và tra dẫn chiếu, không sinh đáp án |
+| `GET /api/v1/health` | Tiến trình còn sống; không tải model hay database |
+| `GET /api/v1/ready` | Model và index đã nạp chưa |
