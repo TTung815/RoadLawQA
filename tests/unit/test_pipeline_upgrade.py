@@ -11,7 +11,7 @@ from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.evidence import evidence_payload
 from ai.diagnostics import PipelineError, TRACE
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-from backend.services.answer import AnswerService
+from ai.pipeline.answer import AnswerService
 from evaluation.legacy_probe import load_bm25
 from tests.unit.fakes import ScriptedProvider, chunk, semantic
 from tests.unit.test_grounded_answer import QUESTION, qa_service
@@ -104,6 +104,6 @@ def test_bm25_cache_rejects_executable_pickle_globals(tmp_path):
 def test_new_plan_hashes_do_not_require_deleted_v1_scripts():
     from evaluation.core_runner import code_hashes
     files = code_hashes()
-    assert 'ai/retrieval/current_law.py' in files
+    assert 'ai/retrieval/runtime.py' in files
     assert 'ai/diagnostics.py' in files
     assert 'backend/retriever_custom.py' not in files

@@ -6,8 +6,10 @@ from fastapi import APIRouter, Depends
 
 from backend.dependencies.retrieval import get_current_retriever, get_lean_retrieval_service, get_retrieval_service
 from backend.schemas.retrieval import RetrievalRequest
-from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
-from backend.services.lean_retrieval import EvidenceRetrievalResult, LeanRetrievalService
+from ai.pipeline.retrieval import HistoryAwareRetrievalService
+from ai.pipeline.results import RetrievalResult
+from ai.pipeline.results import EvidenceRetrievalResult
+from ai.pipeline.retrieval import LeanRetrievalService
 
 router = APIRouter(tags=["Retrieval"])
 

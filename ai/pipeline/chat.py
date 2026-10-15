@@ -8,8 +8,8 @@ from collections.abc import Callable, Mapping, Sequence
 from ai.agent.citation_verifier import CitationVerification
 from ai.agent.conversation_router import ConversationRouter
 from ai.diagnostics import traced
-from backend.schemas.answer import AnswerResult, AnswerTimings
-from backend.services.answer import AnswerService
+from ai.pipeline.results import AnswerResult, AnswerTimings
+from ai.pipeline.answer import AnswerService
 
 
 _ADDRESSEE = r"(?:\s+(?:ban|bot|chatbot|roadlawqa))?"

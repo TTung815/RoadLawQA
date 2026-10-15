@@ -4,13 +4,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 
-from backend.dependencies.answer import get_chat_service
+from backend.dependencies.chat import get_chat_service
 from backend.dependencies.conversations import get_conversation_store
-from backend.schemas.answer import AnswerResult
+from ai.pipeline.results import AnswerResult
 from backend.schemas.conversations import (
     ConversationDetail, ConversationRename, ConversationSummary, MessageExchange, MessageRequest,
 )
-from backend.services.chat import ChatService
+from ai.pipeline.chat import ChatService
 from backend.services.conversations import ConversationStore
 
 router = APIRouter(prefix="/conversations", tags=["Conversations"])

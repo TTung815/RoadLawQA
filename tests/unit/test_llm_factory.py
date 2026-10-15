@@ -47,7 +47,7 @@ def test_unknown_provider_is_rejected(isolated_config):
 
 
 def test_backend_dependencies_use_shared_factory(isolated_config, monkeypatch):
-    from backend.dependencies import retrieval, answer
+    from backend.dependencies import retrieval, chat as answer
     fake = object()
     seen = []
     def factory(settings):
@@ -72,7 +72,7 @@ def test_backend_dependencies_use_shared_factory(isolated_config, monkeypatch):
 
 @pytest.mark.parametrize("router_effort, expected", [(None, "medium"), ("low", "low"), ("none", "none")])
 def test_router_uses_its_own_reasoning_effort_without_changing_answer_stages(monkeypatch, router_effort, expected):
-    from backend.dependencies.answer import router_settings
+    from backend.dependencies.chat import router_settings
     from configs.settings import LLMSettings
     settings = LLMSettings(llm_provider="openai", openai_api_key="fake", openai_reasoning_effort="medium",
                            router_reasoning_effort=router_effort)
@@ -82,7 +82,7 @@ def test_router_uses_its_own_reasoning_effort_without_changing_answer_stages(mon
 
 
 def test_router_effort_defaults_to_low_and_is_ignored_for_gemini(monkeypatch):
-    from backend.dependencies.answer import router_settings
+    from backend.dependencies.chat import router_settings
     from configs.settings import LLMSettings
     monkeypatch.delenv("ROUTER_REASONING_EFFORT", raising=False)
     assert LLMSettings(llm_provider="openai", openai_api_key="fake").router_reasoning_effort == "low"

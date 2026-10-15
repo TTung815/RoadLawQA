@@ -59,9 +59,9 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
     from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
     from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
     from ai.agent.contextualizer import QueryContextualizer
-    from backend.services.answer import AnswerService
-    from backend.services.chat import ChatService
-    from backend.services.lean_retrieval import LeanRetrievalService
+    from ai.pipeline.answer import AnswerService
+    from ai.pipeline.chat import ChatService
+    from ai.pipeline.retrieval import LeanRetrievalService
     from tests.unit.fakes import semantic
 
     provider = ScriptedProvider([

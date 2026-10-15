@@ -5,10 +5,10 @@ from fastapi.testclient import TestClient
 
 from ai.agent.citation_verifier import CitationVerification
 from ai.diagnostics import PipelineError
-from backend.dependencies.answer import get_chat_service
+from backend.dependencies.chat import get_chat_service
 from backend.dependencies.conversations import get_conversation_store
 from backend.main import create_app
-from backend.schemas.answer import AnswerResult
+from ai.pipeline.results import AnswerResult
 from backend.services.conversations import ConversationStore, title_from
 
 

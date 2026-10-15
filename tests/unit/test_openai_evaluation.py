@@ -186,8 +186,8 @@ async def test_openai_adapter_runs_v2_answer_pipeline_and_preserves_publication_
     from ai.agent.answer_generator import AnswerGenerator
     from ai.agent.citation_verifier import CitationVerifier
     from ai.agent.contextualizer import QueryContextualizer
-    from backend.services.answer import AnswerService
-    from backend.services.lean_retrieval import LeanRetrievalService
+    from ai.pipeline.answer import AnswerService
+    from ai.pipeline.retrieval import LeanRetrievalService
     from tests.unit.fakes import ScriptedRetriever, chunk, semantic
     from tests.unit.test_grounded_answer import DRAFT, QUESTION
     draft = json.loads(json.dumps(DRAFT))

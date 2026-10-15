@@ -2,17 +2,37 @@
 
 ## Ranh giới các thành phần
 
-Streamlit chỉ gọi HTTP API, không import model/retriever. FastAPI khởi tạo
-provider, model và kết nối database khi cần; `/api/v1/health` không tải tài
-nguyên. `LLMProvider` và `Retriever` là các hợp đồng thay thế provider/backend.
+Các tầng phụ thuộc một chiều, tầng dưới không import tầng trên:
+
+```text
+frontend (Streamlit)  ──HTTP──►  backend (FastAPI: API, dependencies, lưu hội thoại)
+                                     │
+                                     ▼
+                        ai/pipeline (chat → retrieval → answer)
+                                     │
+                    ┌────────────────┼────────────────┐
+                    ▼                ▼                ▼
+               ai/agent         ai/retrieval        ai/llm
+       (router, generator,   (hybrid, rerank,   (OpenAI/Gemini)
+          verifier)           tra dẫn chiếu)
+                                     │
+                                     ▼
+                         ingestion (corpus, index)
+```
+
+`ai/` không import `backend/` hay `evaluation/`; evaluation chạy đúng pipeline
+mà API dùng. Streamlit chỉ gọi HTTP API. FastAPI khởi tạo provider, model và
+database khi cần; `/api/v1/health` không tải tài nguyên. `LLMProvider` và
+`Retriever` là các hợp đồng thay thế provider/backend.
 
 | Thành phần | Mã nguồn |
 | --- | --- |
-| Hội thoại và phạm vi | [chat.py](../backend/services/chat.py), [conversation_router.py](../ai/agent/conversation_router.py) |
-| Điều phối RAG | [lean_retrieval.py](../backend/services/lean_retrieval.py), [answer.py](../backend/services/answer.py) |
-| Truy xuất | [structured.py](../ai/retrieval/structured.py), [current_law.py](../ai/retrieval/current_law.py) |
+| Pipeline chatbot | [chat.py](../ai/pipeline/chat.py) (xã giao, router), [retrieval.py](../ai/pipeline/retrieval.py), [answer.py](../ai/pipeline/answer.py), [results.py](../ai/pipeline/results.py) (kết quả trả về) |
+| Router, sinh và kiểm chứng | [conversation_router.py](../ai/agent/conversation_router.py), [answer_generator.py](../ai/agent/answer_generator.py), [citation_verifier.py](../ai/agent/citation_verifier.py) |
+| Truy xuất | [structured.py](../ai/retrieval/structured.py), [neighborhood.py](../ai/retrieval/neighborhood.py), [runtime.py](../ai/retrieval/runtime.py) (nạp lazy/warm-up) |
 | Thiết bị và batching | [devices.py](../ai/retrieval/devices.py), [reranking.py](../ai/retrieval/reranking.py) |
-| Sinh và kiểm chứng | [answer_generator.py](../ai/agent/answer_generator.py), [citation_verifier.py](../ai/agent/citation_verifier.py) |
+| API | [main.py](../backend/main.py), [api/v1/](../backend/api/v1/), [dependencies/](../backend/dependencies/), [conversations.py](../backend/services/conversations.py) (SQLite) |
+| Giao diện | [app.py](../frontend/app.py) (bố cục), [client.py](../frontend/client.py) (HTTP), [state.py](../frontend/state.py) (trạng thái), [views.py](../frontend/views.py) (hiển thị) |
 | Nguồn cấu trúc và index | [structured_corpus.py](../ingestion/structured_corpus.py), [structured_index.py](../ingestion/structured_index.py) |
 
 ## Hội thoại và query expansion

@@ -1,16 +1,15 @@
-"""Lazily opened serving retriever over the structured corpus; models load on first use."""
+"""Serving retriever opened lazily (or by warm-up): index, embedder and reranker load once."""
 
 import asyncio
 import time
 import threading
 
 from ai.diagnostics import record
-from ai.retrieval.base import RetrievedChunk, Retriever
-from evaluation.legacy_probe import runtime_id
+from ai.retrieval.base import Retriever
 from ingestion.legal_registry import read_json
 
 
-class LazyCurrentLawRetriever(Retriever):
+class LazyRetriever(Retriever):
     """Serving owns one lazily opened, read-only resource set."""
 
     def __init__(self):
@@ -22,13 +21,14 @@ class LazyCurrentLawRetriever(Retriever):
             if self._retriever is None:
                 from types import SimpleNamespace
                 from configs.settings import Settings
-                from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST
+                from ingestion.structured_corpus import DEFAULT_BUNDLE
                 config = Settings()
-                snapshot = read_json(DEFAULT_SNAPSHOT_MANIFEST)
+                # The corpus manifest locks the embedding model its vectors were built with.
+                manifest = read_json(DEFAULT_BUNDLE / "manifest.json")
                 settings = SimpleNamespace(
                     host=config.weaviate_host, port=config.weaviate_port,
                     grpc_port=config.weaviate_grpc_port,
-                    embedding_revision=snapshot["shadow_resources"]["embedding"]["revision"],
+                    embedding_revision=manifest["embedding_revision"],
                     reranker_revision=config.reranker_revision,
                     retrieval_backend=config.retrieval_backend, hybrid_alpha=config.hybrid_alpha,
                     hybrid_candidate_limit=config.hybrid_candidate_limit,
@@ -36,7 +36,7 @@ class LazyCurrentLawRetriever(Retriever):
                     reranker_batch_size=config.reranker_batch_size,
                     embedding_device=config.embedding_device, reranker_device=config.reranker_device,
                 )
-                self._retriever, self._client = load_current_retriever(settings)
+                self._retriever, self._client = load_retriever(settings)
             return self._retriever
 
     async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None):
@@ -71,14 +71,7 @@ class LazyCurrentLawRetriever(Retriever):
             self._retriever = self._client = None
 
 
-def map_chunk(chunk: dict, score: float = 0.0) -> RetrievedChunk:
-    return RetrievedChunk(id=runtime_id(chunk), text=chunk["text"], enriched_text=chunk["enriched_text"],
-                          citation=chunk["display_citation"], score=score,
-                          metadata={**{k: v for k, v in chunk.items() if k not in {"id", "text", "enriched_text"}},
-                                    "processed_id": chunk["id"]})
-
-
-def load_current_retriever(settings):
+def load_retriever(settings):
     """Open the existing structured index read-only; shared by API and evaluation."""
     if getattr(settings, "retrieval_backend", "structured") != "structured":
         raise ValueError("only the structured retrieval backend is supported")

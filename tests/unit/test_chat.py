@@ -5,9 +5,9 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from backend.dependencies import answer as dependencies
+from backend.dependencies import chat as dependencies
 from backend.main import create_app
-from backend.services.chat import ChatService
+from ai.pipeline.chat import ChatService
 from ai.agent.conversation_router import ConversationDecision, ConversationRouter
 from tests.unit.fakes import ScriptedProvider
 
@@ -95,8 +95,8 @@ async def test_routing_reuses_resolved_query_without_second_contextualization(in
     from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
     from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
     from ai.agent.contextualizer import QueryContextualizer
-    from backend.services.answer import AnswerService
-    from backend.services.lean_retrieval import LeanRetrievalService
+    from ai.pipeline.answer import AnswerService
+    from ai.pipeline.retrieval import LeanRetrievalService
     from tests.unit.fakes import ScriptedRetriever, chunk
     from tests.unit.fakes import semantic
 

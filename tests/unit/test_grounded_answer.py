@@ -12,10 +12,10 @@ from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAns
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.contextualizer import QueryContextualizer
 from ai.agent.range_coverage import RangeCoverage
-from backend.dependencies.answer import get_chat_service
+from backend.dependencies.chat import get_chat_service
 from backend.main import create_app
-from backend.services.answer import AnswerService
-from backend.services.lean_retrieval import LeanRetrievalService
+from ai.pipeline.answer import AnswerService
+from ai.pipeline.retrieval import LeanRetrievalService
 from tests.unit.fakes import ScriptedProvider, ScriptedRetriever, chunk, semantic
 
 QUESTION = "Ô tô vi phạm bị phạt tiền và trừ điểm giấy phép lái xe thế nào?"

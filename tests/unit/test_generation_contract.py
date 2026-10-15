@@ -64,7 +64,7 @@ async def test_verifier_still_blocks_old_empty_draft_without_a_provider_call():
 @pytest.mark.asyncio
 async def test_provider_ignoring_partial_contract_cannot_publish_or_trigger_hidden_retry():
     import httpx
-    from backend.dependencies.answer import get_chat_service
+    from backend.dependencies.chat import get_chat_service
     from backend.main import create_app
     from tests.unit.test_grounded_answer import qa_service, QUESTION
 

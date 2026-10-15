@@ -10,7 +10,7 @@ from ai.llm.gemini import GeminiProvider
 from tests.retrieval_fakes import CallbackRetriever
 from backend.dependencies.retrieval import get_retrieval_service
 from backend.main import create_app
-from backend.services.retrieval import HistoryAwareRetrievalService
+from ai.pipeline.retrieval import HistoryAwareRetrievalService
 from tests.unit.test_history_retrieval import CURRENT, HISTORY, STANDALONE
 
 

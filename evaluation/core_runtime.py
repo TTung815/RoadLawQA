@@ -9,14 +9,22 @@ from __future__ import annotations
 from ai.agent.answer_generator import AnswerGenerator
 from ai.agent.citation_verifier import CitationVerifier
 from ai.agent.contextualizer import QueryContextualizer
-from ai.retrieval.base import Retriever
+from ai.retrieval.base import RetrievedChunk, Retriever
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-from backend.services.lean_retrieval import LeanRetrievalService
-from backend.services.answer import AnswerService
+from ai.pipeline.retrieval import LeanRetrievalService
+from ai.pipeline.answer import AnswerService
 from evaluation.core_schema import Question, RunSettings
-from ai.retrieval.current_law import map_chunk
+from evaluation.legacy_probe import runtime_id
 from ingestion.legal_registry import PROJECT_ROOT, read_json
 from ai.diagnostics import TRACE
+
+
+def map_chunk(chunk: dict, score: float = 0.0) -> RetrievedChunk:
+    """Map a frozen leaf row (current-law corpus) to the retriever contract."""
+    return RetrievedChunk(id=runtime_id(chunk), text=chunk["text"], enriched_text=chunk["enriched_text"],
+                          citation=chunk["display_citation"], score=score,
+                          metadata={**{k: v for k, v in chunk.items() if k not in {"id", "text", "enriched_text"}},
+                                    "processed_id": chunk["id"]})
 
 
 class CoreRuntime:
@@ -86,7 +94,7 @@ def create_evaluation_provider(settings: RunSettings):
 
 
 def create_live_runtime(settings: RunSettings, *, needs_retrieval: bool = True) -> CoreRuntime:
-    from ai.retrieval.current_law import load_current_retriever
+    from ai.retrieval.runtime import load_retriever
     from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST, verify_frozen_snapshot
 
     verify_frozen_snapshot()
@@ -95,5 +103,5 @@ def create_live_runtime(settings: RunSettings, *, needs_retrieval: bool = True) 
     provider = create_evaluation_provider(settings)
     if not needs_retrieval:
         return CoreRuntime(provider, chunks, settings)
-    retriever, client = load_current_retriever(settings)
+    retriever, client = load_retriever(settings)
     return CoreRuntime(provider, chunks, settings, retriever, client)

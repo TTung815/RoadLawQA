@@ -4,7 +4,7 @@ import math
 import socket
 
 import pytest
-from ai.retrieval.current_law import LazyCurrentLawRetriever
+from ai.retrieval.runtime import LazyRetriever
 from configs.settings import Settings
 
 
@@ -16,7 +16,7 @@ def live_retriever():
             pass
     except OSError:
         pytest.skip("Start the existing Weaviate container to run this smoke test")
-    retriever = LazyCurrentLawRetriever()
+    retriever = LazyRetriever()
     try:
         yield retriever
     finally:

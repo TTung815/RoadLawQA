@@ -39,7 +39,7 @@ def fake(monkeypatch):
         holder["retriever"] = FakeRetriever(fail=holder.get("fail", False))
         return holder["retriever"]
 
-    monkeypatch.setattr(dependencies, "LazyCurrentLawRetriever", factory)
+    monkeypatch.setattr(dependencies, "LazyRetriever", factory)
     dependencies.get_current_retriever.cache_clear()
     yield holder
     dependencies.get_current_retriever.cache_clear()

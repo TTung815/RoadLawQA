@@ -166,11 +166,15 @@ Weaviate và model cache. API health chỉ kiểm tiến trình, không xác nh�
 
 | Thư mục | Nội dung |
 | --- | --- |
-| `ai/` | Router, retrieval, LLM adapters, generation và verification |
-| `backend/`, `frontend/` | API, services và giao diện chatbot |
+| `ai/pipeline/` | Luồng chatbot: router → retrieval → sinh đáp án → kiểm chứng |
+| `ai/agent/`, `ai/retrieval/`, `ai/llm/`, `ai/prompts/` | Từng thành phần: router/generator/verifier, hybrid search và rerank, adapter OpenAI/Gemini, prompt |
+| `backend/` | FastAPI: route, dependency, lưu hội thoại SQLite, warm-up |
+| `frontend/` | Streamlit: bố cục, client HTTP, trạng thái và hiển thị |
 | `ingestion/`, `data/` | Nguồn luật, review, corpus có phiên bản và builder |
-| `evaluation/`, `tests/` | Dataset, runner/scorer và kiểm thử |
-| `docs/` | [Tài liệu công khai](docs/README.md), protocol và hồ sơ nguồn |
+| `evaluation/`, `tests/` | Benchmark, runner/scorer, ablation, judge và kiểm thử |
+| `docs/` | [Tài liệu](docs/README.md): kiến trúc, cài đặt, phạm vi nguồn, đánh giá |
+
+Chi tiết các tầng và chiều phụ thuộc ở [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Nguồn gốc và ghi công
 

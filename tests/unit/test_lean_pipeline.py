@@ -6,8 +6,8 @@ from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAns
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
 from ai.agent.contextualizer import ContextualizedQuery, QueryContextualizer
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-from backend.services.answer import AnswerService
-from backend.services.lean_retrieval import LeanRetrievalService
+from ai.pipeline.answer import AnswerService
+from ai.pipeline.retrieval import LeanRetrievalService
 from evaluation.core_runtime import CoreRuntime
 from evaluation.core_schema import Question
 from tests.unit.fakes import ScriptedProvider, ScriptedRetriever, chunk
@@ -23,7 +23,7 @@ class RowsLookup:
         self.rows = rows
 
     async def fetch_article(self, law, article_no):
-        from ai.retrieval.current_law import map_chunk
+        from evaluation.core_runtime import map_chunk
         laws = {row['law'] for row in self.rows}
         names = [law] if law in laws else [name for name in laws if law.casefold() in name.casefold()]
         if len(names) != 1:
@@ -33,7 +33,7 @@ class RowsLookup:
 
     async def fetch_combination_rules(self, laws):
         import re
-        from ai.retrieval.current_law import map_chunk
+        from evaluation.core_runtime import map_chunk
         return [map_chunk(row) for row in self.rows if row['law'] in laws
                 and row.get('publication_eligible') is not False
                 and re.search(r'nhiều hành vi|nhiều lần|cùng một lần', row['text'], re.I)
@@ -244,7 +244,7 @@ async def test_combination_lookup_is_conditional_and_uses_shared_budget():
 async def test_real_corpus_scope_and_combination_sources_are_reachable_without_grader():
     import json
     from pathlib import Path
-    from ai.retrieval.current_law import map_chunk
+    from evaluation.core_runtime import map_chunk
     rows = json.loads(Path('data/processed/current-law/current-law-chunks-2026-09-22.json').read_text())['chunks']
     retriever = RowsLookup(rows)
     expander = LegalNeighborhoodExpander(retriever.fetch_article,
@@ -266,7 +266,7 @@ async def test_real_corpus_scope_and_combination_sources_are_reachable_without_g
 async def test_cross_document_applicability_is_not_starved_by_sibling_sanctions():
     import json
     from pathlib import Path
-    from ai.retrieval.current_law import map_chunk
+    from evaluation.core_runtime import map_chunk
     rows = json.loads(Path('data/processed/current-law/current-law-chunks-2026-09-22.json').read_text())['chunks']
     retriever = RowsLookup(rows)
     anchors = [next(map_chunk(c) for c in rows if '168/2024' in c['law'] and str(c['article_no']) == '32'

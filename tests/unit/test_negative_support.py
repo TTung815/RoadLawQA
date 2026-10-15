@@ -4,7 +4,7 @@ import pytest
 
 from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
-from backend.services.answer import AnswerService
+from ai.pipeline.answer import AnswerService
 from tests.unit.fakes import ScriptedProvider, chunk, semantic
 from tests.unit.test_grounded_answer import qa_service
 

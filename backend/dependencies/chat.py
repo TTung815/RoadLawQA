@@ -7,8 +7,8 @@ from ai.agent.citation_verifier import CitationVerifier
 from ai.agent.conversation_router import ConversationRouter
 from ai.llm.factory import create_provider
 from backend.dependencies.retrieval import get_lean_retrieval_service
-from backend.services.answer import AnswerService
-from backend.services.chat import ChatService
+from ai.pipeline.answer import AnswerService
+from ai.pipeline.chat import ChatService
 from configs.settings import LLMSettings
 
 

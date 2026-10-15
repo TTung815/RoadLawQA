@@ -4,10 +4,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from backend.dependencies.answer import get_chat_service
-from backend.schemas.answer import AnswerResult
+from backend.dependencies.chat import get_chat_service
+from ai.pipeline.results import AnswerResult
 from backend.schemas.retrieval import RetrievalRequest
-from backend.services.chat import ChatService
+from ai.pipeline.chat import ChatService
 
 router = APIRouter(tags=["Answer"])
 

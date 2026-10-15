@@ -131,7 +131,7 @@ def render(report: dict) -> str:
 
 
 def main() -> None:
-    from ai.retrieval.current_law import LazyCurrentLawRetriever
+    from ai.retrieval.runtime import LazyRetriever
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--alphas", default="0,0.25,0.5,0.75,1")
@@ -141,7 +141,7 @@ def main() -> None:
     alphas = [float(value) for value in args.alphas.split(",")]
     if any(not 0 <= alpha <= 1 for alpha in alphas):
         raise ValueError("alpha must be within [0, 1]")
-    lazy = LazyCurrentLawRetriever()
+    lazy = LazyRetriever()
     try:
         base = lazy._load()
         report = asyncio.run(evaluate(base, alphas))

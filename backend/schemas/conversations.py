@@ -4,7 +4,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, StringConstraints
 
-from backend.schemas.answer import AnswerResult
+from ai.pipeline.results import AnswerResult
 
 Text = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 

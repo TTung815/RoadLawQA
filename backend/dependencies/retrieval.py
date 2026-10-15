@@ -4,16 +4,16 @@ from functools import lru_cache
 
 from ai.agent.contextualizer import QueryContextualizer
 from ai.llm.factory import create_provider
-from ai.retrieval.current_law import LazyCurrentLawRetriever
+from ai.retrieval.runtime import LazyRetriever
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-from backend.services.retrieval import HistoryAwareRetrievalService
-from backend.services.lean_retrieval import LeanRetrievalService
+from ai.pipeline.retrieval import HistoryAwareRetrievalService
+from ai.pipeline.retrieval import LeanRetrievalService
 from configs.settings import LLMSettings
 
 
 @lru_cache(maxsize=1)
-def get_current_retriever() -> LazyCurrentLawRetriever:
-    return LazyCurrentLawRetriever()
+def get_current_retriever() -> LazyRetriever:
+    return LazyRetriever()
 
 
 @lru_cache(maxsize=1)

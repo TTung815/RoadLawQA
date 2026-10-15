@@ -30,10 +30,10 @@ def test_explicit_gpu_never_silently_runs_on_cpu(monkeypatch, device):
 
 
 def test_cpu_selection_and_device_inspection_do_not_load_resources(monkeypatch):
-    from ai.retrieval.current_law import LazyCurrentLawRetriever
+    from ai.retrieval.runtime import LazyRetriever
     monkeypatch.setitem(sys.modules, "torch", None)
     assert resolve_device("cpu") == "cpu"
-    retriever = LazyCurrentLawRetriever()
+    retriever = LazyRetriever()
     assert retriever.runtime_devices == {}
     assert retriever._retriever is None
     retriever._retriever = SimpleNamespace(runtime_devices={"embedding": "mps:0", "reranker": "mps:0"})

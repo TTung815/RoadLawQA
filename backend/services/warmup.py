@@ -3,7 +3,7 @@
 import logging
 import time
 
-from ai.retrieval.current_law import LazyCurrentLawRetriever
+from ai.retrieval.runtime import LazyRetriever
 
 logger = logging.getLogger("uvicorn.error")
 # A short generic query: loads the index, embedder and reranker and runs one
@@ -11,7 +11,7 @@ logger = logging.getLogger("uvicorn.error")
 WARMUP_QUERY = "Đi xe máy không đội mũ bảo hiểm bị phạt bao nhiêu?"
 
 
-async def warm_up(retriever: LazyCurrentLawRetriever, state: dict) -> None:
+async def warm_up(retriever: LazyRetriever, state: dict) -> None:
     state["warmup"] = "running"
     started = time.perf_counter()
     try:

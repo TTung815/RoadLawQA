@@ -1,43 +1,34 @@
-"""One hybrid search plus bounded source lookup; no LLM coverage/rewrite loop."""
+"""Retrieval stage of the pipeline: contextualize, one hybrid search, bounded source lookup."""
 
 import time
-from typing import List, Mapping, Sequence
-
-from pydantic import BaseModel, Field
+from typing import Mapping, Sequence
 
 from ai.agent.contextualizer import QueryContextualizer
 from ai.agent.evidence import publishable_chunk
 from ai.diagnostics import traced
 from ai.retrieval.base import Retriever
 from ai.retrieval.query_expansion import checked_expansion
-from ai.retrieval.neighborhood import LegalNeighborhoodExpander, LegalScope
-from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
+from ai.retrieval.neighborhood import LegalNeighborhoodExpander
+from ai.pipeline.results import EvidenceRetrievalResult, RetrievalResult, RetrievalTimings, StructuralExpansionTrace
 
 
-class StructuralExpansionTrace(BaseModel):
-    triggered: bool
-    reason: str
-    scopes: List[LegalScope]
-    chunk_ids: List[str]
-    citations: List[str]
-    lookup_ms: float
-    added_characters: int
+class HistoryAwareRetrievalService:
+    def __init__(self, contextualizer: QueryContextualizer, retriever: Retriever):
+        self._contextualizer = contextualizer
+        self._retriever = retriever
 
-
-class RetrievalTimings(BaseModel):
-    contextualization_ms: float = 0.0
-    retrieval_ms: float = 0.0
-    structural_lookup_ms: float = 0.0
-    total_ms: float = 0.0
-
-
-class EvidenceRetrievalResult(RetrievalResult):
-    retrieval_queries: List[str]
-    retrieval_query: str | None = None
-    # Reranked top-k before reference lookup; chunks adds the looked-up sources.
-    ranked_chunk_ids: List[str] = Field(default_factory=list)
-    structural_expansion: StructuralExpansionTrace | None = None
-    timings: RetrievalTimings = Field(default_factory=RetrievalTimings)
+    async def retrieve(
+        self, current_query: str, chat_history: Sequence[Mapping[str, str]] = (),
+        top_k: int = 10,
+    ) -> RetrievalResult:
+        if top_k < 1:
+            raise ValueError("top_k must be positive")
+        query = await self._contextualizer.contextualize(current_query, chat_history)
+        chunks = await self._retriever.search(query.standalone_query, top_k=top_k)
+        return RetrievalResult(
+            original_query=current_query, standalone_query=query.standalone_query,
+            chunks=chunks,
+        )
 
 
 class LeanRetrievalService(HistoryAwareRetrievalService):

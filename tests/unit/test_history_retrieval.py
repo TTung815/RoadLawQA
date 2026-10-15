@@ -11,7 +11,7 @@ from ai.llm.base import LLMMessage, LLMProvider, LLMResponse, T
 from ai.llm.gemini import GeminiProvider
 from ai.retrieval.base import RetrievedChunk, Retriever
 from tests.retrieval_fakes import CallbackRetriever
-from backend.services.retrieval import HistoryAwareRetrievalService
+from ai.pipeline.retrieval import HistoryAwareRetrievalService
 
 CURRENT = "Còn ô tô thì sao?"
 STANDALONE = "Người điều khiển ô tô vượt đèn đỏ bị xử phạt bao nhiêu?"

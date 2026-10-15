@@ -25,13 +25,13 @@ def write_new(path: Path, value) -> None:
 
 def code_hashes() -> dict[str, str]:
     # Bind actual serving prompts/agents/providers plus evaluator; no .env/secrets.
-    paths = [p for base in ("ai/agent", "ai/prompts", "ai/llm", "ai/retrieval", "backend/services", "backend/schemas")
+    paths = [p for base in ("ai/agent", "ai/prompts", "ai/llm", "ai/retrieval", "ai/pipeline", "backend/services", "backend/schemas")
              for p in (PROJECT_ROOT / base).glob("*.py")]
     paths += [PROJECT_ROOT / "evaluation" / name for name in
               ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "module_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py", "revised_current_law_dataset.py")]
     paths += [PROJECT_ROOT / "evaluation/gold_support.py", PROJECT_ROOT / "ai/diagnostics.py", PROJECT_ROOT / "evaluation/snapshot.py"]
     paths += [PROJECT_ROOT / name for name in ("configs/settings.py", "backend/dependencies/retrieval.py",
-                                              "backend/dependencies/answer.py", "ingestion/structured_corpus.py",
+                                              "backend/dependencies/chat.py", "ingestion/structured_corpus.py",
                                               "ingestion/structured_index.py", "ingestion/legal_dependency.py")]
     return {str(p.relative_to(PROJECT_ROOT)): file_digest(p) for p in sorted(paths)}
 
@@ -166,7 +166,7 @@ async def run_questions(plan: RunPlan, runtime, *, execution_kind: str = "live",
             if not isinstance(output, dict):
                 raise ValueError("runtime result must be an object")
             if question.mode == "end_to_end":
-                from backend.schemas.answer import AnswerResult
+                from ai.pipeline.results import AnswerResult
                 output = AnswerResult.model_validate(output).model_dump(mode="json")
         except Exception as exc:
             # Do not persist exception text/tracebacks that can contain keys or requests.

@@ -13,13 +13,13 @@ from streamlit.testing.v1 import AppTest
 from ai.agent.citation_verifier import CitationVerification
 from ai.diagnostics import PipelineError
 from ai.retrieval.base import RetrievedChunk
-from backend.dependencies import answer as dependencies
-from backend.dependencies.answer import get_chat_service
+from backend.dependencies import chat as dependencies
+from backend.dependencies.chat import get_chat_service
 from backend.dependencies.conversations import get_conversation_store
 from backend.main import create_app
-from backend.schemas.answer import AnswerResult, EvidenceCitation, GroundedAnswer, VerifiedClaim
+from ai.pipeline.results import AnswerResult, EvidenceCitation, GroundedAnswer, VerifiedClaim
 from backend.services.conversations import ConversationStore
-from backend.services.lean_retrieval import EvidenceRetrievalResult
+from ai.pipeline.results import EvidenceRetrievalResult
 from tests.unit.test_conversations import FakeChat, reply
 
 ROOT = Path(__file__).resolve().parents[2]
