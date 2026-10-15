@@ -252,3 +252,21 @@ def test_child_penalty_without_age_searches_age_conditions_without_inventing_an_
     assert not any(character.isdigit() for character in focus)
 
 
+
+
+@pytest.mark.asyncio
+async def test_rerank_ablation_keeps_native_order_without_calling_the_reranker(units):
+    pool = units[:25]
+
+    def hybrid(**kwargs):
+        return native_response(pool[:kwargs['limit']])
+
+    class Ranker:
+        def predict(self, pairs):
+            raise AssertionError('rerank=False must not call the reranker')
+
+    retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)),
+                                    Embedder(), Ranker(), rerank=False)
+    results = await retriever.search('Đi xe máy không đội mũ bảo hiểm bị phạt bao nhiêu?', top_k=10)
+    assert [c.id for c in results] == [u['id'] for u in pool[:10]]
+    assert all(c.metadata['rerank_query_view'] == 'none' for c in results)

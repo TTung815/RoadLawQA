@@ -52,6 +52,8 @@ class RunSettings(LabelModel):
     reranker_revision: Text
     # Preserve omitted values in historical plans; new plans lock the serving default.
     top_k: int = Field(default=5, ge=1, le=20)
+    # Ablation only; every historical plan reranked, serving always does.
+    rerank: StrictBool = True
     max_attempts: int = Field(default=2, ge=1, le=2)
     expansion: StrictBool = True
     timeout_seconds: float = Field(default=180, gt=0, allow_inf_nan=False)

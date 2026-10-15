@@ -36,9 +36,11 @@ def age_penalty_focus(query: str) -> str | None:
 class StructuredRetriever(Retriever):
     def __init__(self, units: list[dict], collection, embedder, reranker, alpha: float = 0.5,
                  candidate_limit: int = 20, compound_candidate_limit: int = 32,
-                 runtime_devices: dict[str, str] | None = None):
+                 runtime_devices: dict[str, str] | None = None, rerank: bool = True):
         if not 20 <= candidate_limit <= compound_candidate_limit <= 40:
             raise ValueError("candidate limits must satisfy 20 <= base <= compound <= 40")
+        # rerank=False is an evaluation ablation: keep the native candidate order.
+        self.rerank = rerank
         self.units, self.collection, self.embedder, self.reranker = units, collection, embedder, reranker
         self.by_id = {u["id"]: u for u in units}
         self.alpha = alpha
@@ -132,13 +134,37 @@ class StructuredRetriever(Retriever):
             return []
         # At most 40 hybrid + 20 explicit candidates, one bounded rerank pass.
         units = list(candidates.values())
+        if not self.rerank:
+            # Ablation: interleaved native order, the same pool the reranker would see.
+            view_orders = [[(u, float(scores[u["id"]].get("hybrid_score") or 0.0), "none") for u in units]]
+            ordered = view_orders[0]
+        else:
+            ordered, view_orders = self._rerank(units, ranking_views, compound=compound,
+                                                temporal_focus=bool(temporal_focus), age_focus=bool(age_focus))
+        # Internal evaluation trace only; preserve the actual pool before truncation.
+        # Multi-view scores are not comparable, so retain each view's native order.
+        record("retrieval_ranking", event="result", top_k=top_k,
+               native_views=[{"view": "original" if index == 0 else secondary_label,
+                              "chunk_ids": [u["id"] for u in pool]}
+                             for index, pool in enumerate(pools)],
+               candidate_ids=[u["id"] for u in units],
+               exact_lookup_ids=[u["id"] for u in units if scores[u["id"]].get("exact_lookup")],
+               reranked=[{"chunk_id": u["id"], "score": rank} for u, rank, _ in ordered],
+               rerank_views=[{"view": order[0][2], "chunk_ids": [u["id"] for u, _, _ in order]}
+                             for order in view_orders],
+               selected_ids=[u["id"] for u, _, _ in ordered[:top_k]])
+        return [map_unit(u, rank, rerank_query_view=label, **scores[u["id"]])
+                for u, rank, label in ordered[:top_k]]
+
+    def _rerank(self, units: list[dict], ranking_views: list[tuple[str, str]], *, compound: bool,
+                temporal_focus: bool, age_focus: bool):
         started = time.perf_counter()
         # One reranker call over the same pool; an age facet adds one pair per candidate.
         ranks = self.reranker.predict([[ranking_query, u["embedding_text"]]
                                        for _, ranking_query in ranking_views for u in units])
         record("rerank", event="timing", duration_ms=(time.perf_counter() - started) * 1000,
-               candidates=len(units), compound_query=compound, question_focus=bool(temporal_focus),
-               age_penalty_focus=bool(age_focus), ranking_views=len(ranking_views))
+               candidates=len(units), compound_query=compound, question_focus=temporal_focus,
+               age_penalty_focus=age_focus, ranking_views=len(ranking_views))
         if not all(math.isfinite(float(x)) for x in ranks):
             raise ValueError("non-finite reranker score")
         view_orders = []
@@ -156,20 +182,7 @@ class StructuredRetriever(Retriever):
                 if unit["id"] not in placed:
                     placed.add(unit["id"])
                     ordered.append((unit, score, label))
-        # Internal evaluation trace only; preserve the actual pool before truncation.
-        # Multi-view scores are not comparable, so retain each view's native order.
-        record("retrieval_ranking", event="result", top_k=top_k,
-               native_views=[{"view": "original" if index == 0 else secondary_label,
-                              "chunk_ids": [u["id"] for u in pool]}
-                             for index, pool in enumerate(pools)],
-               candidate_ids=[u["id"] for u in units],
-               exact_lookup_ids=[u["id"] for u in units if scores[u["id"]].get("exact_lookup")],
-               reranked=[{"chunk_id": u["id"], "score": rank} for u, rank, _ in ordered],
-               rerank_views=[{"view": order[0][2], "chunk_ids": [u["id"] for u, _, _ in order]}
-                             for order in view_orders],
-               selected_ids=[u["id"] for u, _, _ in ordered[:top_k]])
-        return [map_unit(u, rank, rerank_query_view=label, **scores[u["id"]])
-                for u, rank, label in ordered[:top_k]]
+        return ordered, view_orders
 
     @traced("retrieval_search")
     async def search(self, query: str, top_k: int = 10, *, retrieval_query: str | None = None):
@@ -230,7 +243,7 @@ def load_structured_retriever(settings):
             getattr(settings, "compound_candidate_limit", 32),
             {"embedding": str(embedder.device),
              "reranker": str(next(reranker.model.parameters()).device),
-             "hybrid_search": "cpu"}), client
+             "hybrid_search": "cpu"}, rerank=getattr(settings, "rerank", True)), client
     except Exception:
         client.close()
         raise
