@@ -58,7 +58,7 @@ def test_backend_dependencies_use_shared_factory(isolated_config, monkeypatch):
     monkeypatch.setattr(retrieval, "create_provider", factory)
     monkeypatch.setattr(answer, "create_provider", factory)
     retrieval.get_retrieval_service.cache_clear()
-    retrieval.get_agentic_retrieval_service.cache_clear()
+    retrieval.get_lean_retrieval_service.cache_clear()
     answer.get_answer_service.cache_clear()
     try:
         retrieval.get_retrieval_service()
@@ -66,5 +66,5 @@ def test_backend_dependencies_use_shared_factory(isolated_config, monkeypatch):
         assert seen == ["openai", "openai", "openai"]
     finally:
         retrieval.get_retrieval_service.cache_clear()
-        retrieval.get_agentic_retrieval_service.cache_clear()
+        retrieval.get_lean_retrieval_service.cache_clear()
         answer.get_answer_service.cache_clear()

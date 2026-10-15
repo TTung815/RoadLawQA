@@ -9,8 +9,6 @@ from typing import Sequence
 from ai.agent.answer_generator import GeneratedAnswer
 from ai.agent.citation_verifier import SemanticVerification
 from ai.agent.contextualizer import ContextualizedQuery
-from ai.agent.evidence_grader import EvidenceGrade
-from ai.agent.query_rewriter import RewrittenQuery
 from ai.llm.base import LLMMessage
 from evaluation.core_runtime import create_evaluation_provider
 from evaluation.snapshot import digest
@@ -21,10 +19,6 @@ def schema_fixtures():
     """Synthetic non-legal fixtures; no benchmark questions or reference answers."""
     return [
         (ContextualizedQuery, {"standalone_query": "Compatibility diagnostic"}),
-        (RewrittenQuery, {"rewritten_query": "Compatibility diagnostic"}),
-        (EvidenceGrade, {"coverage": [{"aspect": "subject_violation", "covered": False,
-                                     "required": True, "support_state": "unknown"}],
-                         "sufficient": False, "reason": "Diagnostic only; no legal evidence."}),
         (GeneratedAnswer, {"answer": {"claims": [{"text": "Compatibility diagnostic only.",
                                    "chunk_ids": ["diagnostic-only"], "support_state": "unknown"}]}}),
         (SemanticVerification, {"assessments": [{"claim_index": 0, "supported": False,
@@ -71,7 +65,7 @@ async def run_preflight(plan_path: Path, output: Path) -> dict:
         checks = [{"name": "credentials", "passed": False, "error_type": "ConfigurationError"}]
     else:
         checks = await check_provider(provider, plan.settings.timeout_seconds)
-    passed = len(checks) == 6 and all(check["passed"] for check in checks)
+    passed = len(checks) == len(schema_fixtures()) + 1 and all(check["passed"] for check in checks)
     result = {"format_version": 1, "kind": "llm_compatibility_preflight",
               "plan_sha256": read_json(plan_path)["plan_sha256"],
               "provider": plan.settings.provider, "model": plan.settings.model,

@@ -9,7 +9,7 @@ from backend.dependencies import answer as dependencies
 from backend.main import create_app
 from backend.services.chat import ChatService
 from ai.agent.conversation_router import ConversationDecision, ConversationRouter
-from tests.unit.test_agentic_retrieval import ScriptedProvider
+from tests.unit.fakes import ScriptedProvider
 
 
 @pytest.mark.asyncio
@@ -97,8 +97,8 @@ async def test_routing_reuses_resolved_query_without_second_contextualization(in
     from ai.agent.contextualizer import QueryContextualizer
     from backend.services.answer import AnswerService
     from backend.services.lean_retrieval import LeanRetrievalService
-    from tests.unit.test_agentic_retrieval import ScriptedRetriever, chunk
-    from tests.unit.test_grounded_answer import semantic
+    from tests.unit.fakes import ScriptedRetriever, chunk
+    from tests.unit.fakes import semantic
 
     query = "Còn người ngồi sau?" if intent == "legal" else "Hỏi người ngồi sau xe máy và cả thuế thu nhập?"
     resolved = "Người ngồi sau xe máy có phải đội mũ bảo hiểm không?"

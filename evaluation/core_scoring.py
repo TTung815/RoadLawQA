@@ -61,17 +61,8 @@ def rate(numerator: float, denominator: int) -> dict:
 def deterministic_checks(record: dict, item: dict, chunks: dict, aliases: dict) -> dict:
     output = record["output"] or {}
     checks = {"evidence_completeness": None, "citation_validity": None,
-              "blocked_source_publication": False, "probe_grade_matches": None,
-              "coverage_grade_matches": None}
+              "blocked_source_publication": False}
     if record["error"] is not None:
-        return checks
-    if record["mode"] == "rewrite_probe":
-        return checks
-    if record["mode"] in {"fixed_evidence", "publication_guard_probe"}:
-        stage = item["stage"]
-        if stage is not None:
-            grade = output["final_grade"]["sufficient"]
-            checks["probe_grade_matches"] = grade == (stage.expected_pool_coverage == "sufficient")
         return checks
     retrieval = output.get("retrieval", {})
     evidence = retrieval.get("chunks", [])
@@ -87,8 +78,6 @@ def deterministic_checks(record: dict, item: dict, chunks: dict, aliases: dict) 
         proxy = type("GoldView", (), {"gold": gold})()
         missing = set(corpus.missing_facets(proxy, list(available)))
         checks["evidence_completeness"] = rate(sum(f.id not in missing for f in supported), len(supported))
-        if gold.expected_coverage in {"sufficient", "insufficient"} and retrieval.get("grade") is not None:
-            checks["coverage_grade_matches"] = retrieval["grade"]["sufficient"] == (not missing)
     evidence_by_id = {c["id"]: c for c in evidence}
     citations = [ref for claim in (output.get("answer") or {}).get("claims", []) for ref in claim["citations"]]
     valid = 0
@@ -146,9 +135,6 @@ def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | Non
                           "Source spans: " + json.dumps(chunk["source_spans"], ensure_ascii=False),
                           "Temporal/publication: " + json.dumps({key: chunk[key] for key in
                               ("temporal_status", "temporal_rules", "publication_eligible", "active_at_cutoff")}, ensure_ascii=False)])
-        if item["stage"] is not None:
-            lines.extend(["", "Probe expectation: " + item["stage"].assertion,
-                          "Pool sufficient: " + str(item["stage"].expected_pool_coverage)])
         lines.extend(["", "```json", json.dumps(record, ensure_ascii=False, indent=2), "```", ""])
     write_new(output_dir / "reviews_template.jsonl", "".join(json.dumps(t, ensure_ascii=False) + "\n" for t in templates))
     write_new(output_dir / "REVIEW.md", "\n".join(lines))
@@ -202,14 +188,7 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
         for key in ("input_tokens", "output_tokens", "cost_usd"):
             values = [r["usage"][key] for r, _, _, _ in rows]
             report[key] = sum(values) if all(v is not None for v in values) else None
-        if mode != "end_to_end":
-            matches = [c["probe_grade_matches"] for _, _, _, c in rows if c["probe_grade_matches"] is not None]
-            report["grade_expectation_match"] = rate(sum(matches), len(matches))
-            report["probe_success_over_all_cases"] = rate(sum(matches), total) if mode != "rewrite_probe" else None
-            rewrites = [v.rewrite_preserved for _, _, v, _ in rows if v and v.rewrite_preserved is not None]
-            report["rewrite_preserved"] = rate(sum(rewrites), len(rewrites))
-            report["semantic_pending"] = total - len(rewrites) if mode == "rewrite_probe" else 0
-        else:
+        if mode == "end_to_end":
             response_statuses = {"answered", "partial_answer", "needs_clarification"}
             def published_claims(record):
                 output = record["output"] or {}
@@ -263,8 +242,6 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
             report["unnecessary_abstention"] = rate(abstained, len(publish))
             completeness = [c["evidence_completeness"] for _, _, _, c in rows if c["evidence_completeness"] is not None]
             report["evidence_completeness"] = rate(sum(v["numerator"] for v in completeness), sum(v["denominator"] for v in completeness))
-            grades = [c["coverage_grade_matches"] for _, _, _, c in rows if c["coverage_grade_matches"] is not None]
-            report["coverage_grade_matches_gold_pool"] = rate(sum(grades), len(grades))
         result["modes"][mode] = report
     result["per_case"] = [{"id": r["id"], "mode": mode, "error": r["error"], "checks": c,
                           "reviewed": v is not None} for mode, rows in groups.items() for r, _, v, c in rows]

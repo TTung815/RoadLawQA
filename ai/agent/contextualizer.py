@@ -22,7 +22,7 @@ class QueryContextualizer:
     """Resolve conversational references without retrieving or answering.
 
     History contains user/assistant role and content dictionaries in chronological
-    order, matching AgentState.chat_history. Provider selection belongs to the caller.
+    order. Provider selection belongs to the caller.
     Empty history bypasses generation; all nonempty history is sent to the provider,
     which determines relevance using the contextualization prompt.
     Provider failures propagate; this milestone introduces no retry policy.

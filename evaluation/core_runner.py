@@ -168,13 +168,6 @@ async def run_questions(plan: RunPlan, runtime, *, execution_kind: str = "live",
             if question.mode == "end_to_end":
                 from backend.schemas.answer import AnswerResult
                 output = AnswerResult.model_validate(output).model_dump(mode="json")
-            elif question.mode in {"fixed_evidence", "publication_guard_probe"}:
-                from ai.agent.evidence_grader import EvidenceGrade
-                EvidenceGrade.model_validate(output["final_grade"])
-                if not output.get("batches") or not isinstance(output.get("evidence_chunk_ids"), list):
-                    raise ValueError("replay output is incomplete")
-            elif not isinstance(output.get("rewritten_query"), str) or not output["rewritten_query"].strip():
-                raise ValueError("rewrite output is empty")
         except Exception as exc:
             # Do not persist exception text/tracebacks that can contain keys or requests.
             error = {"category": "provider_or_pipeline_error", "type": type(exc).__name__}

@@ -56,11 +56,9 @@ def _same_article_reference(text: str, anchor: RetrievedChunk) -> bool:
 
 
 class LegalNeighborhoodExpander:
-    """Select consequence siblings using aspect headings and local references.
+    """Bounded lookup of explicit references and consequence leaves around retrieved sources.
 
-    Complete additional-sanction clauses may supply negative applicability evidence;
-    they are included atomically, never as a partial list implying exhaustiveness.
-    No sanction is asserted to apply here. Final coverage belongs to the grader.
+    No sanction is asserted to apply here; generation and verification decide.
     """
 
     def __init__(self, fetch_article: ArticleFetch, max_chunks: int = 8,
@@ -74,143 +72,6 @@ class LegalNeighborhoodExpander:
         self.max_chunks = max_chunks
         self.max_characters = max_characters
         self.max_scopes = max_scopes
-
-    async def expand(self, anchors: Sequence[RetrievedChunk],
-                     missing_aspects: Sequence[str],
-                     existing: Sequence[RetrievedChunk]) -> NeighborhoodSelection:
-        supported = set(missing_aspects) & {'license_points', 'additional_sanction',
-                                          'condition_exception', 'subject_violation', 'monetary_penalty'}
-        if not supported:
-            return NeighborhoodSelection(triggered=False, reason='No supported consequence gap.',
-                                         missing_aspects=list(missing_aspects))
-        grouped = defaultdict(list)
-        for anchor in anchors:
-            law = str(anchor.metadata.get('law') or '').strip()
-            article = str(anchor.metadata.get('article_no') or '').strip()
-            clause = str(anchor.metadata.get('clause_no') or '').strip()
-            if law and article and clause:
-                grouped[(law, article)].append(anchor)
-        if not grouped:
-            return NeighborhoodSelection(triggered=False, reason='No reliable structural anchor.',
-                                         missing_aspects=list(missing_aspects))
-
-        result = NeighborhoodSelection(triggered=True, reason='Unresolved consequence coverage with reliable anchors.',
-                                       missing_aspects=list(missing_aspects))
-        started = time.perf_counter()
-        existing_ids = {chunk.id for chunk in existing}
-        seen = set(existing_ids)
-        direct, complete_groups, context = [], [], []
-        reference_requests = []
-        for anchor in anchors:
-            named_laws = set(re.findall(
-                r'Luật\s+(?:Trật tự,\s*an toàn giao thông đường bộ|Đường bộ)',
-                anchor.text, re.IGNORECASE,
-            ))
-            # A document can follow several references separated by parenthetical
-            # vehicle conditions, e.g. khoản 1 Điều 56 (...), khoản 2 Điều 56 (...)
-            # của Luật ... . Resolve only when the named document is unambiguous.
-            if len(named_laws) == 1:
-                target = next(iter(named_laws))
-                for match in re.finditer(r'(?:khoản\s+(\d+)\s+)?Điều\s+(\d+)\b', anchor.text, re.I):
-                    reference_requests.append((target, match[2], match[1], anchor.id))
-            for match in re.finditer(
-                r'(?:khoản\s+(\d+)\s+)?Điều\s+(\d+)\s+(Luật\s+[^;\n.()]+|này)',
-                anchor.text, re.IGNORECASE,
-            ):
-                target = match[3].strip()
-                # Only explicit document names or the same document are resolved.
-                if target.casefold() == 'này':
-                    target = str(anchor.metadata.get('law') or '')
-                reference_requests.append((target, match[2], match[1], anchor.id))
-        for (law, article), scope_anchors in list(grouped.items())[:self.max_scopes]:
-            fetched = list(await self._fetch_article(law, article))
-            scope = LegalScope(law=law, article_no=article,
-                               anchor_chunk_ids=[chunk.id for chunk in scope_anchors],
-                               candidate_count=len(fetched))
-            result.scopes.append(scope)
-            siblings = {}
-            for chunk in fetched:
-                # Defense in depth even if a database/mock violates the requested filter.
-                if (str(chunk.metadata.get('law') or '').strip() == law and
-                    str(chunk.metadata.get('article_no') or '').strip() == article
-                    and publishable_chunk(chunk)):
-                    siblings.setdefault(chunk.id, chunk)
-            additional = defaultdict(list)
-            clause_members = defaultdict(list)
-            for chunk in sorted(siblings.values(), key=self._order):
-                clause_members[str(chunk.metadata.get('clause_no') or '')].append(chunk)
-                head = str(chunk.metadata.get('clause_head') or '').casefold()
-                body = chunk.text.casefold()
-                is_points = 'trừ điểm' in head
-                is_additional = 'xử phạt bổ sung' in head
-                matches = any(_same_article_reference(body, anchor) for anchor in scope_anchors)
-                if matches and (('license_points' in supported and is_points) or
-                                ('additional_sanction' in supported and is_additional)):
-                    direct.append(chunk)
-                if 'additional_sanction' in supported and is_additional:
-                    additional[str(chunk.metadata.get('clause_no') or '')].append(chunk)
-            for clause, group in additional.items():
-                # When no point applies, the entire clause is needed to establish scope.
-                if clause and len(group) == len(clause_members[clause]) and not any(any(_same_article_reference(chunk.text, anchor)
-                               for anchor in scope_anchors) for chunk in group):
-                    annotated = []
-                    for chunk in group:
-                        copy = chunk.model_copy(deep=True)
-                        copy.metadata['structural_context'] = {
-                            'complete_clause_chunk_ids': [member.id for member in group],
-                            'purpose': 'additional_sanction_applicability',
-                        }
-                        annotated.append(copy)
-                    complete_groups.append(annotated)
-            if supported & {'condition_exception', 'subject_violation', 'monetary_penalty'}:
-                # Broad context is a search candidate, never an applicability proof.
-                referenced_clauses = {number for c in siblings.values()
-                                      for number in re.findall(r'\bkhoản\s+(\d+)\b', c.text, re.I)}
-                context.extend(sorted(siblings.values(), key=lambda c: (
-                    str(c.metadata.get('clause_no') or '') not in referenced_clauses,
-                    bool(c.metadata.get('point')), self._order(c))))
-        referenced = []
-        seen_scopes = {(scope.law, scope.article_no) for scope in result.scopes}
-        reference_groups = defaultdict(list)
-        for law, article, clause, anchor_id in reference_requests:
-            reference_groups[(law, article)].append((clause, anchor_id))
-        for (law, article), requests in reference_groups.items():
-            if len(seen_scopes) >= self.max_scopes:
-                break
-            if (law, article) in seen_scopes:
-                continue
-            seen_scopes.add((law, article))
-            fetched = list(await self._fetch_article(law, article))
-            result.scopes.append(LegalScope(law=law, article_no=article,
-                                           anchor_chunk_ids=list(dict.fromkeys(r[1] for r in requests)),
-                                           candidate_count=len(fetched)))
-            clauses = {clause for clause, _ in requests}
-            referenced.extend(c for c in fetched if publishable_chunk(c)
-                              and str(c.metadata.get('article_no') or '') == article
-                              and (None in clauses or str(c.metadata.get('clause_no') or '') in clauses))
-        result.lookup_ms = round((time.perf_counter() - started) * 1000, 2)
-
-        def add_group(group):
-            new = [chunk for chunk in group if chunk.id not in seen]
-            cost = sum(len(chunk.text) + len(chunk.enriched_text) for chunk in new)
-            if len(result.chunks) + len(new) > self.max_chunks or result.added_characters + cost > self.max_characters:
-                return
-            for chunk in new:
-                seen.add(chunk.id)
-                result.chunks.append(chunk)
-            result.added_characters += cost
-
-        for chunk in direct:
-            add_group([chunk])
-        for group in complete_groups:
-            add_group(group)
-        for chunk in referenced:
-            add_group([chunk])
-        for chunk in context:
-            add_group([chunk])
-        if not result.chunks:
-            result.reason = 'Lookup added no new eligible evidence within budget.'
-        return result
 
     async def expand_references(self, anchors: Sequence[RetrievedChunk], question: str = "") -> NeighborhoodSelection:
         """Follow explicit references and reverse consequence links once, within budgets.

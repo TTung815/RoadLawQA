@@ -5,11 +5,9 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from ai.agent.evidence_grader import EvidenceGrade
-from ai.llm.base import LLMProvider
 from evaluation import core_runner as runner
 from evaluation import core_scoring as scoring
-from evaluation.core_runtime import CoreRuntime, hybrid_candidates, map_chunk
+from evaluation.core_runtime import CoreRuntime, map_chunk
 from evaluation.core_schema import Question, RunPlan, RunSettings, SemanticReview
 from evaluation.snapshot import digest
 from ingestion.legal_registry import read_json
@@ -113,49 +111,14 @@ async def test_checkpoint_persists_before_next_case_and_failure_stops_run():
         await runner.run_questions(p, Runtime(), execution_kind="synthetic", on_record=failed_checkpoint)
 
 
-class GradeProvider(LLMProvider):
-    def __init__(self):
-        self.pools = []
-
-    async def generate(self, *args, **kwargs):
-        raise AssertionError("no unstructured generation")
-
-    async def generate_structured(self, messages, response_schema, **kwargs):
-        assert response_schema is EvidenceGrade
-        ids = [c["id"] for c in json.loads(messages[-1].content)["chunks"]]
-        self.pools.append(ids)
-        return EvidenceGrade(sufficient=False, reason="fixture", coverage=[])
-
-
-@pytest.mark.asyncio
-async def test_replay_accumulates_all_batches_without_full_corpus_search():
-    from evaluation import gold_support as corpus
-    chunks = read_json(corpus.DEFAULT_OUTPUT)["chunks"][:2]
-    provider = GradeProvider()
-    runtime = CoreRuntime(provider, chunks, settings())
-    question = Question(id="fixture", current_query="fixture query", mode="fixed_evidence",
-                        evidence_batches=[[chunks[0]["id"]], [chunks[1]["id"]]])
-    output = await runtime.execute(question)
-    assert len(provider.pools[0]) == 1 and len(provider.pools[1]) == 2
-    assert output["evidence_chunk_ids"] == [c["id"] for c in chunks]
-
-
 @pytest.mark.asyncio
 async def test_neighborhood_lookup_preserves_publication_metadata():
     from evaluation import gold_support as corpus
     chunk = next(c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"] if not c["publication_eligible"])
-    runtime = CoreRuntime(GradeProvider(), [chunk], settings())
+    runtime = CoreRuntime(None, [chunk], settings())
     found = await runtime.fetch_article(chunk["law"], chunk["article_no"])
     assert found[0].metadata["publication_eligible"] is False
     assert found[0].metadata["source_spans"] == chunk["source_spans"]
-
-
-def test_hybrid_preserves_legacy_citation_merge_without_mutating_rows():
-    rows = [{"id": "a", "display_citation": "c1"}, {"id": "b", "display_citation": "c2"}]
-    result = hybrid_candidates(rows, [(0, 10), (1, 5)], [(rows[1], .8)], .5, 2)
-    assert [c["id"] for c, _ in result] == ["b", "a"]
-    assert result[0][1] == pytest.approx(.65)
-    assert "score" not in rows[0]
 
 
 def write_run(tmp_path, *, kind="live", output=None, error=None):

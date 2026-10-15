@@ -44,7 +44,6 @@ class LLMSettings(AppSettings):
         "openai_max_output_tokens": "OPENAI_MAX_OUTPUT_TOKENS",
         "llm_request_timeout_seconds": "LLM_REQUEST_TIMEOUT_SECONDS",
         "llm_max_transient_retries": "LLM_MAX_TRANSIENT_RETRIES",
-        "max_retrieval_attempts": "MAX_RETRIEVAL_ATTEMPTS",
         "structural_expansion_enabled": "STRUCTURAL_EXPANSION_ENABLED",
     }
     gemini_api_key: Optional[str] = None
@@ -58,7 +57,6 @@ class LLMSettings(AppSettings):
     llm_request_timeout_seconds: float = Field(default=90.0, gt=0, allow_inf_nan=False)
     llm_max_transient_retries: int = Field(default=2, ge=0, le=5)
     # Compatibility setting for old experiments; serving always searches once.
-    max_retrieval_attempts: int = Field(default=2, ge=1, le=2)
     structural_expansion_enabled: bool = True
 
     @property
@@ -126,7 +124,6 @@ class Settings(LLMSettings):
 
     # Paths
     project_root: Path = PROJECT_ROOT
-    bm25_index_path: Path = PROJECT_ROOT / "outputs/current-law-shadow-2026-09-22/bm25_index.pkl"
     data_dir: Path = PROJECT_ROOT / "data"
 
     # Weaviate
@@ -134,7 +131,7 @@ class Settings(LLMSettings):
     weaviate_port: int = Field(default=8080, ge=1, le=65535)
     weaviate_grpc_port: int = Field(default=50051, ge=1, le=65535)
     weaviate_collection: str = "LawStructured20260922V2"
-    retrieval_backend: Literal["structured", "frozen"] = "structured"
+    retrieval_backend: Literal["structured"] = "structured"
     hybrid_alpha: float = Field(default=0.5, ge=0, le=1, allow_inf_nan=False)
     hybrid_candidate_limit: int = Field(default=20, ge=20, le=40)
     compound_candidate_limit: int = Field(default=32, ge=20, le=40)

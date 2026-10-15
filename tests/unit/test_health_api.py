@@ -52,7 +52,6 @@ assert not any(name in sys.modules for name in blocked)
 '''
     env = dict(
         os.environ, WEAVIATE_PORT="invalid", WEAVIATE_GRPC_PORT="invalid",
-        MAX_RETRIEVAL_ATTEMPTS="invalid",
     )
     env.pop("GEMINI_API_KEY", None)
     subprocess.run(

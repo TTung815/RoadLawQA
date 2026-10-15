@@ -135,8 +135,8 @@ help/ngoài phạm vi qua router thường dùng một call. Retry lỗi provide
 ngân sách riêng, nên logical calls không bằng mọi HTTP request thực tế.
 
 `retrieval_query` ghi expansion đã chấp nhận; `retrieval_queries` ghi câu hỏi
-độc lập và expansion. `retrieval_attempts=1`; `grade=null` và `rewritten_query=null`
-vì luồng phục vụ không chạy grading/rewrite/regrade cũ. Trace native ghi view
+độc lập và expansion. `ranked_chunk_ids` là top-k sau rerank, `chunks` thêm các
+nguồn tra dẫn chiếu, mô tả trong `structural_expansion`. Trace native ghi view
 thực tế kể cả facet. `routing_ms` gồm xử lý lịch sử và expansion.
 
 API trả lỗi đã lọc. Diagnostics offline có thể giữ draft để debug, nhưng không
@@ -149,7 +149,7 @@ lưu API key hoặc request thô tới provider.
 | `POST /api/v1/answer` | Toàn chatbot, nhận query/history/top-k |
 | `POST /api/v1/retrieve/inspect` | Truy xuất câu độc lập, không LLM/router; history bị từ chối |
 | `POST /api/v1/retrieve` | Retrieval với contextualization khi có lịch sử |
-| `POST /api/v1/retrieve/agentic` | Tên endpoint giữ tương thích; hiện dùng pipeline lean |
+| `POST /api/v1/retrieve/evidence` | Retrieval đầy đủ của chatbot: hybrid/rerank và tra dẫn chiếu, không sinh đáp án |
 
 Evaluator RAG dùng cùng service luật/retriever nhưng không chạy router chatbot.
 Điểm/latency evaluator không đại diện toàn bộ trải nghiệm hội thoại.

@@ -6,36 +6,17 @@ Heavy models/connections are created only by explicit live run, never on import.
 
 from __future__ import annotations
 
-import asyncio
-from typing import Any
-
 from ai.agent.answer_generator import AnswerGenerator
 from ai.agent.citation_verifier import CitationVerifier
 from ai.agent.contextualizer import QueryContextualizer
-from ai.agent.evidence_grader import EvidenceGrader
-from ai.agent.query_rewriter import QueryRewriter
-from ai.retrieval.base import RetrievedChunk, Retriever
+from ai.retrieval.base import Retriever
 from ai.retrieval.neighborhood import LegalNeighborhoodExpander
 from backend.services.lean_retrieval import LeanRetrievalService
 from backend.services.answer import AnswerService
 from evaluation.core_schema import Question, RunSettings
-from ai.retrieval.current_law import CurrentLawRetriever, hybrid_candidates, map_chunk
+from ai.retrieval.current_law import map_chunk
 from ingestion.legal_registry import PROJECT_ROOT, read_json
-from ingestion.shadow_index import DEFAULT_OUTPUT_DIR, SHADOW_COLLECTION, index_properties
 from ai.diagnostics import TRACE
-
-
-class PoolRetriever(Retriever):
-    def __init__(self, batches: list[list[str]], chunks: dict[str, dict]):
-        self.batches, self.chunks, self.position = batches, chunks, 0
-
-    async def search(self, query: str, top_k: int = 10) -> list[RetrievedChunk]:
-        if self.position >= len(self.batches):
-            return []
-        batch = self.batches[self.position]
-        self.position += 1
-        # Controlled batch is not truncated by top_k or supplemented from the corpus.
-        return [map_chunk(self.chunks[identity]) for identity in batch]
 
 
 class CoreRuntime:
@@ -65,27 +46,9 @@ class CoreRuntime:
 
     async def _execute(self, question: Question) -> dict:
         context = QueryContextualizer(self.provider)
-        grader, rewriter = EvidenceGrader(self.provider), QueryRewriter(self.provider)
         history = [m.model_dump() for m in question.chat_history]
-        if question.mode == "rewrite_probe":
-            standalone = (await context.contextualize(question.current_query, history)).standalone_query
-            # No gold-selected gap/evidence is supplied to this standalone stage probe.
-            grade = await grader.grade(standalone, [])
-            rewrite = await rewriter.rewrite(standalone, standalone, grade)
-            return {"kind": "rewrite_probe", "standalone_query": standalone,
-                    "rewritten_query": rewrite.rewritten_query}
-        if question.mode in {"fixed_evidence", "publication_guard_probe"}:
-            standalone = (await context.contextualize(question.current_query, history)).standalone_query
-            pool, grades = {}, []
-            for batch in question.evidence_batches:
-                for identity in batch:
-                    pool.setdefault(identity, map_chunk(self.chunks[identity]))
-                grade = await grader.grade(standalone, list(pool.values()))
-                grades.append({"evidence_chunk_ids": list(pool), "grade": grade.model_dump(mode="json")})
-            # Replay measures coverage on each union; no full-corpus expansion/rewrite.
-            return {"kind": question.mode, "standalone_query": standalone, "batches": grades,
-                    "final_grade": grades[-1]["grade"],
-                    "evidence_chunk_ids": list(pool)}
+        if question.mode != "end_to_end":
+            raise ValueError("only end-to-end questions are executed")
         if self.retriever is None:
             raise ValueError("end-to-end needs the isolated shadow retriever")
         if self.settings.max_attempts != 1:

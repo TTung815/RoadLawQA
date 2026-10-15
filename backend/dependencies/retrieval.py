@@ -26,7 +26,7 @@ def get_retrieval_service() -> HistoryAwareRetrievalService:
 
 
 @lru_cache(maxsize=1)
-def get_agentic_retrieval_service() -> LeanRetrievalService:
+def get_lean_retrieval_service() -> LeanRetrievalService:
     settings = LLMSettings()
     provider = create_provider(settings)
     expander = None

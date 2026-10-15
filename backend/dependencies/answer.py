@@ -6,7 +6,7 @@ from ai.agent.answer_generator import AnswerGenerator
 from ai.agent.citation_verifier import CitationVerifier
 from ai.agent.conversation_router import ConversationRouter
 from ai.llm.factory import create_provider
-from backend.dependencies.retrieval import get_agentic_retrieval_service
+from backend.dependencies.retrieval import get_lean_retrieval_service
 from backend.services.answer import AnswerService
 from backend.services.chat import ChatService
 from configs.settings import LLMSettings
@@ -26,5 +26,5 @@ def get_answer_service() -> AnswerService:
     settings = LLMSettings()
     provider = create_provider(settings)
     return AnswerService(
-        get_agentic_retrieval_service(), AnswerGenerator(provider), CitationVerifier(provider),
+        get_lean_retrieval_service(), AnswerGenerator(provider), CitationVerifier(provider),
     )

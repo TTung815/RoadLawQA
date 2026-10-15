@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from ai.agent.citation_verifier import CitationVerification
 from ai.agent.support import SupportState
-from backend.services.agentic_retrieval import AgenticRetrievalResult
+from backend.services.lean_retrieval import EvidenceRetrievalResult
 
 
 class EvidenceCitation(BaseModel):
@@ -35,7 +35,7 @@ class AnswerTimings(BaseModel):
 class AnswerResult(BaseModel):
     status: Literal["conversational", "out_of_scope", "answered", "partial_answer", "needs_clarification", "insufficient_evidence", "verification_failed"]
     message: str
-    retrieval: AgenticRetrievalResult | None
+    retrieval: EvidenceRetrievalResult | None
     evidence_citations: list[EvidenceCitation]
     answer: GroundedAnswer | None = None
     limitations: list[str] = Field(default_factory=list)

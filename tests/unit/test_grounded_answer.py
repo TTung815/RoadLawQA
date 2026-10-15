@@ -10,58 +10,37 @@ import pytest
 
 from ai.agent.answer_generator import AnswerGenerator, DraftAnswer, GeneratedAnswer
 from ai.agent.citation_verifier import CitationVerifier, SemanticVerification
-from ai.agent.evidence_grader import EvidenceGrade
-from ai.agent.query_rewriter import RewrittenQuery
+from ai.agent.contextualizer import QueryContextualizer
 from ai.agent.range_coverage import RangeCoverage
 from backend.dependencies.answer import get_chat_service
 from backend.main import create_app
 from backend.services.answer import AnswerService
-from tests.unit.test_agentic_retrieval import chunk, make_service, ScriptedProvider
+from backend.services.lean_retrieval import LeanRetrievalService
+from tests.unit.fakes import ScriptedProvider, ScriptedRetriever, chunk, semantic
 
 QUESTION = "Ô tô vi phạm bị phạt tiền và trừ điểm giấy phép lái xe thế nào?"
-COMPLETE = {
-    "sufficient": True, "reason": "Both requested consequences are supported.",
-    "coverage": [{"aspect": aspect, "covered": True, "support_state": "positive_support"}
-                 for aspect in ["monetary_penalty", "license_points"]],
-}
 DRAFT = {"claims": [
     {"support_state": "positive_support", "text": "Bị phạt tiền theo mức trong nguồn.", "chunk_ids": ["money"]},
     {"support_state": "positive_support", "text": "Bị trừ điểm giấy phép lái xe theo nguồn.", "chunk_ids": ["points"]},
 ]}
 
 
-def semantic(count, supported=True, complete=True):
-    return {"assessments": [
-        {"claim_index": index, "supported": supported,
-         "support_state": "positive_support" if supported else "unknown",
-         "reason": "Supported by attached source." if supported else "Attached source does not support the claim."}
-        for index in range(count)],
-        "response_appropriate": supported, "answer_complete": complete, "completeness_reason": "Question coverage checked."}
 
-
-def qa_service(draft=DRAFT, verification=None, sufficient=True):
-    grade = COMPLETE if sufficient else {
-        "sufficient": False, "reason": "License evidence is missing.",
-        "coverage": [{"aspect": "monetary_penalty", "covered": True, "support_state": "positive_support"},
-                     {"aspect": "license_points", "covered": False}],
-    }
-    evidence = [chunk("money"), chunk("points")] if sufficient else [chunk("money")]
-    retrieval, grading, retriever, _ = make_service([(EvidenceGrade, grade)], [evidence], max_attempts=1)
-    if not sufficient and draft is DRAFT:
-        draft = {"claims": [DRAFT["claims"][0]], "response_kind": "partial",
-                 "limitations": ["Chưa đủ căn cứ xác định số điểm bị trừ."]}
-        verification = {**semantic(1, complete=False), "response_appropriate": True}
+def qa_service(draft=DRAFT, verification=None, evidence=None):
+    evidence = [chunk("money"), chunk("points")] if evidence is None else evidence
     script = [(GeneratedAnswer, draft)]
     if verification is not False:
         script.append((SemanticVerification, semantic(len(draft["claims"])) if verification is None else verification))
     provider = ScriptedProvider(script)
+    retriever = ScriptedRetriever([evidence])
+    retrieval = LeanRetrievalService(QueryContextualizer(provider), retriever)
     return (AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider), max_answer_attempts=1),
-            provider, grading, retriever)
+            provider, retriever)
 
 
 @pytest.mark.asyncio
 async def test_sufficient_evidence_generates_and_verifies_server_rendered_citations():
-    service, provider, _, _ = qa_service()
+    service, provider, _ = qa_service()
     result = await service.answer(QUESTION, top_k=3)
     assert result.status == "answered"
     assert result.verification.provenance_valid is True
@@ -74,7 +53,7 @@ async def test_sufficient_evidence_generates_and_verifies_server_rendered_citati
     assert [call["schema"] for call in provider.calls] == [GeneratedAnswer, SemanticVerification]
     generation, verification = [call["payload"] for call in provider.calls]
     assert generation["question"] == verification["question"] == QUESTION
-    assert generation["required_aspects"] == ["monetary_penalty", "license_points"]
+    assert generation["required_aspects"] == []
     assert [item["id"] for item in generation["chunks"]] == ["money", "points"]
     assert verification["claims"][0]["chunk_ids"] == ["money"]
     assert verification["claims"][1]["chunk_ids"] == ["points"]
@@ -85,44 +64,8 @@ async def test_sufficient_evidence_generates_and_verifies_server_rendered_citati
 
 
 @pytest.mark.asyncio
-async def test_incomplete_retrieval_returns_verified_partial_answer_with_limits():
-    service, provider, _, _ = qa_service(sufficient=False)
-    result = await service.answer(QUESTION)
-    assert result.status == "partial_answer"
-    assert result.answer is not None
-    assert result.verification.status == "passed"
-    assert result.verification.answer_complete is False
-    assert len(provider.calls) == 2
-    assert result.limitations == ["Chưa đủ căn cứ xác định số điểm bị trừ."]
-    assert result.retrieval.grade.missing_aspects == ["license_points"]
-    assert [c.chunk_id for c in result.answer.claims[0].citations] == ["money"]
-
-
-@pytest.mark.asyncio
-async def test_clause_membership_cannot_authorize_a_negative_answer():
-    anchor, provision_a, provision_b = chunk("anchor"), chunk("provision-a"), chunk("provision-b")
-    for provision in (provision_a, provision_b):
-        provision.metadata["structural_context"] = {
-            "complete_clause_chunk_ids": ["provision-a", "provision-b"],
-            "purpose": "additional_sanction_applicability",
-        }
-    grade = {"sufficient": True, "reason": "Complete applicability evidence supplied.",
-             "coverage": [{"aspect": "additional_sanction", "covered": True, "support_state": "negative_support"}]}
-    retrieval, _, _, _ = make_service([(EvidenceGrade, grade)],
-                                      [[anchor, provision_a, provision_b]], max_attempts=1)
-    provider = ScriptedProvider([])
-    result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(
-        "Hành vi này có bị tước giấy phép lái xe không?")
-    assert result.status == "insufficient_evidence"
-    assert result.answer is None
-    assert result.retrieval.grade.coverage[0].support_state == "unknown"
-    assert result.verification.status == "not_run"
-    assert provider.calls == []
-
-
-@pytest.mark.asyncio
 async def test_fabricated_citation_fails_without_semantic_call_or_draft_publication():
-    service, provider, _, _ = qa_service(
+    service, provider, _ = qa_service(
         {"claims": [{"support_state": "positive_support", "text": "Một nhận định.", "chunk_ids": ["invented"]}]}, verification=False)
     result = await service.answer(QUESTION)
     assert result.status == "verification_failed"
@@ -135,7 +78,7 @@ async def test_fabricated_citation_fails_without_semantic_call_or_draft_publicat
 
 @pytest.mark.asyncio
 async def test_valid_id_unsupported_claim_fails_and_no_repair_loop_occurs():
-    service, provider, _, _ = qa_service(verification=semantic(2, supported=False))
+    service, provider, _ = qa_service(verification=semantic(2, supported=False))
     result = await service.answer(QUESTION)
     assert result.status == "verification_failed"
     assert result.answer is None
@@ -144,26 +87,6 @@ async def test_valid_id_unsupported_claim_fails_and_no_repair_loop_occurs():
     assert result.repair_attempts == 0
     assert len(provider.calls) == 2
     assert provider.script == []
-
-
-@pytest.mark.asyncio
-async def test_complementary_retry_leaves_reach_generation_and_claim_verification():
-    gap = {"sufficient": False, "reason": "Missing license consequences.", "coverage": [
-        {"aspect": "monetary_penalty", "covered": True, "support_state": "positive_support"}, {"aspect": "license_points", "covered": False}]}
-    retrieval, _, retriever, _ = make_service([
-        (EvidenceGrade, gap), (RewrittenQuery, {"rewritten_query": "Ô tô vi phạm bị trừ điểm GPLX thế nào?"}),
-        (EvidenceGrade, COMPLETE),
-    ], [[chunk("money")], [chunk("points")]])
-    draft = {"claims": [{"support_state": "positive_support", "text": "Có cả tiền phạt và hậu quả GPLX theo các nguồn.",
-                         "chunk_ids": ["money", "points"]}]}
-    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, semantic(1))])
-    result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(QUESTION)
-    assert result.status == "answered"
-    assert result.retrieval.selected_attempt == 2
-    assert len(retriever.calls) == 2
-    assert [item["id"] for item in provider.calls[0]["payload"]["chunks"]] == ["money", "points"]
-    assert provider.calls[1]["payload"]["claims"][0]["chunk_ids"] == ["money", "points"]
-    assert [citation.chunk_id for citation in result.answer.claims[0].citations] == ["money", "points"]
 
 
 @pytest.mark.asyncio
@@ -228,27 +151,6 @@ async def test_generation_receives_proven_point_boundary_and_open_upper_branch()
 
 
 @pytest.mark.asyncio
-async def test_real_qa_orchestration_carries_range_proof_to_both_llm_stages():
-    question, evidence, proof = inclusive_range_evidence()
-    grade = {"sufficient": True, "reason": "Joint numeric coverage supported.",
-             "coverage": [{"aspect": "subject_violation", "covered": True, "support_state": "positive_support"},
-                          {"aspect": "threshold_range", "covered": True, "support_state": "positive_support"}],
-             "range_coverage": proof.model_dump()}
-    retrieval, _, _, _ = make_service([(EvidenceGrade, grade)], [evidence], max_attempts=1)
-    draft = {"claims": [{"support_state": "positive_support", "text": "Đúng 20: hậu quả A; trên 20 đến 35: hậu quả B.",
-                         "chunk_ids": ["lower", "upper"]}]}
-    response = semantic(1)
-    response["range_assessments"] = [
-        {"branch_index": index, "addressed": True, "reason": "Correct branch answered."}
-        for index in [0, 1]]
-    provider = ScriptedProvider([(GeneratedAnswer, draft), (SemanticVerification, response)])
-    result = await AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider)).answer(question)
-    assert result.status == "answered"
-    assert provider.calls[0]["payload"]["required_range"] == provider.calls[1]["payload"]["required_range"]
-    assert [item.chunk_id for item in result.verification.range_assessments] == ["lower", "upper"]
-
-
-@pytest.mark.asyncio
 @pytest.mark.parametrize("addressed", [True, False])
 async def test_branch_assessment_overrides_optimistic_global_completeness(addressed):
     question, evidence, proof = inclusive_range_evidence()
@@ -284,13 +186,13 @@ async def test_each_required_range_branch_needs_exactly_one_verifier_assessment(
 @pytest.mark.asyncio
 @pytest.mark.parametrize("stage", ["generator", "verifier", "retrieval"])
 async def test_provider_and_retrieval_failures_propagate(stage):
-    service, provider, grading, _ = qa_service()
+    service, provider, retriever = qa_service()
     if stage == "generator":
         provider.script[0] = (GeneratedAnswer, RuntimeError("generator unavailable"))
     elif stage == "verifier":
         provider.script[1] = (SemanticVerification, RuntimeError("verifier unavailable"))
     else:
-        grading.script[0] = (EvidenceGrade, RuntimeError("retrieval grading unavailable"))
+        retriever.batches[0] = RuntimeError("retrieval unavailable")
     with pytest.raises(RuntimeError, match="RuntimeError"):
         await service.answer(QUESTION)
     assert len(provider.calls) == {"generator": 1, "verifier": 2, "retrieval": 0}[stage]
@@ -301,7 +203,7 @@ async def test_provider_and_retrieval_failures_propagate(stage):
 async def test_missing_duplicate_or_invented_verifier_assessments_fail_closed(indices):
     response = semantic(2)
     response["assessments"] = [dict(response["assessments"][0], claim_index=index) for index in indices]
-    service, provider, _, _ = qa_service(verification=response)
+    service, provider, _ = qa_service(verification=response)
     result = await service.answer(QUESTION)
     assert result.status == "verification_failed"
     assert result.answer is None
@@ -311,7 +213,7 @@ async def test_missing_duplicate_or_invented_verifier_assessments_fail_closed(in
 
 @pytest.mark.asyncio
 async def test_supported_claims_with_incomplete_answer_are_not_published():
-    service, _, _, _ = qa_service(verification=semantic(2, complete=False))
+    service, _, _ = qa_service(verification=semantic(2, complete=False))
     result = await service.answer(QUESTION)
     assert result.verification.semantic_valid is True
     assert result.verification.answer_complete is False
@@ -323,7 +225,7 @@ async def test_supported_claims_with_incomplete_answer_are_not_published():
     {"claims": [{"support_state": "positive_support", "text": "Bị phạt theo nguồn.", "chunk_ids": ["money", "money"]}]},
 ])
 async def test_duplicate_id_fails_without_semantic_verifier(draft):
-    service, provider, _, _ = qa_service(draft, verification=False)
+    service, provider, _ = qa_service(draft, verification=False)
     result = await service.answer(QUESTION)
     assert result.verification.status == "failed"
     assert result.answer is None
@@ -333,7 +235,7 @@ async def test_duplicate_id_fails_without_semantic_verifier(draft):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("sufficient", [True, False])
 async def test_answer_api_observable_success_and_insufficiency(sufficient):
-    service, _, _, retriever = qa_service(sufficient=sufficient)
+    service, provider, retriever = qa_service(evidence=None if sufficient else [])
     app = create_app()
     app.dependency_overrides[get_chat_service] = lambda: service
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
@@ -341,19 +243,20 @@ async def test_answer_api_observable_success_and_insufficiency(sufficient):
     assert response.status_code == 200
     result = response.json()
     assert result["retrieval"]["original_query"] == result["retrieval"]["standalone_query"] == QUESTION
-    assert result["retrieval"]["grade"]["sufficient"] is sufficient
-    assert result["status"] == ("answered" if sufficient else "partial_answer")
+    assert result["status"] == ("answered" if sufficient else "insufficient_evidence")
     assert result["repair_attempts"] == 0
-    assert result["evidence_citations"]
+    assert bool(result["evidence_citations"]) is sufficient
+    # Without publishable evidence no generation or verification call is made.
+    assert len(provider.calls) == (2 if sufficient else 0)
     assert "generation_ms" in result["timings"]
-    assert "grading_ms" in result["retrieval"]["timings"]
+    assert "structural_lookup_ms" in result["retrieval"]["timings"]
     assert retriever.calls == [(QUESTION, 3)]
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("stage", ["generator", "verifier"])
 async def test_answer_api_provider_failure_is_server_error_without_legal_answer(stage):
-    service, provider, _, _ = qa_service()
+    service, provider, _ = qa_service()
     index, schema = (0, GeneratedAnswer) if stage == "generator" else (1, SemanticVerification)
     provider.script[index] = (schema, RuntimeError("provider unavailable"))
     app = create_app()
@@ -402,7 +305,7 @@ def no_network(*args, **kwargs):
     raise AssertionError('Unexpected network connection')
 socket.create_connection = socket.socket.connect = socket.socket.connect_ex = no_network
 from tests.unit.test_grounded_answer import qa_service, QUESTION
-service, provider, _, _ = qa_service()
+service, provider, _ = qa_service()
 assert asyncio.run(service.answer(QUESTION)).status == 'answered'
 assert not any(name in sys.modules for name in blocked)
 '''

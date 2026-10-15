@@ -7,7 +7,7 @@ import pytest
 from ai.agent.conversation_router import ConversationDecision, ConversationRouter
 from ai.retrieval.query_expansion import checked_expansion
 from ai.retrieval.structured import StructuredRetriever
-from tests.unit.test_agentic_retrieval import ScriptedProvider, chunk
+from tests.unit.fakes import ScriptedProvider, chunk
 from tests.unit.test_retrieval_selection import Embedder, native_response
 from ingestion.structured_corpus import load_bundle, lexical_text
 
@@ -62,7 +62,7 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
     from backend.services.answer import AnswerService
     from backend.services.chat import ChatService
     from backend.services.lean_retrieval import LeanRetrievalService
-    from tests.unit.test_grounded_answer import semantic
+    from tests.unit.fakes import semantic
 
     provider = ScriptedProvider([
         (ConversationDecision, {"intent": "legal", "standalone_query": original, "retrieval_query": rewrite}),
@@ -85,7 +85,6 @@ async def test_expanded_chat_keeps_followup_facts_for_generation_and_verificatio
     assert result.retrieval.standalone_query == original
     assert result.retrieval.retrieval_queries == [original, rewrite]
     assert result.retrieval.retrieval_query == rewrite
-    assert result.retrieval.retrieval_attempts == 1
     assert len(provider.calls) == 3
     for call in provider.calls[1:]:
         assert call["payload"]["question"] == original
@@ -143,27 +142,6 @@ async def test_invalid_expansion_does_not_search_invented_locator():
     retriever = StructuredRetriever(units, SimpleNamespace(query=SimpleNamespace(hybrid=hybrid)), Embedder(), None)
     assert await retriever.search("Mức phạt vượt đèn đỏ?", retrieval_query="Điều 6 Nghị định 168/2024") == []
     assert len(calls) == 1
-
-
-@pytest.mark.asyncio
-async def test_explicit_frozen_backend_also_bounds_and_deduplicates_expansion():
-    from ai.retrieval.current_law import CurrentLawRetriever
-    from unittest.mock import Mock
-
-    original = [{"id": str(i), "enriched_text": str(i)} for i in range(20)]
-    additional = [original[0], *[{"id": str(i), "enriched_text": str(i)} for i in range(20, 40)]]
-    ranker = Mock()
-    ranker.predict.side_effect = lambda pairs: [1.0] * len(pairs)
-    retriever = CurrentLawRetriever([], None, None, None, ranker)
-    retriever._candidates = Mock(side_effect=[[(c, .5) for c in original], [(c, .5) for c in additional]])
-    # Mapping is unrelated to candidate selection; inspect the rerank boundary.
-    import unittest.mock
-    with unittest.mock.patch("ai.retrieval.current_law.map_chunk", side_effect=lambda c, score: c):
-        results = await retriever.search("Câu hỏi gốc", top_k=5, retrieval_query="Diễn đạt tìm nguồn")
-    pairs = ranker.predict.call_args.args[0]
-    assert len(pairs) == 20 and len({text for _, text in pairs}) == 20
-    assert len(results) == 5 and retriever._candidates.call_count == 2
-    assert all(q == "Diễn đạt tìm nguồn" for q, _ in pairs)
 
 
 def test_existing_question_focus_is_not_displaced_by_a_generic_rewrite():

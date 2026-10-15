@@ -4,11 +4,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from backend.dependencies.retrieval import get_agentic_retrieval_service, get_retrieval_service, get_current_retriever
+from backend.dependencies.retrieval import get_current_retriever, get_lean_retrieval_service, get_retrieval_service
 from backend.schemas.retrieval import RetrievalRequest
 from backend.services.retrieval import HistoryAwareRetrievalService, RetrievalResult
-from backend.services.agentic_retrieval import AgenticRetrievalResult
-from backend.services.lean_retrieval import LeanRetrievalService
+from backend.services.lean_retrieval import EvidenceRetrievalResult, LeanRetrievalService
 
 router = APIRouter(tags=["Retrieval"])
 
@@ -34,11 +33,11 @@ async def retrieve(
     )
 
 
-@router.post("/retrieve/agentic", response_model=AgenticRetrievalResult)
-async def retrieve_agentic(
+@router.post("/retrieve/evidence", response_model=EvidenceRetrievalResult)
+async def retrieve_evidence(
     request: RetrievalRequest,
-    service: Annotated[LeanRetrievalService, Depends(get_agentic_retrieval_service)],
-) -> AgenticRetrievalResult:
+    service: Annotated[LeanRetrievalService, Depends(get_lean_retrieval_service)],
+) -> EvidenceRetrievalResult:
     return await service.retrieve(
         request.current_query,
         [turn.model_dump() for turn in request.chat_history],

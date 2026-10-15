@@ -94,8 +94,8 @@ async def test_preflight_checks_plain_and_every_real_pipeline_schema():
         return httpx.Response(200, json=response_body(text))
     provider = MeasuredProvider(OpenAIProvider("fake", transport=httpx.MockTransport(handler)))
     checks = await preflight.check_provider(provider, 10)
-    assert len(checks) == 6 and all(c["passed"] for c in checks)
-    assert len(requests) == 6 and len(provider.observations) == 6
+    assert len(checks) == 4 and all(c["passed"] for c in checks)
+    assert len(requests) == 4 and len(provider.observations) == 4
 
 
 @pytest.mark.asyncio
@@ -186,16 +186,14 @@ async def test_openai_adapter_runs_v2_answer_pipeline_and_preserves_publication_
     from ai.agent.answer_generator import AnswerGenerator
     from ai.agent.citation_verifier import CitationVerifier
     from ai.agent.contextualizer import QueryContextualizer
-    from ai.agent.evidence_grader import EvidenceGrader
-    from ai.agent.query_rewriter import QueryRewriter
-    from backend.services.agentic_retrieval import AgenticRetrievalService
     from backend.services.answer import AnswerService
-    from tests.unit.test_agentic_retrieval import ScriptedRetriever, chunk
-    from tests.unit.test_grounded_answer import COMPLETE, DRAFT, QUESTION, semantic
+    from backend.services.lean_retrieval import LeanRetrievalService
+    from tests.unit.fakes import ScriptedRetriever, chunk, semantic
+    from tests.unit.test_grounded_answer import DRAFT, QUESTION
     draft = json.loads(json.dumps(DRAFT))
     if mode == "negative":
         draft["claims"][0]["support_state"] = "negative_support"
-    outputs = {"EvidenceGrade": COMPLETE, "GeneratedAnswer": {"answer": draft},
+    outputs = {"GeneratedAnswer": {"answer": draft},
                "SemanticVerification": semantic(2, supported=mode != "unsupported")}
     calls = []
     def handler(request):
@@ -205,13 +203,12 @@ async def test_openai_adapter_runs_v2_answer_pipeline_and_preserves_publication_
         assert "temperature" not in body
         return httpx.Response(200, json=response_body(json.dumps(outputs[name])))
     provider = MeasuredProvider(OpenAIProvider("fake", transport=httpx.MockTransport(handler)))
-    retrieval = AgenticRetrievalService(QueryContextualizer(provider),
-                ScriptedRetriever([[chunk("money"), chunk("points")]]), EvidenceGrader(provider),
-                QueryRewriter(provider), max_attempts=1)
+    retrieval = LeanRetrievalService(QueryContextualizer(provider),
+                ScriptedRetriever([[chunk("money"), chunk("points")]]))
     service = AnswerService(retrieval, AnswerGenerator(provider), CitationVerifier(provider))
     result = await service.answer(QUESTION)
     assert result.status == status
-    expected = ["EvidenceGrade", "GeneratedAnswer"]
+    expected = ["GeneratedAnswer"]
     if mode != "negative":
         expected.append("SemanticVerification")
     if mode != "valid":

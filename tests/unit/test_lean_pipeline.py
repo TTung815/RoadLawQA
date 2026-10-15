@@ -10,10 +10,34 @@ from backend.services.answer import AnswerService
 from backend.services.lean_retrieval import LeanRetrievalService
 from evaluation.core_runtime import CoreRuntime
 from evaluation.core_schema import Question
-from tests.unit.test_agentic_retrieval import ScriptedProvider, ScriptedRetriever, chunk
+from tests.unit.fakes import ScriptedProvider, ScriptedRetriever, chunk
 from tests.unit.test_core_evaluation import settings
-from tests.unit.test_grounded_answer import semantic
-from tests.unit.test_neighborhood_expansion import legal, consequence, Lookup
+from tests.unit.fakes import semantic
+from tests.unit.fakes import legal, consequence, Lookup
+
+
+class RowsLookup:
+    """Article and combination-rule lookup over frozen leaf rows, for expander tests."""
+
+    def __init__(self, rows):
+        self.rows = rows
+
+    async def fetch_article(self, law, article_no):
+        from ai.retrieval.current_law import map_chunk
+        laws = {row['law'] for row in self.rows}
+        names = [law] if law in laws else [name for name in laws if law.casefold() in name.casefold()]
+        if len(names) != 1:
+            return []
+        return [map_chunk(row) for row in self.rows if row['law'] == names[0]
+                and str(row['article_no']) == str(article_no) and row.get('publication_eligible') is not False]
+
+    async def fetch_combination_rules(self, laws):
+        import re
+        from ai.retrieval.current_law import map_chunk
+        return [map_chunk(row) for row in self.rows if row['law'] in laws
+                and row.get('publication_eligible') is not False
+                and re.search(r'nhiều hành vi|nhiều lần|cùng một lần', row['text'], re.I)
+                and re.search(r'xử phạt|phạt tiền|trừ điểm', row['text'], re.I)]
 
 
 def draft(text='Quy tắc đúng theo nguồn.'):
@@ -30,10 +54,8 @@ async def test_default_runtime_calls_only_context_when_needed_generation_and_ver
     runtime = CoreRuntime(provider, [], settings(max_attempts=1, expansion=False), retriever)
     result = await runtime.execute(Question(id='fixture', current_query='Quy tắc là gì?', chat_history=history))
     assert result['status'] == 'answered'
-    assert result['retrieval']['grade'] is None
-    assert result['retrieval']['attempts'][0]['grade'] is None
-    assert result['retrieval']['timings']['grading_ms'] == 0
-    assert result['retrieval']['timings']['rewrite_ms'] == 0
+    assert result['retrieval']['ranked_chunk_ids'] == ['rule']
+    assert set(result['retrieval']['timings']) == {'contextualization_ms', 'retrieval_ms', 'structural_lookup_ms', 'total_ms'}
     assert len(retriever.calls) == 1
     assert provider.script == []
     assert all(e['stage'] not in {'coverage_grading', 'query_rewrite'} for e in runtime.last_trace)
@@ -222,9 +244,9 @@ async def test_combination_lookup_is_conditional_and_uses_shared_budget():
 async def test_real_corpus_scope_and_combination_sources_are_reachable_without_grader():
     import json
     from pathlib import Path
-    from ai.retrieval.current_law import CurrentLawRetriever, map_chunk
+    from ai.retrieval.current_law import map_chunk
     rows = json.loads(Path('data/processed/current-law/current-law-chunks-2026-09-22.json').read_text())['chunks']
-    retriever = CurrentLawRetriever(rows, None, None, None, None)
+    retriever = RowsLookup(rows)
     expander = LegalNeighborhoodExpander(retriever.fetch_article,
                                         combination_lookup=retriever.fetch_combination_rules)
     anchors = [map_chunk(c) for c in rows if '55/VBHN' in c['law'] and str(c['article_no']) == '27'
@@ -244,9 +266,9 @@ async def test_real_corpus_scope_and_combination_sources_are_reachable_without_g
 async def test_cross_document_applicability_is_not_starved_by_sibling_sanctions():
     import json
     from pathlib import Path
-    from ai.retrieval.current_law import CurrentLawRetriever, map_chunk
+    from ai.retrieval.current_law import map_chunk
     rows = json.loads(Path('data/processed/current-law/current-law-chunks-2026-09-22.json').read_text())['chunks']
-    retriever = CurrentLawRetriever(rows, None, None, None, None)
+    retriever = RowsLookup(rows)
     anchors = [next(map_chunk(c) for c in rows if '168/2024' in c['law'] and str(c['article_no']) == '32'
                     and str(c.get('clause_no')) == clause and c.get('point') == point)
                for clause, point in [('13', 'e'), ('13', 'a'), ('14', 'i')]]

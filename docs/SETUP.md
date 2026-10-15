@@ -15,7 +15,7 @@ health hoặc truy xuất độc lập sau khi đã có tài nguyên local.
 | Database Weaviate/volume | Không | Object và vector đã lập chỉ mục |
 | `outputs/structured-law-v2/index.json` | Không | Receipt xác minh index hiện hành |
 | Model cache embedding/reranker | Không | Trọng số đúng revision đã khóa |
-| `outputs/current-law-shadow-2026-09-22/` và `bm25_index.pkl` ở root | Không | Tài nguyên snapshot/provenance cho evaluator và backend frozen |
+| `outputs/current-law-shadow-2026-09-22/` và `bm25_index.pkl` ở root | Không | Tài nguyên snapshot/provenance mà bước kiểm corpus frozen cần |
 | Kết quả evaluation/diagnostics | Không | Đáp án, trace, plan và receipt của từng lượt |
 
 **Clone repo chưa đủ để chạy demo đầy đủ.** Cách đã kiểm là dùng workspace
