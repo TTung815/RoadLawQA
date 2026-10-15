@@ -126,7 +126,7 @@ elif conversations:
                         type="primary" if conversation["id"] == current_conversation() else "secondary")
             # Keyed confirmation: unlike a popover, its open state follows the
             # conversation id, not its position, when the list changes.
-            menu.button("🗑", key=f"ask-delete-{conversation['id']}", on_click=ask_delete,
+            menu.button("", icon=":material/delete:", key=f"ask-delete-{conversation['id']}", on_click=ask_delete,
                         args=(conversation["id"],), disabled=busy, help="Xóa cuộc trò chuyện")
             if st.session_state.get("confirm_delete") == conversation["id"]:
                 st.caption("Xóa cuộc trò chuyện này?")
