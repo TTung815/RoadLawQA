@@ -1,0 +1,402 @@
+[
+  {
+    "case_id": "current_law_001",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "84ea5275d63c550624777eca7efd4d0fc5b6255aaccf97acdeea1aca53d7aa49",
+    "case_sha256": "aecb2ec9a850ea84c1e4f9f2b24f093a17416b0367773b59b86ab005acfa8125"
+  },
+  {
+    "case_id": "current_law_002",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "7fc28b9b6a645301c144178af521776052b7045fb9c133f72e63cd1198bf524f",
+    "case_sha256": "18c6ac74670d15eea7e16a900f4f9ffd0f71f4c401f47961f951853d66ca8748"
+  },
+  {
+    "case_id": "current_law_003",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "beef9e5b4756a20e98bc22c74d2b94fc4b2f9b3ece1e39e6e708e6d7ba079981",
+    "case_sha256": "49c86127575b6102aabf96987b2620762e7f057959adfe134d955e40623c50dc"
+  },
+  {
+    "case_id": "current_law_004",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "a6c47a9fa07f75667af63276d25b54a2674917fe08ae6d8aabf80feac876c90b",
+    "case_sha256": "c32f41a39afbf2799a5d7eb37ff790dbe140c3e883eeb6a5eafee1a777bdfa6f"
+  },
+  {
+    "case_id": "current_law_005",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "fac51575201e7fadeab3ee5df3267665c88c979e7bf193b9c1556294a0221eec",
+    "case_sha256": "fc330715340288ab2c45510d5c2bb6651afdcee4755a53dbb748d6e10775558e"
+  },
+  {
+    "case_id": "current_law_006",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "d1c4537389e9c26798051488968b01c4406bdc96284a40fc0dd60e07196967df",
+    "case_sha256": "95c0c279a8e37ccfab011dd71e1915a2a3a722df6a1d6bd033e59955318c2043"
+  },
+  {
+    "case_id": "current_law_007",
+    "action": "refine",
+    "reason": "Câu hỏi đã xác định xe gia đình không kinh doanh. Không nên bắt buộc nhắc ngoại lệ xe kinh doanh vận tải hành khách; chuyển ý đó thành bổ sung. Hai ý chính về chỗ ngồi và thiết bị an toàn vẫn giữ. Có thể ghi rõ xe hai hàng ghế để loại trừ diễn giải ngoại lệ một hàng ghế.",
+    "query_changed": true,
+    "parent_case_sha256": "736f3ef54090f45ae64f6111470a40eb43099c776a530738af1faabb6ff2db09",
+    "case_sha256": "9b99b7184b6594a411348d8b086c6efd99656607f1a5b6c09afdc544adccb570"
+  },
+  {
+    "case_id": "current_law_008",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b318b39f9d1da7f9be6c9c00ba2d8db08c4f0e940c46d62c28f828012cdd99da",
+    "case_sha256": "6fd8f2104a99d2fe881fd417d9b09927fc66cf814c26f1e48794d74f4b1fe839"
+  },
+  {
+    "case_id": "current_law_009",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "db5cdae2861f69fc74ecb1365cf09f1a8ccca50d081e9f0a295877d7172624fe",
+    "case_sha256": "befc3ea76f71920bb0ebb58fd97ada38a1e86885873ae95a115051c10923f242"
+  },
+  {
+    "case_id": "current_law_010",
+    "action": "revise",
+    "reason": "Nguồn hiện có cho phép phân biệt nộp phạt với phục hồi điểm. Thay facet yêu cầu reviewer xác nhận negative-support bằng kết luận có điều kiện dựa vào khoản 2 Điều 58; không yêu cầu chatbot mô tả quy trình review nội bộ.",
+    "query_changed": false,
+    "parent_case_sha256": "415361521c16f0749a71469854dd32b2e146cfb8d4d8c3d98dd95d1e379d2811",
+    "case_sha256": "30eba8eec04512d56d8ff1679a34e9b52bf7ac1aa655d07db658f58f0438909b"
+  },
+  {
+    "case_id": "current_law_011",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "8c2714b405eaae694ba998219f7306967f11cd4f0bc999770153f6b3629b9dfd",
+    "case_sha256": "d43a2a6ff563b18645c105e8a9187277a7bf46f6431b2497d29af0e08d95d6a5"
+  },
+  {
+    "case_id": "current_law_012",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "43806f269bbc37e84dfd9fe9da7559230af06c2ef3f6f7e35239d6e4a69aacf9",
+    "case_sha256": "68e28e6647819a5f79ea2670b927fe931c165b176597952d3431e88606e65c8e"
+  },
+  {
+    "case_id": "current_law_013",
+    "action": "refine",
+    "reason": "Mức phạt tham chiếu phù hợp nhánh vượt tốc độ 15 km/h thông thường. Thêm không gây tai nạn vào câu hỏi hoặc chấp nhận đáp án nêu rõ giả định này; không ép một mức phạt bao trùm cả nhánh gây tai nạn.",
+    "query_changed": true,
+    "parent_case_sha256": "3731c281189f29ba55e4ac63da16318a14e0e8a6e542b7b15879302ea9127d36",
+    "case_sha256": "7c7cf73802b2662e2f007fbcbbeeb71682b547a29785a4e36e90460fb91d4699"
+  },
+  {
+    "case_id": "current_law_014",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "0969edbf2c39fddd505c7574cc71e68ebf95fbeae6c235b68e1511c7a073c388",
+    "case_sha256": "a6ef08f7cee6a50a51a13bf49b3fca50a9ae92c1b5e9ee885c363a94d24d2de3"
+  },
+  {
+    "case_id": "current_law_015",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "dd60aa6485caf89905fdaab22204ac7f8b8d1cef7426cfb4cc360d6d071a906a",
+    "case_sha256": "08500b79f224c5144bcd23e4d3757af4fee51ef7980e068577ca6757e5bc6a08"
+  },
+  {
+    "case_id": "current_law_016",
+    "action": "revise",
+    "reason": "Nguồn về chở hai người và các ngoại lệ đã có. Cho phép giải thích hai nhánh; chỉ hỏi làm rõ khi cần kết luận riêng cho tình huống. Không buộc insufficient_evidence do thiếu dữ kiện người dùng.",
+    "query_changed": false,
+    "parent_case_sha256": "e71e09bb2f62cedd9b32136c944631974760b54f7016c6d983c03d404772bd5b",
+    "case_sha256": "46a76f346f115bc33409001abfcebcb986d10bfc8c40b6a95e474ae17841dfdf"
+  },
+  {
+    "case_id": "current_law_017",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b11060389acec81c0c4cea06406745f8a3149a5e6b327ab2baeea26f2ce493f9",
+    "case_sha256": "278c79b05d45638b6065d17f2cf6db34dca29a6a0c368e1e62b82048c57c7de9"
+  },
+  {
+    "case_id": "current_law_018",
+    "action": "refine",
+    "reason": "Đáp án tham chiếu có tuyến nội tỉnh/liên tỉnh, nhưng facet định nghĩa chưa kiểm tra rõ phần phân loại tuyến được hỏi. Tách hoặc bổ sung ý bắt buộc này, dựa khoản 8 Điều 56 văn bản 49.",
+    "query_changed": false,
+    "parent_case_sha256": "2ccee5df9a478e68a438d0b5264f6f827563bacc29df84eb1032ec0be922b58f",
+    "case_sha256": "c15bce6e6478b0d693185592a9289a5faf748e1e1032354bc68a67ee70865079"
+  },
+  {
+    "case_id": "current_law_019",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "2f9f62a1182d30a725279141a1d60c0bad94ed9940c8620c209a325f1e149caa",
+    "case_sha256": "2b63ad96cd52e4bdf108b86dd267ba14924197fadc946fda1ba139255899fb7c"
+  },
+  {
+    "case_id": "current_law_020",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "1495efaf1793247002971b99eb6b237d6fd981a4bfb768a0c011deb792b45c7d",
+    "case_sha256": "ebe741c4974d25704ae8794d736e3fee27de828e1e7e78277ee65a2d6cb60f8d"
+  },
+  {
+    "case_id": "current_law_021",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "a6ff5cf32a0070cf227fcf6fc9284eaaadefa0e826c5935b32ffb483f61e1619",
+    "case_sha256": "ede22c8ba72dca93da775c0dce6137caf9353252acd8dc23fda51cc93e122cef"
+  },
+  {
+    "case_id": "current_law_022",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "d4310344c7c6046e46e3963d58d6b7c72447bb2123fd14fbc6c4a4d8e4263a62",
+    "case_sha256": "2133d07726db2541f0712a6a34386d2763238cd311b5406106add4ed73a16e0b"
+  },
+  {
+    "case_id": "current_law_023",
+    "action": "revise",
+    "reason": "Khoản 2 Điều 5 Nghị định 168 quy định phạt tiền từng hành vi trong cùng lần. Thêm nguồn này, thay facet thiếu dependency bằng nguyên tắc tổng hợp. Giữ quy tắc trừ mức điểm cao nhất tại điểm b khoản 1 Điều 50. Không coi khoảng tiền là quyết định phạt cụ thể.",
+    "query_changed": false,
+    "parent_case_sha256": "f81884e4102bf1af5418bc26cea349b76ad7ad94dd6871bff6f17d8ea743fe1b",
+    "case_sha256": "c676ca8125e73724d36088805ecf3a123e5ce335e01180809f36880817fcb6e7"
+  },
+  {
+    "case_id": "current_law_024",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "9cf819b6b7b1727399a6e03b781a0ad81966b57b9acd269aa07bf0dc06fbefaf",
+    "case_sha256": "b5e819a475cc145ae645d0b3c7d8a12c6db661da2a8d34ceae8a618c9c603e5f"
+  },
+  {
+    "case_id": "current_law_025",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "cdc37d213a70320ddcf1df9ed241e084550b933302000b3d40af9ece6887bc6c",
+    "case_sha256": "769a7d491fb520cfd29aa1a41def05f1bb0751e7449ef5b249c27898c959f947"
+  },
+  {
+    "case_id": "current_law_026",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "83fa828e0c6971052773ffc78981652ab1a2ff225ce45f06cf1a6bb8d3c3f804",
+    "case_sha256": "e1b17cfe380c92ce6263a0f6c7e23294848072ac13239e676ed215ed9bf2236a"
+  },
+  {
+    "case_id": "current_law_027",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "08e7797610a1a219c7c2f3863196231ea96b7ad95458e47379da2882e8043611",
+    "case_sha256": "b6e869963bc9c68228654f2e32a2a47d7e6c4ba751a92bb5cba054f8caa1b4a8"
+  },
+  {
+    "case_id": "current_law_028",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "a7c864b33418aaf3d74d0dd20e5b3cc3089ef4aa3292488b5b9cb7e7f9ccbb9a",
+    "case_sha256": "ef593d99c737b16b4f3048093bf6410deb08823b0477b17f8631959fbd3c982d"
+  },
+  {
+    "case_id": "current_law_029",
+    "action": "revise",
+    "reason": "Khoản 4 Điều 27 giới hạn quyền không phụ thuộc đèn cho nhóm a–d; đoàn xe tang thuộc điểm đ khoản 2. Cho phép kết luận trong phạm vi quyền ưu tiên này; không suy rộng thành phủ định mọi tình huống có hiệu lệnh điều khiển giao thông. Chuyển nhóm g2 thành support và bỏ facet về quy trình xác nhận nội bộ.",
+    "query_changed": false,
+    "parent_case_sha256": "f10cc46c990e0f69fb384439335b22c76ef639a94168e807e6da02bd34c842f1",
+    "case_sha256": "0a1210c80cbf2d74a86466d3c37f8fb11bffce4113173055be949b2caccb8d3c"
+  },
+  {
+    "case_id": "current_law_030",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "3cea1651fb252d0aac9eb9078d36a5ad186bbf8324b73861fbd5c39efd62359d",
+    "case_sha256": "a8e52c2e5919227a6e40f70ecb17d47d6bc20e200ab8a4665538390c50ef47af"
+  },
+  {
+    "case_id": "current_law_031",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "5aeb3d2577acc62f3f95a2ff09bc1b650143a20c25d972da550eb1d4f9882157",
+    "case_sha256": "f99f84482072a974a0b0a7e872feb3b66a11e3b7e54afb09cb164e1e7175dfe7"
+  },
+  {
+    "case_id": "current_law_032",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "c1f57e32f8480b9a49ffe9bff74821c3994cc8514ee313148bac5ec8f79fa32a",
+    "case_sha256": "35fd92b93e6487683bcde330551260ea9bd59534741c8ac10a62fbde29d72298"
+  },
+  {
+    "case_id": "current_law_033",
+    "action": "refine",
+    "reason": "Nguồn mô tả tay phải giơ thẳng đứng. Có thể thêm tay phải vào câu hỏi để sát nguồn; chấp nhận câu trả lời tự nêu đủ điều kiện này, không cần phạt vì không hỏi lại.",
+    "query_changed": true,
+    "parent_case_sha256": "2597b7e07482e977795e8a789c024dafe8a65773a6d72a2ca129ac08b848fb60",
+    "case_sha256": "e7210ae398cd023c541662801e428c5fa6e20b1d31c4c8060f1533336e366bdc"
+  },
+  {
+    "case_id": "current_law_034",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b74eda5e97da68e626dc570544449465f69d183916e8e09992047ec3f4da2d78",
+    "case_sha256": "000a49b9f72cda4527af935922ef2b7c782219f849f89dbe7dc458124653ab8b"
+  },
+  {
+    "case_id": "current_law_035",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "3122bb080e73c2034aded83e61b021391cb11b130abb8cc5d9fef7e89c2e6bba",
+    "case_sha256": "3ad165c29dc6ac6d6e22738e580d2e7ba61a9d1ba8694ed818137819bb5c4409"
+  },
+  {
+    "case_id": "current_law_036",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "88b7bd840e2f641d67ce639f7388cf98749b455f0b2c2eccfe999bbd8c534a8c",
+    "case_sha256": "49c60247884b87e9fbd38fa2396bdf7ee03be23abd9eb48d6dae62ae038ded5a"
+  },
+  {
+    "case_id": "current_law_037",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b4f84496bce42070c075bc81c852166502a4a18b1a1da7ae8c6efd459c858f5b",
+    "case_sha256": "afa3b443e31d24b010d643c8bba09118ab69cb453c5adb872e2bcc4687b0c4e5"
+  },
+  {
+    "case_id": "current_law_038",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "71d69c56ce818fa9343595d792d4b1581bdcef16bfdd76e28ac69eab1117e05d",
+    "case_sha256": "f58dd2f107f95650acd66c9f7afcf071da4a7b486aa364bd3fd4d0dc54b976b1"
+  },
+  {
+    "case_id": "current_law_039",
+    "action": "refine",
+    "reason": "Câu hỏi đã nói tài xế thuê không phải chủ xe. Giữ đúng đối tượng, mức phạt và sửa đổi 238; không bắt buộc giải thích nhánh chủ xe/Điều 32 để đạt đủ ý.",
+    "query_changed": false,
+    "parent_case_sha256": "6a1ab6cf998921e229d02b7d3fbaf2e1a4bdc6e62a78cd37abce3ee6a2fbfd0b",
+    "case_sha256": "5143939bd0d573e83306feb1cc45414116b8acbef4c66131fc65e9f94ab500d5"
+  },
+  {
+    "case_id": "current_law_040",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b3b8aa86076452e4895b19e7f015981eae79c4f6a7c68a46b743e8905dffd7e3",
+    "case_sha256": "d1a93cbac9271330487449883321d410df1580387a0cc94ecc977f8c2c4b4532"
+  },
+  {
+    "case_id": "current_law_041",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "7df3352b61663e9a3774e6353db2a5e021c8373f58d8f416371e95dd8a7f56e9",
+    "case_sha256": "68a9aaf06f05eab4af348cda461a25ceefc75918f21c0196cde9bbf5901718bb"
+  },
+  {
+    "case_id": "current_law_042",
+    "action": "revise",
+    "reason": "Giữ phân biệt vị trí xe sau sự cố và điều kiện phải đặt cảnh báo cách tối thiểu 150 m. Cho phép trả lời theo điều kiện hoặc hỏi vị trí xe; không mặc định thiếu căn cứ pháp luật khi chỉ thiếu dữ kiện.",
+    "query_changed": false,
+    "parent_case_sha256": "387bcf6bd79721eebff6492c55a4811d7c016939915df2d3215263ab34b1bc4d",
+    "case_sha256": "450abef9472eebf6ec849c76fa6101488e9ec4ab3ad05901eb1da13d85fb327b"
+  },
+  {
+    "case_id": "current_law_043",
+    "action": "revise",
+    "reason": "Corpus v2 đã có điểm a khoản 1 Điều 5 và khoản 5 Điều 11 của 90/VBHN-VPQH năm 2026 về tuổi chịu xử phạt. Cần thay đáp án abstain và nhóm evidence rỗng bằng kết luận giới hạn về xử phạt hành chính người 13 tuổi.",
+    "query_changed": false,
+    "parent_case_sha256": "a61dae80572a0e1ae45ad9e43a3e860040ace8915d61637c7465914bd039a312",
+    "case_sha256": "faac454ed1cde4a316d95f2f6a9309fd8de3708e35b9d5e0d314b5284a317ae9"
+  },
+  {
+    "case_id": "current_law_044",
+    "action": "revise",
+    "reason": "Giữ điều kiện cổng có đường cho xe ra vào, khoảng cách 3 m so với 5 m. Trả lời có điều kiện hoặc hỏi rõ; mức phạt 800.000–1.000.000 đồng là bổ sung khi người dùng chỉ hỏi đủ căn cứ kết luận vi phạm chưa.",
+    "query_changed": false,
+    "parent_case_sha256": "b6c79c28c3c13d9af28e31c7c8606adc5f6cbab96428ada89e078f00660892b6",
+    "case_sha256": "a798a22cb02413f1fd0cd3c15fe4fe5d86be6bd8a142563bf44c20d6c6d045c7"
+  },
+  {
+    "case_id": "current_law_045",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "b21c846d08a7b302c59e60d106f41be1a12db7285568f5d3f6d159986995ceeb",
+    "case_sha256": "43e1c006a5ccfa32bb5867ac192b83a9b24f88ac780a2fc59a8824e13338bb12"
+  },
+  {
+    "case_id": "current_law_046",
+    "action": "revise",
+    "reason": "Đang đi đón bệnh nhân cấp cứu là dữ kiện về nhiệm vụ đã nêu; không coi việc chưa có bệnh nhân trên xe là mất quyền ưu tiên. Giữ điều kiện tín hiệu ưu tiên và việc tuân thủ người điều khiển/biển tạm. Chỉ làm rõ dữ kiện thực sự thiếu, không ép insufficient_evidence.",
+    "query_changed": false,
+    "parent_case_sha256": "b382b2febea9cc045477c61311f88218d443a880e244d831020f52f78f5689ba",
+    "case_sha256": "589e0db7d0d47860d11bca6afbbe0d880889effba97800cc7450cf59aca87359"
+  },
+  {
+    "case_id": "current_law_047",
+    "action": "no_material_issue_found",
+    "reason": "Đáp án và các ý bắt buộc phù hợp nguồn được dẫn trong corpus tại cutoff; chưa phát hiện mâu thuẫn trọng yếu trong lượt rà này. Đây không phải xác nhận pháp lý độc lập.",
+    "query_changed": false,
+    "parent_case_sha256": "9faface68eb98a49b9f23af8c9e87c57cf0c0c32893cbdf88691efa09f073af1",
+    "case_sha256": "3251de1ba79dd7499719b6a94b7afc223d3fdebe42d1f17b1b7ea50f46f8f4f7"
+  },
+  {
+    "case_id": "current_law_048",
+    "action": "revise",
+    "reason": "Hỏng máy không đồng nghĩa hỏng phanh. Giữ điều kiện người điều khiển, hệ thống lái/phanh, liên kết và báo hiệu; giải thích khi nào được dùng dây và khi nào cần thanh nối cứng. Không ép insufficient_evidence nếu có thể trả lời điều kiện đầy đủ.",
+    "query_changed": false,
+    "parent_case_sha256": "49c5ffdff364ce4217ef49a434b6c5d28593f43b6f224250309a54a4fb6146db",
+    "case_sha256": "519af74bc9c25ea4406a1808e82ccb89e237c1c0c175e281216f2a4308bf887e"
+  },
+  {
+    "case_id": "current_law_049",
+    "action": "refine",
+    "reason": "Khoản 1 Điều 12 văn bản 55 hỗ trợ trực tiếp phải tuân thủ tốc độ khi vượt. Điểm a khoản 2 Điều 26 văn bản 49 là định nghĩa bổ trợ; không nên AND bắt buộc cả hai cho một câu trả lời đúng và đủ.",
+    "query_changed": false,
+    "parent_case_sha256": "7f953a8054ddcc8be3714257dfcb9f7f15e1f8adc9e03f46a9c1b2ecca21d1b9",
+    "case_sha256": "1d6a7e930fd46aabc6a3ecd0172aaf775c84d59d8b03304c8072769a41f6696a"
+  },
+  {
+    "case_id": "current_law_050",
+    "action": "refine",
+    "reason": "Giữ cách đếm một người lái + ba người được chở và giới hạn tối đa hai người theo ngoại lệ trẻ em. Quy định xử phạt có thể bổ sung, không bắt buộc nếu câu hỏi chỉ hỏi được phép chở cả nhà hay không.",
+    "query_changed": false,
+    "parent_case_sha256": "cc6c878daf84ba2cf6210b4e49ee3dc6a99c69e9e74dd112d1435b14a293a8c6",
+    "case_sha256": "77b3b2e3956f6c65109106a1404c7253a71bb21b126e165d4333d87900303dbe"
+  }
+]

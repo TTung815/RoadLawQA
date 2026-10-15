@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "review_id": "nd168-effective-view-technical-review-2026-09-22",
+  "reviewed_on": "2026-09-22",
+  "reviewer": "Codex",
+  "review_type": "technical_semantic_and_owner_policy_review",
+  "decision": "approved_for_current_law_snapshot_with_publication_blocks",
+  "scope": "Đối chiếu Nghị định 238 với amendment map, text gốc 168 và effective view. Đây không phải ý kiến pháp lý chuyên nghiệp.",
+  "reviewed_artifact": {
+    "path": "data/processed/current-law/nd168-effective-2026-09-22.json",
+    "sha256": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d",
+    "manifest_path": "data/legal_sources/nd168_effective_view_manifest.json",
+    "manifest_sha256": "8dc94982d76318341f762599a22177070a3f3b6042bc298956a2e2617c253d1c"
+  },
+  "source_evidence": {
+    "official_landing_url": "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-238-2026-nd-cp-469913.htm",
+    "official_docx_matches_owner_file": true,
+    "base_text_sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718",
+    "amendment_text_sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d",
+    "amendment_map_sha256": "dc3fb195260a092098c0b9c7fc01d7d4765b9c47abbfcfe26b289e65cb6f54a7"
+  },
+  "coverage": {
+    "operation_count": 102,
+    "direct_payload_operations_articles_1_to_18": 46,
+    "phrase_and_repeal_operations_article_19": 56,
+    "by_operation_type": {
+      "add": 14,
+      "replace": 32,
+      "add_phrase": 16,
+      "replace_phrase": 29,
+      "remove_phrase": 7,
+      "repeal": 4
+    }
+  },
+  "checks": [
+    {
+      "name": "source_and_locator_coverage",
+      "status": "passed",
+      "result": "102/102 operation có locator đích và source line truy ngược được."
+    },
+    {
+      "name": "direct_payload_result",
+      "status": "passed",
+      "result": "46/46 payload trực tiếp khớp text kết quả ở locator hoặc subtree tương ứng."
+    },
+    {
+      "name": "article_19_phrase_result",
+      "status": "passed",
+      "result": "56/56 phép bổ sung, thay thế, bỏ cụm từ hoặc bãi bỏ tạo đúng kết quả mong đợi."
+    },
+    {
+      "name": "citation_and_provenance",
+      "status": "passed",
+      "result": "Mọi record bị sửa đều dẫn cả 168 và 238, có operation_id và Điều sửa đổi; record không bị sửa chỉ dẫn 168."
+    },
+    {
+      "name": "determinism_and_integrity",
+      "status": "passed",
+      "result": "Mỗi operation làm đổi state hash; output tái lập được và khớp checksum manifest."
+    }
+  ],
+  "corrected_findings": [
+    {
+      "id": "temporal-001",
+      "severity": "high",
+      "finding": "Ba locator có mốc 2028 trước đây bị đánh dấu future cho toàn bộ locator, trong khi khoản 3 Điều 53 chỉ hoãn theo nhóm xe.",
+      "correction": "Đổi thành mixed_effective_date, active_at_cutoff=null và publication_eligible=false; ba locator mốc 2029 vẫn là future toàn phần."
+    },
+    {
+      "id": "provenance-001",
+      "severity": "medium",
+      "finding": "56 operation Điều 19 chưa có source_lines trong patch ledger.",
+      "correction": "Bổ sung source_lines cho đủ 102/102 operation."
+    },
+    {
+      "id": "ledger-001",
+      "severity": "medium",
+      "finding": "Hash target riêng có thể không đổi khi thay cả Điều nhưng tiêu đề Điều giữ nguyên.",
+      "correction": "Bổ sung state_before_sha256 và state_after_sha256 cho mỗi operation."
+    }
+  ],
+  "temporal_review": {
+    "future_2029": {
+      "count": 3,
+      "locators": [
+        "điểm n khoản 5 Điều 20",
+        "điểm k khoản 7 Điều 26",
+        "điểm l khoản 7 Điều 26"
+      ],
+      "decision": "Không active và không được publication tại cutoff 2026-09-22."
+    },
+    "mixed_2028": {
+      "count": 3,
+      "locators": [
+        "điểm l khoản 5 Điều 20",
+        "điểm b khoản 3 Điều 21",
+        "điểm b khoản 9a Điều 32"
+      ],
+      "decision": "Giữ cả quy tắc chung 15/08/2026 và ngoại lệ 01/01/2028 trong metadata; chặn publication tự động vì locator chứa nhiều nhóm xe với mốc khác nhau.",
+      "unresolved_legal_question": "Đối với nhóm xe được hoãn trong giai đoạn 15/08/2026–31/12/2027, không tự suy luận quy định cũ tiếp tục áp dụng hay không có chế tài."
+    }
+  },
+  "owner_decision": {
+    "status": "approved",
+    "approved_on": "2026-09-22",
+    "approved_by": "Chủ dự án qua hội thoại",
+    "decision": "approve_fail_closed_temporal_policy",
+    "meaning": "Cho phép dùng effective view cho bước chuẩn bị corpus, nhưng mọi câu phụ thuộc ba locator mixed_2028 phải abstain cho tới khi điều kiện được biểu diễn đủ an toàn và có duyệt publication riêng; legal review chung không tự gỡ chặn này.",
+    "does_not_authorize": [
+      "chunk hoặc index production",
+      "dùng locator bị chặn làm gold benchmark",
+      "suy luận hiệu lực chuyển tiếp ngoài nội dung nguồn"
+    ]
+  },
+  "remaining_gates": [
+    "Tạo processed corpus và shadow Weaviate/BM25 có manifest/checksum.",
+    "Kiểm tra membership, thứ tự BM25 và runtime rồi mới freeze current-law snapshot.",
+    "Production index chỉ được thay sau một quyết định riêng."
+  ],
+  "legal_review": {
+    "status": "approved",
+    "reviewed_on": "2026-09-22",
+    "basis": [
+      "Đối chiếu 102/102 operation với nguyên văn Nghị định 238 và text gốc Nghị định 168.",
+      "Kiểm tra kết quả sau patch, provenance, citation, source line và state hash.",
+      "Chủ dự án phê duyệt policy fail-closed đối với locator có điều kiện thời gian/chủ thể chưa biểu diễn đủ an toàn."
+    ],
+    "limits": [
+      "Không phải văn bản hợp nhất chính thức.",
+      "Không cho phép publication sáu locator future/mixed trái với metadata.",
+      "Không tự suy luận quy định chuyển tiếp ngoài nội dung nguồn."
+    ]
+  }
+}

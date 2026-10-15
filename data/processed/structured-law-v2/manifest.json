@@ -1,0 +1,44 @@
+{
+  "version": "structured-law-20260922-v2",
+  "corpus_sha256": "ddbf1c7e57d7fba0e64a2a8dd652c0070cb1140a325b4746de0f6bd659746fc9",
+  "inputs": {
+    "data/raw/legal/49-vbhn-vpqh/supporting-text.txt": "ebf20b2826c6ab03d44ce564f7dfc1eddd6e7c78ac12b66cfd50a9f092f057fe",
+    "data/raw/legal/55-vbhn-vpqh/supporting-text.txt": "07fcfdf64b410b32f159d4e201971ddae41f5e73875f690562321beeeacd8a6b",
+    "data/processed/current-law/nd168-effective-2026-09-22.json": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d",
+    "data/legal_sources/administrative-age-v1/registry.json": "e7a633fc676cf010f0c008ad47d87e78114aef7fce28fcfa522cf2fece49f68f",
+    "data/legal_sources/administrative-age-v1/review.json": "4edd065e3cf750c0335e10e990abc0f27a6ce8a1bb0bd545d79625c4b2df8a51",
+    "data/legal_sources/registry.json": "bf639a4a784a6cbfa86f7274c3582314c405295376943f01efef7efb35149f63",
+    "data/raw/legal/90-vbhn-vpqh-2026/source.pdf": "f60237d37fe965d4b15654747f53cfce60fb3c82cd76c597215882345bd6e20c",
+    "data/raw/legal/90-vbhn-vpqh-2026/scoped-text.txt": "0250301ffccba0155ea5b0ef39560fb944ef058bba7549924f2a8e0593a360e4",
+    "data/processed/current-law/current-law-chunks-2026-09-22.json": "2da4b2f4934718a3e0ccf91d53599a32e42e735777ba4ac11eba5cc3f9b13b09"
+  },
+  "builder_sha256": "9e1737e8d47734e0c5d68cebba5772f8c35117546111d43246805ad03a2552f0",
+  "embedding_model": "Alibaba-NLP/gte-multilingual-base",
+  "embedding_revision": "9bbca17d9273fd0d03d5725c7a4b0f6b45142062",
+  "lexical_pipeline": "NFC+casefold+punctuation-to-space+PyVi+whitespace",
+  "statistics": {
+    "source_leaves": 2535,
+    "search_chunks": 1759,
+    "levels": {
+      "article": 99,
+      "clause": 638,
+      "point": 1022
+    },
+    "blocked_chunks": 10,
+    "blocked_source_ids": [
+      "49-vbhn-vpqh-d10-k4",
+      "49-vbhn-vpqh-d83",
+      "55-vbhn-vpqh-d35-k2",
+      "55-vbhn-vpqh-d62-k7",
+      "nd168-effective-as-of-2026-09-22-d20-k5-pl",
+      "nd168-effective-as-of-2026-09-22-d20-k5-pn",
+      "nd168-effective-as-of-2026-09-22-d21-k3-pb",
+      "nd168-effective-as-of-2026-09-22-d26-k7-pk",
+      "nd168-effective-as-of-2026-09-22-d26-k7-pl",
+      "nd168-effective-as-of-2026-09-22-d32-k9a-pb"
+    ],
+    "max_tokens": 467,
+    "merge_budget_tokens": 480,
+    "hard_budget_tokens": 2048
+  }
+}

@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "registry_id": "roadlawqa-current-law-2026-09-22",
+  "legal_as_of": "2026-09-22",
+  "jurisdiction": "Việt Nam - pháp luật cấp trung ương",
+  "source_policy": "Giữ PDF chính thức làm artifact gốc; khi Công báo có DOCX chính thức thì ưu tiên DOCX để trích text, kèm checksum và review đối chiếu.",
+  "scope_document": "docs/LEGAL_SCOPE.md",
+  "scope_review": {
+    "status": "approved",
+    "reviewer": "Chủ dự án (phê duyệt triển khai qua hội thoại)",
+    "reviewed_on": "2026-09-22",
+    "notes": [
+      "Phạm vi, cutoff và nguyên tắc giữ PDF canonical được chấp thuận để triển khai Pha 1."
+    ]
+  },
+  "documents": [
+    {
+      "document_id": "35-2024-qh15",
+      "symbol": "35/2024/QH15",
+      "title": "Luật Đường bộ",
+      "document_type": "luat",
+      "issuing_authority": "Quốc hội",
+      "issued_on": "2024-06-27",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "status_at_cutoff": "lineage_only",
+      "roles": [
+        "historical"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?docid=211193&pageid=27160",
+        "attachment_url": null,
+        "raw_path": null,
+        "sha256": null,
+        "media_type": null,
+        "pages": null,
+        "acquired_on": null
+      },
+      "extraction": null,
+      "relations": [
+        {
+          "type": "base_of",
+          "target_document_id": "49-vbhn-vpqh",
+          "notes": "Nội dung hiện hành được đọc từ văn bản hợp nhất 49/VBHN-VPQH."
+        }
+      ],
+      "scope": {
+        "decision": "metadata_only",
+        "reason": "Giữ lineage; không index song song với văn bản hợp nhất hiện hành.",
+        "included_sections": []
+      },
+      "temporal_notes": [
+        "Một số quy định có mốc hiệu lực riêng; interval phải được giữ ở cấp quy định khi xây corpus."
+      ],
+      "metadata_review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewed_on": null,
+        "notes": []
+      }
+    },
+    {
+      "document_id": "36-2024-qh15",
+      "symbol": "36/2024/QH15",
+      "title": "Luật Trật tự, an toàn giao thông đường bộ",
+      "document_type": "luat",
+      "issuing_authority": "Quốc hội",
+      "issued_on": "2024-06-27",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "status_at_cutoff": "lineage_only",
+      "roles": [
+        "historical"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?docid=211194&pageid=27160",
+        "attachment_url": null,
+        "raw_path": null,
+        "sha256": null,
+        "media_type": null,
+        "pages": null,
+        "acquired_on": null
+      },
+      "extraction": null,
+      "relations": [
+        {
+          "type": "base_of",
+          "target_document_id": "55-vbhn-vpqh",
+          "notes": "Nội dung hiện hành được đọc từ văn bản hợp nhất 55/VBHN-VPQH."
+        }
+      ],
+      "scope": {
+        "decision": "metadata_only",
+        "reason": "Giữ lineage; không index song song với văn bản hợp nhất hiện hành.",
+        "included_sections": []
+      },
+      "temporal_notes": [
+        "Điều khoản chuyển tiếp và các mốc hiệu lực riêng phải được giữ ở cấp quy định."
+      ],
+      "metadata_review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewed_on": null,
+        "notes": []
+      }
+    },
+    {
+      "document_id": "118-2025-qh15",
+      "symbol": "118/2025/QH15",
+      "title": "Luật sửa đổi, bổ sung một số điều của 10 luật có liên quan đến an ninh, trật tự",
+      "document_type": "luat",
+      "issuing_authority": "Quốc hội",
+      "issued_on": "2025-12-10",
+      "effective_from": "2026-07-01",
+      "effective_to": null,
+      "status_at_cutoff": "lineage_only",
+      "roles": [
+        "amending"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?classid=1&docid=216534&orggroupid=1&pageid=27160",
+        "attachment_url": null,
+        "raw_path": null,
+        "sha256": null,
+        "media_type": null,
+        "pages": null,
+        "acquired_on": null
+      },
+      "extraction": null,
+      "relations": [
+        {
+          "type": "amends",
+          "target_document_id": "35-2024-qh15",
+          "notes": "Quan hệ được thể hiện trong phần đầu 49/VBHN-VPQH."
+        },
+        {
+          "type": "amends",
+          "target_document_id": "36-2024-qh15",
+          "notes": "Quan hệ được thể hiện trong phần đầu 55/VBHN-VPQH."
+        }
+      ],
+      "scope": {
+        "decision": "metadata_only",
+        "reason": "49 và 55 đã tích hợp sửa đổi cần thiết; giữ văn bản này làm lineage thay vì index trùng.",
+        "included_sections": []
+      },
+      "temporal_notes": [],
+      "metadata_review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewed_on": null,
+        "notes": []
+      }
+    },
+    {
+      "document_id": "49-vbhn-vpqh",
+      "symbol": "49/VBHN-VPQH",
+      "title": "Văn bản hợp nhất Luật Đường bộ",
+      "document_type": "van_ban_hop_nhat",
+      "issuing_authority": "Văn phòng Quốc hội",
+      "issued_on": "2026-03-17",
+      "effective_from": null,
+      "effective_to": null,
+      "status_at_cutoff": "official_consolidation",
+      "roles": [
+        "canonical"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?classid=0&docid=217234&pageid=27160",
+        "attachment_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/3/49-vbhn-vpqh.pdf",
+        "raw_path": "data/raw/legal/49-vbhn-vpqh/official.pdf",
+        "sha256": "522db5de8613ada683bcf873ae99ccbd590e4c7a6f848e9d878e7a67ed0f8ba3",
+        "media_type": "application/pdf",
+        "pages": 66,
+        "acquired_on": "2026-09-22"
+      },
+      "extraction": {
+        "path": "data/raw/legal/49-vbhn-vpqh/supporting-text.txt",
+        "sha256": "ebf20b2826c6ab03d44ce564f7dfc1eddd6e7c78ac12b66cfd50a9f092f057fe",
+        "method": "ingestion.docx_text trích phần thân OOXML; footnote được tách riêng để giữ provenance",
+        "tool_version": "RoadLawQA ingestion.docx_text schema 1",
+        "quality": "official_docx_text",
+        "supporting_input_path": "data/raw/legal/49-vbhn-vpqh/supporting.docx",
+        "supporting_input_sha256": "507ffb4b542ae27b576266df58a4d6273c72c0d7a5d0415acc9a5766c7bf07e7",
+        "supporting_input_origin": "DOCX chính thức tải từ Công báo điện tử ngày 2026-09-22",
+        "supporting_input_url": "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-49-vbhn-vpqh-469134.htm",
+        "review": {
+          "status": "approved",
+          "reviewer": "Codex — đối chiếu DOCX Công báo, cấu trúc Điều và PDF",
+          "reviewed_on": "2026-09-22",
+          "notes": [
+            "Đủ Điều 1–86; Điều 86 được phục hồi chính xác từ DOCX chính thức thay cho text layer lỗi ở trang PDF 66.",
+            "41 footnote và vị trí tham chiếu được lưu riêng tại data/raw/legal/49-vbhn-vpqh/footnotes.json; không trộn vào body dùng để chunk."
+          ]
+        },
+        "notes": [
+          "Bản pdftotext cũ thiếu tiêu đề Điều 86 và bị lỗi dấu ở trang 66; không dùng làm corpus."
+        ]
+      },
+      "relations": [
+        {
+          "type": "consolidates",
+          "target_document_id": "35-2024-qh15",
+          "notes": "Luật gốc."
+        },
+        {
+          "type": "consolidates",
+          "target_document_id": "118-2025-qh15",
+          "notes": "Văn bản sửa đổi được tích hợp."
+        }
+      ],
+      "scope": {
+        "decision": "ingest",
+        "reason": "Nguồn đọc canonical cho Luật Đường bộ tại cutoff.",
+        "included_sections": [
+          "toàn văn, giữ metadata hiệu lực riêng ở cấp quy định"
+        ]
+      },
+      "temporal_notes": [
+        "VBHN không phải văn bản thay thế luật gốc; ngày hiệu lực đến từ các văn bản được hợp nhất."
+      ],
+      "metadata_review": {
+        "status": "approved",
+        "reviewer": "Codex — đối chiếu nguồn chính thức",
+        "reviewed_on": "2026-09-22",
+        "notes": [
+          "Công báo số 176 và DOCX chính thức xác nhận số hiệu, ngày ban hành, cơ quan ban hành và toàn văn 86 Điều."
+        ]
+      }
+    },
+    {
+      "document_id": "55-vbhn-vpqh",
+      "symbol": "55/VBHN-VPQH",
+      "title": "Văn bản hợp nhất Luật Trật tự, an toàn giao thông đường bộ",
+      "document_type": "van_ban_hop_nhat",
+      "issuing_authority": "Văn phòng Quốc hội",
+      "issued_on": "2026-03-23",
+      "effective_from": null,
+      "effective_to": null,
+      "status_at_cutoff": "official_consolidation",
+      "roles": [
+        "canonical"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?docid=217295&pageid=27160",
+        "attachment_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/3/55-vbhn-vpqh.pdf",
+        "raw_path": "data/raw/legal/55-vbhn-vpqh/official.pdf",
+        "sha256": "9a20c8e616d444e3abe63c765a225d0797b7079c9a18e5fe7da0fc4f46847dac",
+        "media_type": "application/pdf",
+        "pages": 74,
+        "acquired_on": "2026-09-22"
+      },
+      "extraction": {
+        "path": "data/raw/legal/55-vbhn-vpqh/supporting-text.txt",
+        "sha256": "07fcfdf64b410b32f159d4e201971ddae41f5e73875f690562321beeeacd8a6b",
+        "method": "ingestion.docx_text trích phần thân OOXML; footnote được tách riêng để giữ provenance",
+        "tool_version": "RoadLawQA ingestion.docx_text schema 1",
+        "quality": "official_docx_text",
+        "supporting_input_path": "data/raw/legal/55-vbhn-vpqh/supporting.docx",
+        "supporting_input_sha256": "cc52a6e84d6bfb5dc1a0085559194775961663472e182adb990e4902cd1f94b3",
+        "supporting_input_origin": "DOCX chính thức tải từ Công báo điện tử ngày 2026-09-22",
+        "supporting_input_url": "https://congbao.chinhphu.vn/van-ban/van-ban-hop-nhat-so-55-vbhn-vpqh-469185.htm",
+        "review": {
+          "status": "approved",
+          "reviewer": "Codex — đối chiếu DOCX Công báo, cấu trúc Điều và PDF",
+          "reviewed_on": "2026-09-22",
+          "notes": [
+            "Đủ Điều 1–89; khoản 4–7 Điều 89 được phục hồi chính xác từ DOCX chính thức thay cho text layer lỗi ở trang PDF 74.",
+            "47 footnote và vị trí tham chiếu được lưu riêng tại data/raw/legal/55-vbhn-vpqh/footnotes.json; không trộn vào body dùng để chunk."
+          ]
+        },
+        "notes": [
+          "Bản pdftotext cũ bị lỗi dấu nặng ở trang 74; không dùng làm corpus."
+        ]
+      },
+      "relations": [
+        {
+          "type": "consolidates",
+          "target_document_id": "36-2024-qh15",
+          "notes": "Luật gốc."
+        },
+        {
+          "type": "consolidates",
+          "target_document_id": "118-2025-qh15",
+          "notes": "Văn bản sửa đổi được tích hợp."
+        }
+      ],
+      "scope": {
+        "decision": "ingest",
+        "reason": "Nguồn đọc canonical cho Luật Trật tự, an toàn giao thông đường bộ tại cutoff.",
+        "included_sections": [
+          "toàn văn, giữ metadata hiệu lực riêng ở cấp quy định"
+        ]
+      },
+      "temporal_notes": [
+        "Khoản có mốc 2028/2029 không được đánh dấu active chỉ từ trạng thái chung của văn bản."
+      ],
+      "metadata_review": {
+        "status": "approved",
+        "reviewer": "Codex — đối chiếu nguồn chính thức",
+        "reviewed_on": "2026-09-22",
+        "notes": [
+          "Công báo số 193 và DOCX chính thức xác nhận số hiệu, ngày ban hành, cơ quan ban hành và toàn văn 89 Điều."
+        ]
+      }
+    },
+    {
+      "document_id": "168-2024-nd-cp",
+      "symbol": "168/2024/NĐ-CP",
+      "title": "Nghị định quy định xử phạt vi phạm hành chính về trật tự, an toàn giao thông trong lĩnh vực giao thông đường bộ; trừ điểm, phục hồi điểm giấy phép lái xe",
+      "document_type": "nghi_dinh",
+      "issuing_authority": "Chính phủ",
+      "issued_on": "2024-12-26",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "status_at_cutoff": "effective",
+      "roles": [
+        "base"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?docid=212167&pageid=27160",
+        "attachment_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/01/168-nd-cp.signed.pdf",
+        "raw_path": "data/raw/legal/168-2024-nd-cp/official.pdf",
+        "sha256": "7bb11b939d162499ab404aa41a940cce05dbf071d9cbae7a8898b00d4b4a48bd",
+        "media_type": "application/pdf",
+        "pages": 111,
+        "acquired_on": "2026-09-22"
+      },
+      "extraction": {
+        "path": "data/raw/legal/168-2024-nd-cp/supporting-text.txt",
+        "sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718",
+        "method": "text do chủ dự án cung cấp, đối chiếu theo từng Điều với text layer của hai PDF Công báo chính thức",
+        "tool_version": "RoadLawQA ingestion.source_review schema 1; no OCR",
+        "quality": "legacy_text_verified_against_pdf",
+        "supporting_input_path": null,
+        "supporting_input_sha256": null,
+        "supporting_input_origin": "Hai PDF Công báo chính thức số 75+76 và 77+78; checksum khóa trong source_extraction_review.json",
+        "supporting_input_url": null,
+        "review": {
+          "status": "approved",
+          "reviewer": "Codex — đối chiếu 55 Điều với Công báo chính thức",
+          "reviewed_on": "2026-09-22",
+          "notes": [
+            "Đủ Điều 1–55 và khớp 55/55 Điều với text layer Công báo sau khi chỉ chuẩn hóa header, ngắt trang, khoảng trắng và gạch nối cuối dòng.",
+            "Không dùng OCR cho bản PDF scan 111 trang; xem data/legal_sources/source_extraction_review.json để chạy lại audit.",
+            "Validator riêng đã kiểm tra đủ 102 operation tại 24 Điều bị Nghị định 238 tác động."
+          ]
+        },
+        "notes": [
+          "Bản text do chủ dự án copy được giữ vì đã đối chiếu đủ 55 Điều với Công báo chính thức.",
+          "Hai PDF Công báo đối chiếu được lưu tại data/raw/legal/168-2024-nd-cp/congbao-part-{1,2}.pdf."
+        ]
+      },
+      "relations": [
+        {
+          "type": "base_of",
+          "target_document_id": "238-2026-nd-cp",
+          "notes": "238 sửa đổi trực tiếp 168; không thay thế toàn bộ."
+        }
+      ],
+      "scope": {
+        "decision": "ingest",
+        "reason": "Base của corpus xử phạt hiện hành; phải áp dụng overlay 238 trước khi index.",
+        "included_sections": [
+          "toàn văn sau khi áp dụng amendment map"
+        ]
+      },
+      "temporal_notes": [
+        "Điều 21 Nghị định 238 bảo lưu quy định có hiệu lực tại thời điểm hành vi xảy ra đối với hành vi trước 15/08/2026.",
+        "Một số quy định có mốc hiệu lực riêng."
+      ],
+      "metadata_review": {
+        "status": "approved",
+        "reviewer": "Codex — đối chiếu nguồn chính thức và Công báo",
+        "reviewed_on": "2026-09-22",
+        "notes": [
+          "Xác nhận số hiệu, cơ quan ban hành, ngày ban hành 26/12/2024, hiệu lực chung 01/01/2025 và cấu trúc 55 Điều."
+        ]
+      }
+    },
+    {
+      "document_id": "238-2026-nd-cp",
+      "symbol": "238/2026/NĐ-CP",
+      "title": "Nghị định sửa đổi, bổ sung một số điều của Nghị định số 168/2024/NĐ-CP",
+      "document_type": "nghi_dinh",
+      "issuing_authority": "Chính phủ",
+      "issued_on": "2026-06-26",
+      "effective_from": "2026-08-15",
+      "effective_to": null,
+      "status_at_cutoff": "effective",
+      "roles": [
+        "amending"
+      ],
+      "source": {
+        "landing_url": "https://vanban.chinhphu.vn/?classid=0&docid=218613&pageid=27160",
+        "attachment_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/238-ndcp.signed.pdf",
+        "raw_path": "data/raw/legal/238-2026-nd-cp/official.pdf",
+        "sha256": "f132e2e941d4b0d704b9790b65dc451c8642062624030cfc24f7c8186f5d7d21",
+        "media_type": "application/pdf",
+        "pages": 14,
+        "acquired_on": "2026-09-22"
+      },
+      "extraction": {
+        "path": "data/raw/legal/238-2026-nd-cp/supporting-text.txt",
+        "sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d",
+        "method": "ingestion.docx_text trích phần thân OOXML theo thứ tự paragraph",
+        "tool_version": "RoadLawQA ingestion.docx_text schema 1",
+        "quality": "official_docx_text",
+        "supporting_input_path": "data/raw/legal/238-2026-nd-cp/supporting.docx",
+        "supporting_input_sha256": "e103437f9b4489db2b55ea005365c430c9b2711f5ae4bf2bab5c87de6f6c479a",
+        "supporting_input_origin": "Tệp do chủ dự án cung cấp; đã đối chiếu byte-for-byte với DOCX tải từ trang Công báo điện tử ngày 2026-09-22",
+        "supporting_input_url": "https://congbao.chinhphu.vn/van-ban/nghi-dinh-so-238-2026-nd-cp-469913.htm",
+        "review": {
+          "status": "approved",
+          "reviewer": "Codex — kiểm tra provenance kỹ thuật",
+          "reviewed_on": "2026-09-22",
+          "notes": [
+            "SHA-256 của DOCX do chủ dự án cung cấp trùng DOCX tải từ trang Công báo điện tử: e103437f9b4489db2b55ea005365c430c9b2711f5ae4bf2bab5c87de6f6c479a.",
+            "Text dẫn xuất có đủ Điều 1–21; việc duyệt này xác nhận provenance và extraction kỹ thuật, không thay thế legal review nội dung sửa đổi."
+          ]
+        },
+        "notes": []
+      },
+      "relations": [
+        {
+          "type": "amends",
+          "target_document_id": "168-2024-nd-cp",
+          "notes": "Quan hệ sửa đổi trực tiếp; không phải thay thế toàn bộ."
+        }
+      ],
+      "scope": {
+        "decision": "ingest",
+        "reason": "Dùng làm overlay có provenance trên Nghị định 168, không index độc lập như toàn bộ quy tắc active.",
+        "included_sections": [
+          "Điều 1 đến Điều 21, gồm hiệu lực và chuyển tiếp"
+        ]
+      },
+      "temporal_notes": [
+        "Có hiệu lực từ 15/08/2026.",
+        "Điều 20 quy định hiệu lực; Điều 21 quy định chuyển tiếp.",
+        "Một số nội dung được bổ sung có ngày áp dụng riêng trong tương lai."
+      ],
+      "metadata_review": {
+        "status": "approved",
+        "reviewer": "Codex — đối chiếu metadata nguồn chính thức",
+        "reviewed_on": "2026-09-22",
+        "notes": [
+          "Trang Công báo điện tử xác nhận số hiệu, ngày ban hành 26/06/2026, ngày hiệu lực 15/08/2026 và cung cấp DOCX/PDF chính thức."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "benchmark_audit_or_c0_c4_run": false,
+  "frozen": true,
+  "gate_passed": true,
+  "legal_as_of": "2026-09-22",
+  "next_authorized_phase": "audit historical candidates and rebuild current-law gold",
+  "production_index_changed": false,
+  "receipt_version": 1,
+  "shadow_bundle": {
+    "manifest_sha256": "8c7a728f293195d28b02dca2819b02d62f32cd85b27422ca49275d50d245105d",
+    "path": "outputs/current-law-shadow-2026-09-22",
+    "required_for_full_replay": true,
+    "tracked_in_git": false
+  },
+  "snapshot_id": "roadlawqa-current-law-2026-09-22",
+  "snapshot_manifest": {
+    "path": "data/processed/current-law/current-law-snapshot-manifest-2026-09-22.json",
+    "sha256": "43652b7ad776ff4e7c9dceb9940f5fb777392769f4a66738894fc4a80543bedd"
+  },
+  "status": "frozen"
+}

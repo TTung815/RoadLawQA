@@ -1,0 +1,103 @@
+{
+  "freeze_eligible": true,
+  "inputs": {
+    "amendment_map_sha256": "dc3fb195260a092098c0b9c7fc01d7d4765b9c47abbfcfe26b289e65cb6f54a7",
+    "amendment_text_sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d",
+    "base_text_sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718",
+    "builder_sha256": "ea5c42e097a9432a3bc5ab4fdda26d80223e15ccb5197b58c72f967c9cb55abe",
+    "registry_sha256": "bf639a4a784a6cbfa86f7274c3582314c405295376943f01efef7efb35149f63"
+  },
+  "legal_review_status": "approved",
+  "limitations": [
+    "Đây là artifact kỹ thuật, không phải văn bản hợp nhất chính thức.",
+    "Ba locator có mốc 2029 chưa active tại cutoff.",
+    "Ba locator có mốc 2028 chứa đồng thời phạm vi đã hiệu lực và phạm vi được hoãn; chúng được đánh dấu mixed_effective_date và tiếp tục chặn publication sau legal review chung, cho tới khi điều kiện được biểu diễn đủ an toàn và có duyệt publication riêng.",
+    "View không tự suy luận bản cũ tiếp tục áp dụng trong thời gian chờ mốc 2028/2029.",
+    "Được dùng để tạo snapshot/shadow index; việc thay production index là gate riêng."
+  ],
+  "output": {
+    "path": "data/processed/current-law/nd168-effective-2026-09-22.json",
+    "sha256": "0c83a4d61e742bda11abfe6fd7c91a4f5184b87a76f800790058a713e3a6068d"
+  },
+  "schema_version": 1,
+  "status": "approved_for_snapshot_freeze",
+  "summary": {
+    "active_at_cutoff_count": 1302,
+    "applied_operation_count": 102,
+    "base_locator_count": 1297,
+    "effective_locator_count": 1308,
+    "failed_operation_count": 0,
+    "future_locator_count": 3,
+    "future_or_mixed_locator_count": 6,
+    "future_records": [
+      {
+        "citation": "điểm n khoản 5 Điều 20 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "effective_from": "2029-01-01",
+        "id": "nd168-effective-d20-k5-pn"
+      },
+      {
+        "citation": "điểm k khoản 7 Điều 26 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "effective_from": "2029-01-01",
+        "id": "nd168-effective-d26-k7-pk"
+      },
+      {
+        "citation": "điểm l khoản 7 Điều 26 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "effective_from": "2029-01-01",
+        "id": "nd168-effective-d26-k7-pl"
+      }
+    ],
+    "mixed_effective_date_locator_count": 3,
+    "mixed_effective_date_records": [
+      {
+        "citation": "điểm l khoản 5 Điều 20 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "id": "nd168-effective-d20-k5-pl",
+        "temporal_rules": [
+          {
+            "effective_from": "2026-08-15",
+            "scope": "Xe kinh doanh vận tải hành khách từ 08 chỗ trở lên (không kể chỗ của người lái xe).",
+            "source_locator": "khoản 1 Điều 20 Nghị định 238/2026/NĐ-CP"
+          },
+          {
+            "effective_from": "2028-01-01",
+            "scope": "Xe kinh doanh vận tải hành khách dưới 08 chỗ (không kể chỗ của người lái xe) và xe vận tải nội bộ.",
+            "source_locator": "khoản 3 Điều 53 Nghị định 168/2024/NĐ-CP được bổ sung bởi Điều 18 Nghị định 238/2026/NĐ-CP"
+          }
+        ]
+      },
+      {
+        "citation": "điểm b khoản 3 Điều 21 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "id": "nd168-effective-d21-k3-pb",
+        "temporal_rules": [
+          {
+            "effective_from": "2026-08-15",
+            "scope": "Xe kinh doanh vận tải hành khách từ 08 chỗ trở lên (không kể chỗ của người lái xe) và xe ô tô đầu kéo.",
+            "source_locator": "khoản 1 Điều 20 Nghị định 238/2026/NĐ-CP"
+          },
+          {
+            "effective_from": "2028-01-01",
+            "scope": "Xe kinh doanh vận tải hành khách dưới 08 chỗ (không kể chỗ của người lái xe), xe kinh doanh vận tải hàng hóa trừ xe ô tô đầu kéo và xe vận tải nội bộ.",
+            "source_locator": "khoản 3 Điều 53 Nghị định 168/2024/NĐ-CP được bổ sung bởi Điều 18 Nghị định 238/2026/NĐ-CP"
+          }
+        ]
+      },
+      {
+        "citation": "điểm b khoản 9a Điều 32 Nghị định 168/2024/NĐ-CP được sửa đổi, bổ sung bởi Nghị định 238/2026/NĐ-CP",
+        "id": "nd168-effective-d32-k9a-pb",
+        "temporal_rules": [
+          {
+            "effective_from": "2026-08-15",
+            "scope": "Chủ xe ô tô đầu kéo.",
+            "source_locator": "khoản 1 Điều 20 Nghị định 238/2026/NĐ-CP"
+          },
+          {
+            "effective_from": "2028-01-01",
+            "scope": "Chủ xe vận tải nội bộ.",
+            "source_locator": "khoản 3 Điều 53 Nghị định 168/2024/NĐ-CP được bổ sung bởi Điều 18 Nghị định 238/2026/NĐ-CP"
+          }
+        ]
+      }
+    ],
+    "operation_count": 102
+  },
+  "view_id": "nd168-effective-as-of-2026-09-22"
+}

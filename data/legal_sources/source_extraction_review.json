@@ -1,0 +1,324 @@
+{
+  "documents": [
+    {
+      "checks": {
+        "all_footnote_references_resolved": true,
+        "article_count_expected": true,
+        "article_sequence_complete": true,
+        "docx_reextracts_byte_identically": true,
+        "footnote_count_expected": true,
+        "footnotes_reextract_identically": true,
+        "no_unreferenced_footnotes": true
+      },
+      "document_id": "49-vbhn-vpqh",
+      "extracted_text": {
+        "article_count": 86,
+        "path": "data/raw/legal/49-vbhn-vpqh/supporting-text.txt",
+        "sha256": "ebf20b2826c6ab03d44ce564f7dfc1eddd6e7c78ac12b66cfd50a9f092f057fe"
+      },
+      "footnotes": {
+        "count": 41,
+        "path": "data/raw/legal/49-vbhn-vpqh/footnotes.json",
+        "reference_count": 41,
+        "sha256": "98e5cc89ecf4f764193c5bd131d395a8882710b18e348a67e194591d87f004bf"
+      },
+      "selected_extraction": "official_docx_body_text",
+      "source_docx": {
+        "path": "data/raw/legal/49-vbhn-vpqh/supporting.docx",
+        "sha256": "507ffb4b542ae27b576266df58a4d6273c72c0d7a5d0415acc9a5766c7bf07e7"
+      },
+      "status": "passed"
+    },
+    {
+      "checks": {
+        "all_footnote_references_resolved": true,
+        "article_count_expected": true,
+        "article_sequence_complete": true,
+        "docx_reextracts_byte_identically": true,
+        "footnote_count_expected": true,
+        "footnotes_reextract_identically": true,
+        "no_unreferenced_footnotes": true
+      },
+      "document_id": "55-vbhn-vpqh",
+      "extracted_text": {
+        "article_count": 89,
+        "path": "data/raw/legal/55-vbhn-vpqh/supporting-text.txt",
+        "sha256": "07fcfdf64b410b32f159d4e201971ddae41f5e73875f690562321beeeacd8a6b"
+      },
+      "footnotes": {
+        "count": 47,
+        "path": "data/raw/legal/55-vbhn-vpqh/footnotes.json",
+        "reference_count": 47,
+        "sha256": "64173167e772c9b76b84efb28dcb6e0398660c14d3ff730dd5b28fdb4c408e9a"
+      },
+      "selected_extraction": "official_docx_body_text",
+      "source_docx": {
+        "path": "data/raw/legal/55-vbhn-vpqh/supporting.docx",
+        "sha256": "cc52a6e84d6bfb5dc1a0085559194775961663472e182adb990e4902cd1f94b3"
+      },
+      "status": "passed"
+    },
+    {
+      "article_comparison": [
+        {
+          "article": 1,
+          "normalized_match": true
+        },
+        {
+          "article": 2,
+          "normalized_match": true
+        },
+        {
+          "article": 3,
+          "normalized_match": true
+        },
+        {
+          "article": 4,
+          "normalized_match": true
+        },
+        {
+          "article": 5,
+          "normalized_match": true
+        },
+        {
+          "article": 6,
+          "normalized_match": true
+        },
+        {
+          "article": 7,
+          "normalized_match": true
+        },
+        {
+          "article": 8,
+          "normalized_match": true
+        },
+        {
+          "article": 9,
+          "normalized_match": true
+        },
+        {
+          "article": 10,
+          "normalized_match": true
+        },
+        {
+          "article": 11,
+          "normalized_match": true
+        },
+        {
+          "article": 12,
+          "normalized_match": true
+        },
+        {
+          "article": 13,
+          "normalized_match": true
+        },
+        {
+          "article": 14,
+          "normalized_match": true
+        },
+        {
+          "article": 15,
+          "normalized_match": true
+        },
+        {
+          "article": 16,
+          "normalized_match": true
+        },
+        {
+          "article": 17,
+          "normalized_match": true
+        },
+        {
+          "article": 18,
+          "normalized_match": true
+        },
+        {
+          "article": 19,
+          "normalized_match": true
+        },
+        {
+          "article": 20,
+          "normalized_match": true
+        },
+        {
+          "article": 21,
+          "normalized_match": true
+        },
+        {
+          "article": 22,
+          "normalized_match": true
+        },
+        {
+          "article": 23,
+          "normalized_match": true
+        },
+        {
+          "article": 24,
+          "normalized_match": true
+        },
+        {
+          "article": 25,
+          "normalized_match": true
+        },
+        {
+          "article": 26,
+          "normalized_match": true
+        },
+        {
+          "article": 27,
+          "normalized_match": true
+        },
+        {
+          "article": 28,
+          "normalized_match": true
+        },
+        {
+          "article": 29,
+          "normalized_match": true
+        },
+        {
+          "article": 30,
+          "normalized_match": true
+        },
+        {
+          "article": 31,
+          "normalized_match": true
+        },
+        {
+          "article": 32,
+          "normalized_match": true
+        },
+        {
+          "article": 33,
+          "normalized_match": true
+        },
+        {
+          "article": 34,
+          "normalized_match": true
+        },
+        {
+          "article": 35,
+          "normalized_match": true
+        },
+        {
+          "article": 36,
+          "normalized_match": true
+        },
+        {
+          "article": 37,
+          "normalized_match": true
+        },
+        {
+          "article": 38,
+          "normalized_match": true
+        },
+        {
+          "article": 39,
+          "normalized_match": true
+        },
+        {
+          "article": 40,
+          "normalized_match": true
+        },
+        {
+          "article": 41,
+          "normalized_match": true
+        },
+        {
+          "article": 42,
+          "normalized_match": true
+        },
+        {
+          "article": 43,
+          "normalized_match": true
+        },
+        {
+          "article": 44,
+          "normalized_match": true
+        },
+        {
+          "article": 45,
+          "normalized_match": true
+        },
+        {
+          "article": 46,
+          "normalized_match": true
+        },
+        {
+          "article": 47,
+          "normalized_match": true
+        },
+        {
+          "article": 48,
+          "normalized_match": true
+        },
+        {
+          "article": 49,
+          "normalized_match": true
+        },
+        {
+          "article": 50,
+          "normalized_match": true
+        },
+        {
+          "article": 51,
+          "normalized_match": true
+        },
+        {
+          "article": 52,
+          "normalized_match": true
+        },
+        {
+          "article": 53,
+          "normalized_match": true
+        },
+        {
+          "article": 54,
+          "normalized_match": true
+        },
+        {
+          "article": 55,
+          "normalized_match": true
+        }
+      ],
+      "checks": {
+        "all_55_articles_match_after_layout_normalization": true,
+        "official_congbao_has_articles_1_to_55": true,
+        "owner_text_has_articles_1_to_55": true
+      },
+      "document_id": "168-2024-nd-cp",
+      "normalization_scope": [
+        "Unicode NFC và khoảng trắng/ngắt trang",
+        "header, số trang và đoạn nối hai số Công báo",
+        "dấu chấm trình bày sau tiêu đề Mục",
+        "gạch nối từ bị tách ở cuối dòng PDF",
+        "khối chữ ký sau Điều 55"
+      ],
+      "official_congbao_parts": [
+        {
+          "path": "data/raw/legal/168-2024-nd-cp/congbao-part-1.pdf",
+          "sha256": "d771ae0ac2c72f03ea5d5e97f5dd463dde73d2a6be8cb0187660873f5232664d"
+        },
+        {
+          "path": "data/raw/legal/168-2024-nd-cp/congbao-part-2.pdf",
+          "sha256": "1d6debc31b4babd0a043a50d3732be1618734122ef00a6610c5483faad473496"
+        }
+      ],
+      "owner_text": {
+        "article_count": 55,
+        "path": "data/raw/legal/168-2024-nd-cp/supporting-text.txt",
+        "sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718"
+      },
+      "selected_extraction": "owner_provided_text_verified_against_official_congbao",
+      "status": "passed"
+    }
+  ],
+  "legal_interpretation_reviewed": false,
+  "production_index_touched": false,
+  "purpose": "Xác nhận text đầu vào có thể tái tạo và đủ cấu trúc trước khi tạo corpus/index.",
+  "review_id": "current-law-source-extraction-review-2026-09-22",
+  "reviewed_on": "2026-09-22",
+  "reviewer": "Codex",
+  "schema_version": 1,
+  "status": "passed"
+}

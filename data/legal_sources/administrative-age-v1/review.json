@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "status": "approved",
+  "reviewer": "Codex — AI technical review",
+  "reviewed_on": "2026-10-14",
+  "registry_sha256": "e7a633fc676cf010f0c008ad47d87e78114aef7fce28fcfa522cf2fece49f68f",
+  "source_pdf_sha256": "f60237d37fe965d4b15654747f53cfce60fb3c82cd76c597215882345bd6e20c",
+  "extracted_text_sha256": "0250301ffccba0155ea5b0ef39560fb944ef058bba7549924f2a8e0593a360e4",
+  "visual_pages_reviewed": [
+    6,
+    10,
+    17,
+    88
+  ],
+  "units": [
+    {
+      "id": "90-vbhn-vpqh-2026-d5-k1-pa",
+      "article_no": "5",
+      "clause_no": "1",
+      "point": "a",
+      "text": "a) Người từ đủ 14 tuổi đến dưới 16 tuổi bị xử phạt vi phạm hành chính về vi phạm hành chính do cố ý; người từ đủ 16 tuổi trở lên bị xử phạt vi phạm hành chính về mọi vi phạm hành chính. Người thuộc lực lượng Quân đội nhân dân, Công an nhân dân vi phạm hành chính thì bị xử lý như đối với công dân khác; trường hợp cần áp dụng hình thức phạt tước quyền sử dụng giấy phép, chứng chỉ hành nghề hoặc đình chỉ hoạt động có thời hạn liên quan đến quốc phòng, an ninh thì người xử phạt đề nghị cơ quan, đơn vị Quân đội nhân dân, Công an nhân dân có thẩm quyền xử lý;",
+      "parent_context": "Điều 5. Đối tượng bị xử lý vi phạm hành chính\n1. Các đối tượng bị xử phạt vi phạm hành chính bao gồm:",
+      "display_citation": "điểm a khoản 1 Điều 5 90/VBHN-VPQH (2026)",
+      "pdf_page": 6,
+      "line_start": 3,
+      "line_end": 3,
+      "source_text_sha256": "fd3e448920206219e4f71ee67d68a4a0dd57384236e88017c580c64b8788fa02",
+      "effective_from": "2013-07-01",
+      "effective_to": null,
+      "source_footnote_ids": [],
+      "lineage_document_ids": [
+        "15-2012-qh13"
+      ],
+      "amending_document_ids": []
+    },
+    {
+      "id": "90-vbhn-vpqh-2026-d11-k5",
+      "article_no": "11",
+      "clause_no": "5",
+      "point": null,
+      "text": "5. Người thực hiện hành vi vi phạm hành chính không có năng lực trách nhiệm hành chính; người thực hiện hành vi vi phạm hành chính chưa đủ tuổi bị xử phạt vi phạm hành chính theo quy định tại điểm a khoản 1 Điều 5 của Luật này.",
+      "parent_context": "Điều 11. Những trường hợp không xử phạt vi phạm hành chính\nKhông xử phạt vi phạm hành chính đối với các trường hợp sau đây:",
+      "display_citation": "khoản 5 Điều 11 90/VBHN-VPQH (2026)",
+      "pdf_page": 10,
+      "line_start": 6,
+      "line_end": 6,
+      "source_text_sha256": "27e03597ad79a4ab81f11b15246223c4a0afb265b0f1903e010db86d5d381cbe",
+      "effective_from": "2013-07-01",
+      "effective_to": null,
+      "source_footnote_ids": [],
+      "lineage_document_ids": [
+        "15-2012-qh13"
+      ],
+      "amending_document_ids": []
+    },
+    {
+      "id": "90-vbhn-vpqh-2026-d22",
+      "article_no": "22",
+      "clause_no": null,
+      "point": null,
+      "text": "Điều 22. Cảnh cáo Cảnh cáo được áp dụng đối với cá nhân, tổ chức vi phạm hành chính không nghiêm trọng, có tình tiết giảm nhẹ và theo quy định thì bị áp dụng hình thức xử phạt cảnh cáo hoặc đối với mọi hành vi vi phạm hành chính do người chưa thành niên từ đủ 14 tuổi đến dưới 16 tuổi thực hiện. Cảnh cáo được quyết định bằng văn bản.",
+      "parent_context": "",
+      "display_citation": "Điều 22 90/VBHN-VPQH (2026)",
+      "pdf_page": 17,
+      "line_start": 7,
+      "line_end": 7,
+      "source_text_sha256": "72333cb8324ec4616c2ea947ad53dccebe42dfa0db32b1ff3a3f6bd44fc80e57",
+      "effective_from": "2013-07-01",
+      "effective_to": null,
+      "source_footnote_ids": [],
+      "lineage_document_ids": [
+        "15-2012-qh13"
+      ],
+      "amending_document_ids": []
+    },
+    {
+      "id": "90-vbhn-vpqh-2026-d134-k3",
+      "article_no": "134",
+      "clause_no": "3",
+      "point": null,
+      "text": "3. Việc áp dụng hình thức xử phạt, quyết định mức xử phạt đối với người chưa thành niên vi phạm hành chính phải nhẹ hơn so với người thành niên có cùng hành vi vi phạm hành chính. Trường hợp người từ đủ 14 tuổi đến dưới 16 tuổi vi phạm hành chính thì không áp dụng hình thức phạt tiền. Trường hợp người từ đủ 16 tuổi đến dưới 18 tuổi vi phạm hành chính bị phạt tiền thì mức tiền phạt không quá 1/2 mức tiền phạt áp dụng đối với người thành niên; bị buộc phải nộp một khoản tiền tương đương trị giá tang vật, phương tiện vi phạm hành chính vào ngân sách nhà nước theo quy định tại khoản 1 Điều 126 của Luật này thì số tiền nộp vào ngân sách nhà nước bằng 1/2 trị giá tang vật, phương tiện vi phạm hành chính. Trường hợp không có tiền nộp phạt hoặc không có khả năng thực hiện biện pháp khắc phục hậu quả thì cha mẹ hoặc người giám hộ phải thực hiện thay;",
+      "parent_context": "Điều 134. Nguyên tắc xử lý\nNgoài những nguyên tắc xử lý vi phạm hành chính quy định tại Điều 3 của Luật này, việc xử lý đối với người chưa thành niên còn được áp dụng các nguyên tắc sau đây:",
+      "display_citation": "khoản 3 Điều 134 90/VBHN-VPQH (2026)",
+      "pdf_page": 88,
+      "line_start": 10,
+      "line_end": 10,
+      "source_text_sha256": "1090982f05b24fa15f93280f033cbccbbb35c6d6760f0c1084ff9318cb758d2d",
+      "effective_from": "2022-01-01",
+      "effective_to": null,
+      "source_footnote_ids": [
+        271
+      ],
+      "lineage_document_ids": [
+        "15-2012-qh13",
+        "67-2020-qh14"
+      ],
+      "amending_document_ids": [
+        "67-2020-qh14"
+      ]
+    }
+  ],
+  "publication_scope": "Điều kiện tuổi chịu xử phạt hành chính, cảnh cáo và giới hạn tiền phạt người chưa thành niên trong tình huống giao thông. Không phải toàn bộ Luật Xử lý vi phạm hành chính.",
+  "scope_limitations": [
+    "Không dùng bốn phạm vi này để kết luận toàn bộ trách nhiệm pháp lý hoặc thủ tục tạm giữ/trả xe.",
+    "Điều 3 và khoản 1 Điều 126 chỉ là dẫn chiếu chưa được nhập/review; chưa đủ nguồn về xử lý tang vật hoặc thủ tục khắc phục hậu quả."
+  ]
+}

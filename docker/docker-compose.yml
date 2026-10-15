@@ -1,4 +1,11 @@
-version: '3.8'
+# Full demo: Weaviate + API + Streamlit. From the repository root:
+#   docker compose --env-file .env -f docker/docker-compose.yml run --rm bootstrap   (once, clean machine)
+#   docker compose --env-file .env -f docker/docker-compose.yml up -d --build
+# --env-file .env is required: it supplies WEAVIATE_CLUSTER_HOSTNAME, and a
+# Weaviate recreated under another hostname cannot open the saved index.
+# The project name stays "docker" so the volume docker_weaviate_data (the
+# built index) is reused; never point this at a new, empty volume.
+name: docker
 
 services:
   weaviate:
@@ -7,11 +14,12 @@ services:
       - "8080:8080"
       - "50051:50051"
     environment:
+      CLUSTER_HOSTNAME: '${WEAVIATE_CLUSTER_HOSTNAME:-node1}'
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'none'
-      GRPC_PORT: '50051'  # <--- QUAN TRỌNG: THÊM DÒNG NÀY ĐỂ BẬT gRPC
+      GRPC_PORT: '50051'
     volumes:
       - weaviate_data:/var/lib/weaviate
     command:
@@ -22,5 +30,63 @@ services:
       - --scheme
       - http
 
+  # One-off setup (profile "setup", not started by `up`): download the pinned
+  # models into the HF cache and build the index on an empty Weaviate.
+  bootstrap:
+    profiles: ["setup"]
+    image: roadlawqa-api
+    build:
+      context: ..
+      target: api
+    # Root so it can write into bind mounts Docker creates on a fresh host.
+    user: root
+    env_file: ../.env
+    environment:
+      WEAVIATE_HOST: weaviate
+      HF_HOME: /home/app/.cache/huggingface
+    volumes:
+      - ${HF_HUB_CACHE_DIR:-~/.cache/huggingface/hub}:/home/app/.cache/huggingface/hub
+      - ../outputs/structured-law-v2:/app/outputs/structured-law-v2
+    depends_on:
+      - weaviate
+    command: ["python", "-m", "ingestion.bootstrap"]
+
+  api:
+    image: roadlawqa-api
+    build:
+      context: ..
+      target: api
+    env_file: ../.env
+    environment:
+      # Container-network address of Weaviate; containers have no MPS GPU.
+      WEAVIATE_HOST: weaviate
+      EMBEDDING_DEVICE: cpu
+      RERANKER_DEVICE: cpu
+      HF_HUB_OFFLINE: '1'
+    volumes:
+      # Model weights stay on the host (local_files_only, locked revisions).
+      - ${HF_HUB_CACHE_DIR:-~/.cache/huggingface/hub}:/home/app/.cache/huggingface/hub:ro
+      # Receipt that verifies the Weaviate collection before serving.
+      - ../outputs/structured-law-v2:/app/outputs/structured-law-v2:ro
+      - chat_data:/app/outputs/chat
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - weaviate
+
+  ui:
+    image: roadlawqa-ui
+    build:
+      context: ..
+      target: ui
+    environment:
+      ROADLAWQA_API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   weaviate_data:
+  chat_data:

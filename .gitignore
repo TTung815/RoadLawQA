@@ -58,3 +58,18 @@ Thumbs.db
 *.sqlite3
 index/
 bm25_index.pkl
+
+# Local development notes; public guides and provenance stay tracked.
+/AGENTS.md
+/docs/MILESTONE_*.md
+/docs/SESSION_HANDOFF.md
+/docs/archive/
+/docs/CS431_FINAL_REPORT.pdf
+/docs/CS529_slide.pdf
+/docs/ADMINISTRATIVE_AGE_INGESTION_*.md
+/docs/EVALUATION_CURRENT_PIPELINE_*.md
+/docs/MPS_INFERENCE_*.md
+/docs/PIPELINE_LEAN_*.md
+/docs/QUERY_EXPANSION_20*.md
+/docs/RETRIEVAL_SELECTION_*.md
+/docs/STRUCTURED_RETRIEVAL_*.md

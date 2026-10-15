@@ -1,0 +1,2085 @@
+{
+  "audit_id": "nd168-nd238-leaf-locator-audit-2026-09-22",
+  "failures": [],
+  "freeze_allowed": true,
+  "inputs": {
+    "amendment_map_path": "data/legal_sources/amendments_238_2026.json",
+    "amendment_map_sha256": "dc3fb195260a092098c0b9c7fc01d7d4765b9c47abbfcfe26b289e65cb6f54a7",
+    "amendment_text_path": "data/raw/legal/238-2026-nd-cp/supporting-text.txt",
+    "amendment_text_sha256": "93ac6ee4e88e55bffe6419de96fb9a397c7c8632a4a4331a48d30973f73fa12d",
+    "base_text_path": "data/raw/legal/168-2024-nd-cp/supporting-text.txt",
+    "base_text_sha256": "b6f300f7ff0d515faf53f080ab261a5edddd175d73397efed4ff899150eb4718"
+  },
+  "legal_as_of": "2026-09-22",
+  "legal_review_status": "approved",
+  "operations": [
+    {
+      "amendment_article": 1,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a01-nd168-d3-k3-i",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 3,
+        "clause": "3",
+        "point": "i"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 1,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a01-nd168-d3-k3-l",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 3,
+        "clause": "3",
+        "point": "l"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 2,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a02-nd168-d6-k1a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "1a",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 2,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a02-nd168-d6-k3-m",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "3",
+        "point": "m"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 3,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a03-nd168-d13-k8-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 13,
+        "clause": "8",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 4,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a04-nd168-d14-k3-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 14,
+        "clause": "3",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 5,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a05-nd168-d17-k2-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 17,
+        "clause": "2",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 6,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a06-nd168-d18-k4-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 18,
+        "clause": "4",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k5-dd",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "5",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k5-g",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "5",
+        "point": "g"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k5-l",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "5",
+        "point": "l"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k5-m",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "5",
+        "point": "m"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a07-nd168-d20-k5-n",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "5",
+        "point": "n"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k6-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "6",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a07-nd168-d20-k8a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "8a",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 7,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a07-nd168-d20-k10-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "10",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a08-nd168-d21-k2-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "2",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a08-nd168-d21-k3-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "3",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a08-nd168-d21-k5-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "5",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a08-nd168-d21-k8-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "8",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a08-nd168-d21-k8-dd",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "8",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 8,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a08-nd168-d21-k8-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "8",
+        "point": "e"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a09-nd168-d26-k7-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "7",
+        "point": "e"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a09-nd168-d26-k7-k",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "7",
+        "point": "k"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a09-nd168-d26-k7-l",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "7",
+        "point": "l"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a09-nd168-d26-k8-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "8",
+        "point": "d"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a09-nd168-d26-k13-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "13",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 9,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a09-nd168-d26-k13-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "13",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 10,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a10-nd168-d29-k3a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 29,
+        "clause": "3a",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 10,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a10-nd168-d29-k4",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 29,
+        "clause": "4",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 11,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a11-nd168-d32-k9a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "9a",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 11,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a11-nd168-d32-k11-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "11",
+        "point": "e"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 11,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a11-nd168-d32-k13-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "13",
+        "point": "e"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 11,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a11-nd168-d32-k19-l",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "19",
+        "point": "l"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 11,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a11-nd168-d32-k21-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "21",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 12,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a12-nd168-d41-k2-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 41,
+        "clause": "2",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 12,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a12-nd168-d41-k4-k1",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 41,
+        "clause": "4",
+        "point": "k1"
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 12,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a12-nd168-d41-k5",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 41,
+        "clause": "5",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 13,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a13-nd168-d42",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 42,
+        "clause": null,
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 14,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a14-nd168-d43",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 43,
+        "clause": null,
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 15,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a15-nd168-d44",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 44,
+        "clause": null,
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 16,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a16-nd168-d46-k2",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 46,
+        "clause": "2",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 17,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a17-nd168-d50-k1-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 50,
+        "clause": "1",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 17,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace",
+      "operation_id": "a17-nd168-d50-k3-a-doan2",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 50,
+        "clause": "3",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 18,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a18-nd168-d53-k3",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 53,
+        "clause": "3",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 18,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_missing_parent_exists",
+      "operation": "add",
+      "operation_id": "a18-nd168-d53-k4",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 53,
+        "clause": "4",
+        "point": null
+      },
+      "target_exists": false
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "xe được kéo khi kéo nhau",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p01-nd168-d6-k3-h",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "3",
+        "point": "h"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "chỉ được phép chuyển sang một làn đường liền kề",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p02-nd168-d6-k2-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "2",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "chỉ được phép chuyển sang một làn đường liền kề",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p02-nd168-d6-k5-g",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "5",
+        "point": "g"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "chỉ được phép chuyển sang một làn đường liền kề",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p02-nd168-d7-k1-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 7,
+        "clause": "1",
+        "point": "e"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "chỉ được phép chuyển sang một làn đường liền kề",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p02-nd168-d8-k6-h",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 8,
+        "clause": "6",
+        "point": "h"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "đối với loại phương tiện đang điều khiển",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p03-nd168-d6-k5-i",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "5",
+        "point": "i"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "đối với loại phương tiện đang điều khiển",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p03-nd168-d7-k6-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 7,
+        "clause": "6",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "đối với loại phương tiện đang điều khiển",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p03-nd168-d8-k6-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 8,
+        "clause": "6",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "làn dừng xe khẩn cấp",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p04-nd168-d6-k7-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "7",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "làn dừng xe khẩn cấp",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p04-nd168-d8-k6-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 8,
+        "clause": "6",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "điểm đ",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p05-nd168-d14-k6-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 14,
+        "clause": "6",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "xe ô tô kinh doanh vận tải",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p06-nd168-d20-k6-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 20,
+        "clause": "6",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "xe ô tô kinh doanh vận tải",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p06-nd168-d21-k5-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "5",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "điểm h",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p07-nd168-d26-k11",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "11",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "Điều 29",
+          "exact_match": true,
+          "normalized_match": true
+        },
+        {
+          "anchor": "điểm n khoản 7",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p08-nd168-d47-k3-h",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 47,
+        "clause": "3",
+        "point": "h"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "khoản 2",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "add_phrase",
+      "operation_id": "a19-p09-nd168-d53-k1",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 53,
+        "clause": "1",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "chở người trên nóc xe; để người đu bám ở cửa xe, bên ngoài thành xe khi xe đang chạy",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p10-nd168-d6-k5-p",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 6,
+        "clause": "5",
+        "point": "p"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d3-k3-q",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 3,
+        "clause": "3",
+        "point": "q"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d3-k3-r",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 3,
+        "clause": "3",
+        "point": "r"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d13-k3-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 13,
+        "clause": "3",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d13-k4-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 13,
+        "clause": "4",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d18",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 18,
+        "clause": "3",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k2-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "2",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k2-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "2",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k5-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "5",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k5-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "5",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k6-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "6",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k6-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "6",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k7-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "7",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k7-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "7",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k8-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "8",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d21-k8-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 21,
+        "clause": "8",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d26-k1-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "1",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d26-k3",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "3",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d26-k5",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 26,
+        "clause": "5",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k1-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "1",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k11-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "11",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k14-h",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "14",
+        "point": "h"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k18-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "18",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k18-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "18",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k19-dd",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "19",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k19-g",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "19",
+        "point": "g"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d32-k20",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "20",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d40",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 40,
+        "clause": "4",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "replace_phrase",
+      "operation_id": "a19-p11-nd168-d48",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 48,
+        "clause": "3",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p12a-nd168-d32-k7-b",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "7",
+        "point": "b"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "giấy chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p12a-nd168-d32-k7-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "7",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "điểm e, điểm g khoản 7;",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p12b-nd168-d32-k18-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "18",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "tại nơi phát hiện vi phạm",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p13-nd168-d47-k5-c",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 47,
+        "clause": "5",
+        "point": "c"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "Điểm g khoản 5;",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p14-nd168-d48-k1-a",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 48,
+        "clause": "1",
+        "point": "a"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "điểm m khoản 3 Điều 6,",
+          "exact_match": true,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p15-nd168-d53-k2",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 53,
+        "clause": "2",
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [
+        {
+          "anchor": "trực thuộc trung ương",
+          "exact_match": false,
+          "normalized_match": true
+        }
+      ],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "remove_phrase",
+      "operation_id": "a19-p16-nd168-d55",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 55,
+        "clause": null,
+        "point": null
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "repeal",
+      "operation_id": "a19-p17-nd168-d32-k17-d",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "17",
+        "point": "d"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "repeal",
+      "operation_id": "a19-p17-nd168-d32-k17-dd",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "17",
+        "point": "đ"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "repeal",
+      "operation_id": "a19-p17-nd168-d32-k17-e",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "17",
+        "point": "e"
+      },
+      "target_exists": true
+    },
+    {
+      "amendment_article": 19,
+      "anchors": [],
+      "anchors_passed": true,
+      "locator_check_passed": true,
+      "locator_expectation": "target_exists",
+      "operation": "repeal",
+      "operation_id": "a19-p17-nd168-d32-k17-g",
+      "passed": true,
+      "source_reference_check_passed": true,
+      "target": {
+        "article": 32,
+        "clause": "17",
+        "point": "g"
+      },
+      "target_exists": true
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Kiểm tra locator lá, source reference và phrase anchor; không phải legal review.",
+  "status": "passed",
+  "summary": {
+    "docx_extraction_reproducible": true,
+    "failed_operations": 0,
+    "normalized_only_anchor_matches": [
+      {
+        "anchor": "trực thuộc trung ương",
+        "operation_id": "a19-p16-nd168-d55"
+      }
+    ],
+    "operation_count": 102,
+    "parsed_base_locator_count": 1297,
+    "passed_operations": 102,
+    "target_article_count": 24
+  }
+}

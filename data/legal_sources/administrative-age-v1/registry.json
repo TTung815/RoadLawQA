@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "registry_id": "administrative-age-dependency-20260922-v1",
+  "legal_as_of": "2026-09-22",
+  "base_registry_path": "data/legal_sources/registry.json",
+  "base_registry_sha256": "bf639a4a784a6cbfa86f7274c3582314c405295376943f01efef7efb35149f63",
+  "document": {
+    "document_id": "90-vbhn-vpqh-2026",
+    "symbol": "90/VBHN-VPQH (2026)",
+    "title": "Luật Xử lý vi phạm hành chính (90/VBHN-VPQH năm 2026)",
+    "document_type": "van_ban_hop_nhat",
+    "issuing_authority": "Văn phòng Quốc hội",
+    "issued_on": "2026-03-30",
+    "effective_from": null,
+    "effective_to": null,
+    "status_at_cutoff": "official_consolidation",
+    "roles": [
+      "canonical",
+      "dependency"
+    ],
+    "source": {
+      "landing_url": "https://chinhphu.vn/?docid=217377&pageid=27160",
+      "attachment_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/3/90-vbhn-vpqh.pdf",
+      "raw_path": "data/raw/legal/90-vbhn-vpqh-2026/source.pdf",
+      "sha256": "f60237d37fe965d4b15654747f53cfce60fb3c82cd76c597215882345bd6e20c",
+      "media_type": "application/pdf",
+      "pages": 94,
+      "acquired_on": "2026-10-14"
+    },
+    "extraction": {
+      "path": "data/raw/legal/90-vbhn-vpqh-2026/scoped-text.txt",
+      "sha256": "0250301ffccba0155ea5b0ef39560fb944ef058bba7549924f2a8e0593a360e4",
+      "method": "Selected PDF text-layer extraction, whitespace normalized, structural footnote marker 271 separated; visually reviewed body and parent context.",
+      "tool_version": "pdftotext (Poppler), visual review 2026-10-14",
+      "quality": "text_layer",
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex — source extraction and temporal review; owner approved scoped ingestion",
+        "reviewed_on": "2026-10-14",
+        "notes": [
+          "Owner authorized adding the necessary Administrative Violations Law data after reviewing the four-section proposal.",
+          "Rendered and visually checked PDF pages 6, 10, 17, 88; body and parent context match scoped extraction.",
+          "Only these four provisions are reviewed; no whole-law completeness approval."
+        ]
+      },
+      "notes": [
+        "Scope only: point a clause 1 article 5, clause 5 article 11, article 22, clause 3 article 134."
+      ]
+    },
+    "relations": [
+      {
+        "type": "lineage",
+        "target_document_id": "15-2012-qh13"
+      },
+      {
+        "type": "lineage",
+        "target_document_id": "67-2020-qh14"
+      }
+    ],
+    "scope": {
+      "decision": "ingest",
+      "reason": "Độ tuổi chịu xử phạt hành chính trong tình huống giao thông; phân biệt không xử phạt, cảnh cáo và phạt tiền đối với người chưa thành niên.",
+      "included_sections": [
+        "điểm a khoản 1 Điều 5 90/VBHN-VPQH (2026)",
+        "khoản 5 Điều 11 90/VBHN-VPQH (2026)",
+        "Điều 22 90/VBHN-VPQH (2026)",
+        "khoản 3 Điều 134 90/VBHN-VPQH (2026)"
+      ]
+    },
+    "temporal_notes": [
+      "Consolidation date is not provision effective date.",
+      "Article 134 clause 3: footnote 271, clause 68 article 1 of 67/2020/QH14, effective 2022-01-01.",
+      "The other three reviewed provisions have no amendment footnote in 90; base-law effective date 2013-07-01.",
+      "Later consolidation 171 body comparison agrees for these four scopes; no 2027 amendments ingested."
+    ],
+    "metadata_review": {
+      "status": "approved",
+      "reviewer": "Codex — source extraction and temporal review; owner approved scoped ingestion",
+      "reviewed_on": "2026-10-14",
+      "notes": [
+        "Owner authorized adding the necessary Administrative Violations Law data after reviewing the four-section proposal.",
+        "Rendered and visually checked PDF pages 6, 10, 17, 88; body and parent context match scoped extraction.",
+        "Only these four provisions are reviewed; no whole-law completeness approval."
+      ]
+    }
+  },
+  "scope_review": {
+    "status": "approved",
+    "reviewer": "Codex — source extraction and temporal review; owner approved scoped ingestion",
+    "reviewed_on": "2026-10-14",
+    "notes": [
+      "Owner authorized adding the necessary Administrative Violations Law data after reviewing the four-section proposal.",
+      "Rendered and visually checked PDF pages 6, 10, 17, 88; body and parent context match scoped extraction.",
+      "Only these four provisions are reviewed; no whole-law completeness approval."
+    ]
+  },
+  "owner_authorization": {
+    "date": "2026-10-14",
+    "instruction": "Oke, bây giờ bạn bổ sung data thêm Luật Xử lí vi phạm hành chính nữa đi nếu cần thiết",
+    "scope_proposal": "docs/LEGAL_DEPENDENCY_AGE_REVIEW_2026_10_14.md"
+  },
+  "scope_limits": [
+    "Không tuyên bố corpus chứa toàn bộ Luật Xử lý vi phạm hành chính.",
+    "Không kết luận trách nhiệm hình sự/dân sự, giao xe của chủ xe, thủ tục tạm giữ/trả xe hoặc biện pháp xử lý khác từ bốn phạm vi này.",
+    "Giữ nguyên toàn bộ đoạn khoản 3 Điều 134 nhưng dẫn chiếu Điều 3 và khoản 1 Điều 126 chưa được đưa vào phạm vi; chưa đủ căn cứ trả lời riêng thủ tục/tang vật/khắc phục hậu quả.",
+    "Không suy rằng dưới 14 tuổi được áp dụng cảnh cáo dành cho nhóm từ đủ 14 đến dưới 16."
+  ]
+}
