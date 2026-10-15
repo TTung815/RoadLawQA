@@ -9,7 +9,7 @@ from pydantic import Field, StrictBool, model_validator
 from evaluation.dataset_schema import LabelModel, Message, SHA256, Text
 
 
-Suite = Literal["legacy", "reviewed", "development", "held_out"]
+Suite = Literal["legacy", "reviewed", "development"]
 Mode = Literal["end_to_end", "fixed_evidence", "rewrite_probe", "publication_guard_probe"]
 
 
@@ -94,7 +94,7 @@ class RunPlan(LabelModel):
         if len(ids) != len(set(ids)):
             raise ValueError("duplicate question ID")
         if self.suite != "development" and any(q.mode != "end_to_end" for q in self.questions):
-            raise ValueError("legacy/held-out report end-to-end only")
+            raise ValueError("only development plans may use probe modes")
         return self
 
 
@@ -110,15 +110,6 @@ class SemanticReview(LabelModel):
     # Required for a v2 full-pass decision; null means not reviewed yet.
     response_appropriate: StrictBool | None = None
     notes: Text
-
-
-class SimpleGold(LabelModel):
-    """Minimal private held-out gold for manual scoring; not a serving contract."""
-    id: Text
-    reference_answer: Text
-    disposition: Literal["publish", "conditional", "abstain"]
-    required_facets: dict[str, Text] = Field(min_length=1)
-    expected_citations: list[Text] = Field(default_factory=list)
 
 
 def unique_records(records):

@@ -14,7 +14,7 @@ from evaluation import llm_preflight as preflight
 from evaluation.core_runtime import create_evaluation_provider
 from evaluation.core_schema import RunSettings
 from evaluation.snapshot import digest
-from tests.unit.test_core_evaluation import write_run
+from tests.unit.test_core_evaluation import fixture_gold, write_run  # noqa: F401 (autouse fixture)
 from tests.unit.test_openai_provider import response_body
 
 
@@ -45,7 +45,7 @@ def test_openai_usage_does_not_double_count_reasoning_and_cached_cost_is_unknown
 
 
 def test_historical_v1_run_digest_uses_original_representation(tmp_path):
-    directory, gold, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     path = directory / "run.json"
     receipt = json.loads(path.read_text())
     receipt["plan"]["format_version"] = 1
@@ -57,7 +57,7 @@ def test_historical_v1_run_digest_uses_original_representation(tmp_path):
     assert plan.format_version == 1 and plan.settings.provider == "gemini"
     assert len(records) == 1
     from evaluation.core_scoring import score_run
-    assert score_run(directory, private_gold=gold)["run_settings"]["provider"] == "gemini"
+    assert score_run(directory)["run_settings"]["provider"] == "gemini"
     receipt["plan"]["settings"]["model"] = "tampered"
     path.write_text(json.dumps(receipt))
     with pytest.raises(ValueError, match="digest"):
@@ -123,7 +123,7 @@ async def test_failed_schema_preflight_stops_at_first_failure():
 
 
 def test_preflight_receipt_is_bound_to_plan_and_cannot_pass_with_missing_checks(monkeypatch, tmp_path):
-    directory, _, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     plan = runner.verify_run(directory)[0]
     monkeypatch.setattr(runner, "load_plan", lambda path: plan)
     plan_path = tmp_path / "plan.json"
@@ -151,7 +151,7 @@ def test_preflight_receipt_is_bound_to_plan_and_cannot_pass_with_missing_checks(
 
 @pytest.mark.asyncio
 async def test_runner_requires_preflight_before_creating_live_runtime(monkeypatch, tmp_path):
-    directory, _, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     plan = runner.verify_run(directory)[0]
     monkeypatch.setattr(runner, "load_plan", lambda path: plan)
     from evaluation import core_runtime
@@ -163,7 +163,7 @@ async def test_runner_requires_preflight_before_creating_live_runtime(monkeypatc
 
 @pytest.mark.asyncio
 async def test_missing_credentials_preflight_writes_failure_without_calling_network(monkeypatch, tmp_path):
-    directory, _, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     plan = runner.verify_run(directory)[0]
     plan.settings = settings()
     monkeypatch.setattr(runner, "load_plan", lambda path: plan)

@@ -11,27 +11,19 @@ from typing import Sequence
 from evaluation import gold_support as corpus
 from evaluation import revised_current_law_dataset as revised
 from evaluation.core_runner import verify_run, write_new
-from evaluation.core_schema import SemanticReview, SimpleGold, unique_records
+from evaluation.core_schema import SemanticReview, unique_records
 from evaluation.legacy_probe import runtime_id
 from ingestion.legal_registry import file_digest, read_json
 
 
-def load_gold(plan, private_gold: Path | None = None) -> dict:
-    if plan.suite == "held_out":
-        if private_gold is None:
-            raise ValueError("held-out scoring requires private gold; runner never reads it")
-        gold = unique_records([SimpleGold.model_validate_json(line) for line in private_gold.read_text().splitlines() if line.strip()])
-        result = {identity: {"reference_answer": g.reference_answer, "disposition": g.disposition,
-                            "facets": g.required_facets, "gold": None, "stage": None,
-                            "expected_citations": g.expected_citations} for identity, g in gold.items()}
-    elif plan.suite == "reviewed":
-        cases = revised.load_cases()
-        if (plan.dataset_version != revised.DATASET_ID or
-                file_digest(revised.DEFAULT_DIR / "manifest.json") != plan.dataset_binding):
-            raise ValueError("run/gold version mismatch")
-        result = {c.id: gold_view(c.gold) for c in cases}
-    else:
-        raise ValueError("only the reviewed benchmark and held-out suites are scored")
+def load_gold(plan) -> dict:
+    if plan.suite != "reviewed":
+        raise ValueError("only the reviewed benchmark is scored")
+    cases = revised.load_cases()
+    if (plan.dataset_version != revised.DATASET_ID or
+            file_digest(revised.DEFAULT_DIR / "manifest.json") != plan.dataset_binding):
+        raise ValueError("run/gold version mismatch")
+    result = {c.id: gold_view(c.gold) for c in cases}
     if set(result) != {q.id for q in plan.questions}:
         raise ValueError("gold must match every planned ID exactly")
     return result
@@ -94,9 +86,9 @@ def deterministic_checks(record: dict, item: dict, chunks: dict, aliases: dict) 
     return checks
 
 
-def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | None = None) -> dict:
+def make_review_packet(run_dir: Path, output_dir: Path) -> dict:
     plan, records = verify_run(run_dir)
-    gold = load_gold(plan, private_gold)
+    gold = load_gold(plan)
     chunks = revised.source_chunks() if plan.suite == "reviewed" else {
         c["id"]: c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"]}
     if output_dir.exists():
@@ -141,11 +133,11 @@ def make_review_packet(run_dir: Path, output_dir: Path, private_gold: Path | Non
     return {"cases": len(records), "semantic_reviews": "pending"}
 
 
-def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Path | None = None) -> dict:
+def score_run(run_dir: Path, reviews_path: Path | None = None) -> dict:
     plan, records = verify_run(run_dir)
     if any(r["execution_kind"] != "live" for r in records):
         raise ValueError("synthetic smoke is not a model quality benchmark")
-    gold = load_gold(plan, private_gold)
+    gold = load_gold(plan)
     reviews = unique_records([SemanticReview.model_validate_json(line) for line in reviews_path.read_text().splitlines() if line.strip()]) if reviews_path else {}
     if not set(reviews) <= set(gold):
         raise ValueError("review contains unknown IDs")
@@ -247,7 +239,6 @@ def score_run(run_dir: Path, reviews_path: Path | None = None, private_gold: Pat
                           "reviewed": v is not None} for mode, rows in groups.items() for r, _, v, c in rows]
     result["run_results_sha256"] = file_digest(run_dir / "results.jsonl")
     result["reviews_sha256"] = file_digest(reviews_path) if reviews_path else None
-    result["private_gold_sha256"] = file_digest(private_gold) if private_gold else None
     return result
 
 
@@ -275,14 +266,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--reviews", type=Path)
-    parser.add_argument("--gold", type=Path)
     args = parser.parse_args(argv)
     if args.action == "review-packet":
-        result = make_review_packet(args.run, args.output, args.gold)
+        result = make_review_packet(args.run, args.output)
     else:
         if args.output.exists():
             raise FileExistsError("report output exists; choose a new version")
-        result = score_run(args.run, args.reviews, args.gold)
+        result = score_run(args.run, args.reviews)
         write_new(args.output / "metrics.json", result)
         write_new(args.output / "REPORT.md", render_report(result))
     print(json.dumps({key: value for key, value in result.items() if key not in {"per_case", "modes"}}, ensure_ascii=False))

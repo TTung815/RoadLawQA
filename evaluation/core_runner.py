@@ -11,7 +11,7 @@ from typing import Callable, Sequence
 
 from evaluation import gold_support as corpus
 from evaluation import revised_current_law_dataset as revised
-from evaluation.core_schema import Question, RunPlan, RunSettings, unique_records
+from evaluation.core_schema import Question, RunPlan, RunSettings
 from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST, verify_frozen_snapshot
 from evaluation.snapshot import digest
 from ingestion.legal_registry import PROJECT_ROOT, file_digest, read_json
@@ -58,19 +58,7 @@ def default_settings() -> RunSettings:
                        top_k=llm.default_top_k, max_attempts=1, expansion=llm.structural_expansion_enabled)
 
 
-def questions_for(suite: str, private_questions: Path | None = None, *, owner_reviewed: bool = False,
-                  dataset_version: str | None = None) -> tuple[list[Question], str, str]:
-    if suite == "held_out":
-        if private_questions is None or not owner_reviewed or not dataset_version:
-            raise ValueError("held-out needs query-only file, dataset version and owner approval")
-        # Query-only contract deliberately rejects gold/answer fields.
-        questions = [Question.model_validate_json(line) for line in private_questions.read_text().splitlines() if line.strip()]
-        unique_records(questions)
-        if not questions:
-            raise ValueError("empty held-out questions")
-        return questions, file_digest(private_questions), dataset_version
-    if private_questions is not None:
-        raise ValueError("internal suites use their reviewed frozen datasets")
+def questions_for(suite: str) -> tuple[list[Question], str, str]:
     if suite == "reviewed":
         cases = revised.load_cases()
         questions = [Question(id=c.id, current_query=c.query, chat_history=c.chat_history) for c in cases]
@@ -78,9 +66,7 @@ def questions_for(suite: str, private_questions: Path | None = None, *, owner_re
     raise ValueError("unknown suite")
 
 
-def prepare_plan(suite: str, output: Path, *, settings: RunSettings | None = None,
-                 private_questions: Path | None = None, owner_reviewed: bool = False,
-                 dataset_version: str | None = None) -> RunPlan:
+def prepare_plan(suite: str, output: Path, *, settings: RunSettings | None = None) -> RunPlan:
     verify_frozen_snapshot()
     settings = settings or default_settings()
     if settings.retrieval_backend == "structured":
@@ -90,8 +76,7 @@ def prepare_plan(suite: str, output: Path, *, settings: RunSettings | None = Non
         settings = settings.model_copy(update={
             "retrieval_corpus_sha256": file_digest(DEFAULT_BUNDLE / "chunks.json"),
             "retrieval_index_sha256": file_digest(DEFAULT_INDEX / "index.json")})
-    questions, binding, version = questions_for(suite, private_questions, owner_reviewed=owner_reviewed,
-                                                dataset_version=dataset_version)
+    questions, binding, version = questions_for(suite)
     plan = RunPlan(suite=suite, dataset_version=version, dataset_binding=binding,
                    snapshot_sha256=file_digest(DEFAULT_SNAPSHOT_MANIFEST), code_hashes=code_hashes(),
                    settings=settings, questions=questions)
@@ -119,10 +104,9 @@ def load_plan(path: Path) -> RunPlan:
         if (plan.settings.retrieval_corpus_sha256 != file_digest(DEFAULT_BUNDLE / "chunks.json") or
                 plan.settings.retrieval_index_sha256 != file_digest(DEFAULT_INDEX / "index.json")):
             raise ValueError("structured retrieval resources changed since run lock")
-    if plan.suite != "held_out":
-        questions, binding, version = questions_for(plan.suite)
-        if questions != plan.questions or binding != plan.dataset_binding or version != plan.dataset_version:
-            raise ValueError("query-only plan differs from the reviewed dataset")
+    questions, binding, version = questions_for(plan.suite)
+    if questions != plan.questions or binding != plan.dataset_binding or version != plan.dataset_version:
+        raise ValueError("query-only plan differs from the reviewed dataset")
     return plan
 
 
@@ -250,12 +234,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     lock = actions.add_parser("settings")
     lock.add_argument("--output", type=Path, required=True)
     prepare = actions.add_parser("prepare")
-    prepare.add_argument("--suite", choices=["reviewed", "held_out"], required=True)
+    prepare.add_argument("--suite", choices=["reviewed"], required=True)
     prepare.add_argument("--output", type=Path, required=True)
     prepare.add_argument("--settings", type=Path)
-    prepare.add_argument("--questions", type=Path)
-    prepare.add_argument("--dataset-version")
-    prepare.add_argument("--owner-reviewed", action="store_true")
     run = actions.add_parser("run")
     run.add_argument("--plan", type=Path, required=True)
     run.add_argument("--output", type=Path, required=True)
@@ -266,8 +247,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         write_new(args.output, default_settings().model_dump(mode="json"))
         print(json.dumps({"settings_saved": True, "model_calls": 0}))
     elif args.action == "prepare":
-        plan = prepare_plan(args.suite, args.output, settings=RunSettings.model_validate(read_json(args.settings)) if args.settings else None,
-                            private_questions=args.questions, owner_reviewed=args.owner_reviewed, dataset_version=args.dataset_version)
+        plan = prepare_plan(args.suite, args.output,
+                            settings=RunSettings.model_validate(read_json(args.settings)) if args.settings else None)
         print(json.dumps({"suite": plan.suite, "cases": len(plan.questions), "model_calls": 0}))
     else:
         print(json.dumps(asyncio.run(execute_plan(args.plan, args.output, args.preflight))))

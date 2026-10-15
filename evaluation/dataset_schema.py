@@ -176,8 +176,8 @@ class GoldLabels(LabelModel):
 class EvaluationCase(LabelModel):
     schema_version: Literal[1] = 1
     id: Text
-    split: Literal["legacy", "regression", "held_out"]
-    exposure: Literal["historically_used", "known_regression", "unseen", "unknown"]
+    split: Literal["legacy", "regression"]
+    exposure: Literal["historically_used", "known_regression", "unknown"]
     query_type: Literal["factual", "penalty", "scenario"]
     query: Text
     chat_history: list[Message] = Field(default_factory=list)
@@ -191,8 +191,6 @@ class EvaluationCase(LabelModel):
 
     @model_validator(mode="after")
     def split_consistency(self):
-        if self.split == "held_out" and self.exposure != "unseen":
-            raise ValueError("Held-out cases must be unseen")
         if self.exposure == "historically_used" and self.split != "legacy":
             raise ValueError("Historical cases remain in the legacy split")
         if self.exposure == "known_regression" and self.split != "regression":

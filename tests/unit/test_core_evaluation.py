@@ -18,8 +18,18 @@ def settings(**kwargs):
 
 
 def plan(questions):
-    return RunPlan(suite="held_out", dataset_version="test-fixture-not-real-heldout", dataset_binding="0" * 64,
+    return RunPlan(suite="development", dataset_version="fixture", dataset_binding="0" * 64,
                    snapshot_sha256="0" * 64, code_hashes={}, settings=settings(), questions=questions)
+
+
+FIXTURE_GOLD = {"fixture": {"reference_answer": "reference", "disposition": "publish", "facets": {"f1": "rule"},
+                            "gold": None, "stage": None, "expected_citations": []}}
+
+
+@pytest.fixture(autouse=True)
+def fixture_gold(monkeypatch):
+    # Scoring tests use one synthetic case instead of the 50-question benchmark.
+    monkeypatch.setattr(scoring, "load_gold", lambda plan: FIXTURE_GOLD)
 
 
 @pytest.mark.parametrize("field", ["gold", "reference_answer", "answer", "required_facets"])
@@ -41,16 +51,6 @@ def test_duplicate_ids_fail_closed():
     q = Question(id="a", current_query="query")
     with pytest.raises(ValidationError):
         plan([q, q])
-
-
-def test_heldout_prepare_accepts_questions_only_and_owner_package_approval(tmp_path):
-    path = tmp_path / "questions.jsonl"
-    path.write_text(Question(id="fixture", current_query="query").model_dump_json() + "\n")
-    with pytest.raises(ValueError):
-        runner.questions_for("held_out", path)
-    questions, binding, version = runner.questions_for("held_out", path, owner_reviewed=True, dataset_version="fixture-v1")
-    assert len(questions) == 1 and version == "fixture-v1"
-    assert binding == runner.file_digest(path)
 
 
 def test_usage_unknown_is_not_zero_and_thought_tokens_counted():
@@ -132,20 +132,18 @@ def write_run(tmp_path, *, kind="live", output=None, error=None):
     runner.write_new(directory / "results.jsonl", json.dumps(record) + "\n")
     runner.write_new(directory / "run.json", {"plan": p.model_dump(mode="json"), "plan_sha256": digest(p.model_dump(mode="json")),
                      "execution_kind": kind, "results_sha256": runner.file_digest(directory / "results.jsonl")})
-    gold = tmp_path / "gold.jsonl"
-    gold.write_text(json.dumps({"id": "fixture", "reference_answer": "reference", "disposition": "publish", "required_facets": {"f1": "rule"}}) + "\n")
-    return directory, gold, record
+    return directory, record
 
 
 def test_synthetic_smoke_cannot_be_reported_as_model_quality(tmp_path):
-    directory, gold, _ = write_run(tmp_path, kind="synthetic", error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, kind="synthetic", error={"type": "FixtureError"})
     with pytest.raises(ValueError, match="synthetic"):
-        scoring.score_run(directory, private_gold=gold)
+        scoring.score_run(directory)
 
 
 def test_pipeline_error_remains_in_denominator_not_abstention(tmp_path):
-    directory, gold, _ = write_run(tmp_path, error={"type": "FixtureError"})
-    report = scoring.score_run(directory, private_gold=gold)["modes"]["end_to_end"]
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    report = scoring.score_run(directory)["modes"]["end_to_end"]
     assert report["pipeline_errors"]["value"] == 1
     assert report["all_required_pass_confirmed_over_all"]["denominator"] == 1
     assert report["unnecessary_abstention"]["numerator"] == 0
@@ -154,31 +152,31 @@ def test_pipeline_error_remains_in_denominator_not_abstention(tmp_path):
 
 
 def test_unreviewed_answer_is_not_semantic_pass(tmp_path):
-    directory, gold, _ = write_run(tmp_path, output={"status": "answered", "retrieval": {"chunks": []},
+    directory, _ = write_run(tmp_path, output={"status": "answered", "retrieval": {"chunks": []},
                                                    "answer": {"claims": []}})
-    report = scoring.score_run(directory, private_gold=gold)["modes"]["end_to_end"]
+    report = scoring.score_run(directory)["modes"]["end_to_end"]
     assert report["answer_rate"]["value"] == 1
     assert report["semantic_pending"] == 1
     assert report["all_required_pass_confirmed_over_all"]["value"] == 0
 
 
 def test_review_is_bound_to_actual_result_and_every_facet(tmp_path):
-    directory, gold, record = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, record = write_run(tmp_path, error={"type": "FixtureError"})
     reviews = tmp_path / "reviews.jsonl"
     review = SemanticReview(id="fixture", result_sha256="0" * 64, reviewer="test reviewer",
                             facet_scores={"f1": 0}, notes="fixture")
     reviews.write_text(review.model_dump_json() + "\n")
     with pytest.raises(ValueError, match="different output"):
-        scoring.score_run(directory, reviews, gold)
+        scoring.score_run(directory, reviews)
     review.result_sha256 = record["result_sha256"]
     review.facet_scores = {"wrong": 1}
     reviews.write_text(review.model_dump_json() + "\n")
     with pytest.raises(ValueError, match="every required facet"):
-        scoring.score_run(directory, reviews, gold)
+        scoring.score_run(directory, reviews)
 
 
 def test_run_results_tampering_and_missing_ids_are_rejected(tmp_path):
-    directory, _, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     (directory / "results.jsonl").write_text("changed")
     with pytest.raises(ValueError, match="changed"):
         runner.verify_run(directory)
@@ -196,19 +194,19 @@ def test_valid_citation_and_reviewer_support_are_separate(tmp_path):
     retrieved = map_chunk(chunk).model_dump(mode="json")
     output = {"status": "answered", "retrieval": {"chunks": [retrieved]}, "answer": {"claims": [
         {"text": "fixture claim", "citations": [{"chunk_id": retrieved["id"], "citation": chunk["display_citation"]}]}]}}
-    directory, gold, record = write_run(tmp_path, output=output)
+    directory, record = write_run(tmp_path, output=output)
     reviews = tmp_path / "reviews.jsonl"
     review = SemanticReview(id="fixture", result_sha256=record["result_sha256"], reviewer="test reviewer",
                             facet_scores={"f1": 1}, citation_support=False, safe_publication=True,
                             notes="valid locator does not support this fixture claim")
     reviews.write_text(review.model_dump_json() + "\n")
-    result = scoring.score_run(directory, reviews, gold)["modes"]["end_to_end"]
+    result = scoring.score_run(directory, reviews)["modes"]["end_to_end"]
     assert result["citation_validity"]["value"] == 1
     assert result["citation_support_reviewed"]["value"] == 0
     assert result["all_required_pass_reviewed"]["value"] == 0
     review.citation_support = True
     reviews.write_text(review.model_dump_json() + "\n")
-    assert scoring.score_run(directory, reviews, gold)["modes"]["end_to_end"]["all_required_pass_reviewed"]["value"] == 1
+    assert scoring.score_run(directory, reviews)["modes"]["end_to_end"]["all_required_pass_reviewed"]["value"] == 1
 
 
 def test_citation_same_id_but_wrong_source_text_fails():
@@ -236,13 +234,13 @@ def test_blocked_citation_is_detected_even_if_locator_is_valid():
 
 
 def test_review_packet_is_create_only_and_has_pending_not_fake_scores(tmp_path):
-    directory, gold, _ = write_run(tmp_path, error={"type": "FixtureError"})
+    directory, _ = write_run(tmp_path, error={"type": "FixtureError"})
     packet = tmp_path / "packet"
-    scoring.make_review_packet(directory, packet, gold)
+    scoring.make_review_packet(directory, packet)
     template = json.loads((packet / "reviews_template.jsonl").read_text())
     assert template["facet_scores"] == {"f1": None} and template["reviewer"] is None
     with pytest.raises(FileExistsError):
-        scoring.make_review_packet(directory, packet, gold)
+        scoring.make_review_packet(directory, packet)
 
 
 @pytest.mark.parametrize('status', ['partial_answer', 'needs_clarification'])
@@ -254,12 +252,12 @@ def test_partial_responses_are_neither_full_answers_nor_silent_refusals(tmp_path
               'answer': {'text': 'Phần đã có căn cứ.', 'claims': [{'text': 'Phần đã có căn cứ.', 'citations': [
                   {'chunk_id': retrieved['id'], 'citation': chunk['display_citation']}]}]},
               'limitations': ['Chưa đủ dữ kiện để kết luận toàn bộ.'], 'follow_up_questions': ['Vị trí nào?']}
-    directory, gold, record = write_run(tmp_path, output=output)
+    directory, record = write_run(tmp_path, output=output)
     reviews = tmp_path / 'reviews.jsonl'
     reviews.write_text(SemanticReview(id='fixture', result_sha256=record['result_sha256'], reviewer='test',
                       facet_scores={'f1': .5}, citation_support=True, safe_publication=True,
                       notes='Correct but incomplete').model_dump_json() + '\n')
-    metrics = scoring.score_run(directory, reviews, gold)['modes']['end_to_end']
+    metrics = scoring.score_run(directory, reviews)['modes']['end_to_end']
     assert metrics['answer_rate']['numerator'] == 0
     assert metrics[status + '_rate']['numerator'] == 1
     assert metrics['unnecessary_abstention']['numerator'] == 0
@@ -267,7 +265,7 @@ def test_partial_responses_are_neither_full_answers_nor_silent_refusals(tmp_path
     assert metrics['semantic_pending'] == 0
     assert metrics['citation_support_reviewed']['value'] == 1
     packet = tmp_path / 'packet'
-    scoring.make_review_packet(directory, packet, gold)
+    scoring.make_review_packet(directory, packet)
     text = (packet / 'REVIEW.md').read_text()
     assert text.index('Phần đã có căn cứ.') < text.index('Gold (')
     assert 'Giới hạn: Chưa đủ dữ kiện' in text

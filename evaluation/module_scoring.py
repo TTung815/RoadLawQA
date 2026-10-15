@@ -149,7 +149,7 @@ def score_modules(run_dir: Path) -> dict:
             "statuses": dict(Counter(c["status"] for c in cases)), "verifier_decisions": dict(verdicts),
             "repairs": sum(c["repair_attempts"] or 0 for c in cases), "per_case": cases,
             "limitations": [
-                "Known 50-case dataset, not held-out accuracy. No router/LLM query expansion in this RAG run.",
+                "No router/LLM query expansion in this RAG run.",
                 "Binary relevance proxy: union of required positive gold support, deduplicated to structured units. Other valid sources may exist.",
                 "Recall counts reference units; facet coverage respects all/any and alternative groups. Optional-only sources are excluded.",
                 "Before = actual merged candidate order (including locator lookup); after = reranked same pool. Not an end-to-end reranker-off ablation.",

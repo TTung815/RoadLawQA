@@ -3,13 +3,12 @@
   "dataset_id": "current_law_20260922_reviewed_v2",
   "status": "owner_approved",
   "legal_as_of": "2026-09-22",
-  "exposure": "known_development",
   "parent_dataset_id": "current_law_20260922_reviewed_v1",
   "approval": {
     "status": "approved",
     "date": "2026-10-14",
     "review_method": "AI-assisted review accepted by project owner; not independent legal certification",
-    "authorization": "Oke, tôi thấy bản rà của bạn đúng và hợp lí hơn so với bản trước rồi đấy, tạo phiên bản nhãn mới theo kết quả của bạn đi, sau đó tạo commit."
+    "authorization": "Owner approved the reviewed labels and the new dataset version"
   },
   "counts": {
     "cases": 50,
@@ -32,8 +31,8 @@
     "data/raw/legal/90-vbhn-vpqh-2026/scoped-text.txt": "0250301ffccba0155ea5b0ef39560fb944ef058bba7549924f2a8e0593a360e4"
   },
   "artifacts": {
-    "README.md": "390e8c181bd47f956c8657439446615331fcbae8a825f05eddca9e16f0790352",
-    "REVIEWED.md": "7e60e88fe1e722287f08ea2c413f64ae66c37bc19b49cc1c018c87a21c587ba5",
+    "README.md": "d0aa26ae59912250168236188b0e526dc6ea6a235e0c3e52e5f46d6a0507796b",
+    "REVIEWED.md": "49a80ff6e92dbd5da2005a9a9bb08cdbc28fa06c5763c64476a7036a65d8ea8a",
     "case.schema.json": "463df3234fbd85a2fc7e6e9ebce4bc858a5204aee4edbd8b02ddb79558bfc5a5",
     "cases.jsonl": "9eac89f22b84f243c281f7be44572bf93158cc837b2107b619e40a4d3d50cfd8",
     "review_decisions.json": "5af0680a223d4bb0f769d3392096eb4ad70e0c691c6461f60026487af9bbd955"

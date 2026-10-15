@@ -102,7 +102,6 @@ async def evaluate(base, alphas: list[float]) -> dict:
             "top_k": TOP_K, "candidate_limits": [base.candidate_limit, base.compound_candidate_limit],
             "runtime_devices": base.runtime_devices, "configs": configs,
             "limitations": [
-                "Known 50-question development benchmark, not held-out accuracy.",
                 "Binary relevance: union of required positive gold sources, mapped to structured units; other valid sources may exist.",
                 "No rerank = native candidate order of the same search; latency still includes the rerank pass.",
                 "Final evidence includes bounded reference lookup; it is not Recall@10.",

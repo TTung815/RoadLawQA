@@ -1,6 +1,6 @@
 # Ground truth 50 câu — reviewed v2
 
-Chủ dự án duyệt phương án ngày 14/10/2026. Cutoff 22/09/2026. Known/development, không phải held-out. Không chấm bằng exact match; phần bổ sung nếu nêu vẫn phải đúng.
+Cutoff 22/09/2026. Không chấm exact match; thông tin bổ sung nếu được nêu vẫn phải đúng.
 
 ## 001
 

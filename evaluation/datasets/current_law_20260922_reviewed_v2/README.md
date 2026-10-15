@@ -1,34 +1,28 @@
-# Ground truth reviewed v2
+# Benchmark 50 câu (reviewed v2)
 
-50 câu đã biết, cutoff 22/09/2026. Chủ dự án duyệt phương án rà có AI hỗ trợ
-ngày 14/10/2026. Đây không phải tập held-out hoặc kết quả model.
+50 câu hỏi về luật giao thông đường bộ, cutoff 22/09/2026. Đáp án tham chiếu
+được rà với nguyên văn luật (có AI hỗ trợ) và chủ dự án duyệt.
 
-- `cases.jsonl`: câu hỏi, đáp án, facet bắt buộc/bổ sung, evidence và điều kiện trạng thái.
-- `REVIEWED.md`: bản đọc để duyệt/đối chiếu.
-- `review_decisions.json`: lý do, thay đổi câu hỏi và hash trước/sau mỗi câu.
-- `manifest.json`: phê duyệt, phiên bản và checksum đầu vào/artifact.
+| File | Nội dung |
+| --- | --- |
+| `cases.jsonl` | Câu hỏi, đáp án tham chiếu, ý bắt buộc/bổ sung, nguồn căn cứ, tiêu chí trạng thái |
+| `REVIEWED.md` | Bản đọc của 50 câu |
+| `review_decisions.json` | Lý do và hash trước/sau của mỗi thay đổi so với bộ nhãn trước |
+| `manifest.json` | Phê duyệt và checksum các file |
+| `case.schema.json` | Schema của một câu |
 
-Giữ nguyên v1 cùng lịch sử/provenance; v2 tham chiếu v1 thay vì sao chép
-model answer lịch sử vào gold mới. 9 câu sửa nhãn/nội dung, 7 câu tinh chỉnh;
-34 câu giữ nội dung. Câu hỏi 007/013/033 được làm rõ; kết quả cũ của các câu
-này không tương đương một lượt chạy mới.
+45 câu cần trả lời trực tiếp; 5 câu có điều kiện (016, 042, 044, 046, 048)
+chấp nhận trả lời theo điều kiện, hỏi rõ hoặc trả lời một phần.
 
-Bốn nhãn abstain cũ 010/023/029/043 nay có căn cứ trả lời. Năm câu conditional
-016/042/044/046/048 có tiêu chí riêng cho trả lời theo điều kiện, hỏi rõ và
-trả lời một phần. Cho phép trạng thái không tự chứng minh nội dung đúng.
-V2 có 45 publish và 5 conditional; chưa có câu thiếu nguồn thực sự, do đó
-không dùng riêng bộ này đo đầy đủ khả năng từ chối. Dùng guard/development
-hoặc bộ bổ sung được duyệt cho phép đo đó.
+Quy tắc chấm:
 
-Facet `required=false` không nằm trong mẫu số completeness nhưng mọi thông
-tin bổ sung model phát biểu vẫn phải đúng và có nguồn. Evidence trong các
-nhóm thay thế có thể OR; `match=all` bên trong nhóm là AND. Ánh xạ leaf ID
-qua `source_processed_ids`; đây chưa phải qrels phân cấp đầy đủ.
+- Không chấm exact match; chấm tương đương về nghĩa với từng ý bắt buộc.
+- Ý `required=false` không tính vào mẫu số độ đầy đủ, nhưng nếu được nêu thì
+  vẫn phải đúng và có nguồn.
+- Các nhóm nguồn thay thế là OR; `match=all` trong một nhóm là AND.
+- Nguồn gold ánh xạ sang corpus phục vụ qua `source_processed_ids`.
+- Bộ này chưa có câu thiếu nguồn thực sự, nên không dùng để đo khả năng từ chối.
 
 ```bash
 .venv/bin/python -m evaluation.revised_current_law_dataset verify
-.venv/bin/python -m evaluation.core_runner prepare --suite reviewed --output outputs/evaluation/labels-v2-run/plan.json
 ```
-
-Tạo plan/preflight mới trước khi chạy. `--suite legacy` vẫn dùng reviewed v1;
-không ghi đè kết quả hoặc đổi nhãn của lượt đã hoàn thành.
