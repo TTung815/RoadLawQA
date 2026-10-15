@@ -88,6 +88,26 @@ def fetch(url: str):
 
 
 st.set_page_config(page_title="RoadLawQA", page_icon="⚖️", layout="centered")
+# Conversation list like other chat apps: one line per chat, left-aligned and
+# truncated with an ellipsis (full title on hover); the open chat is a subtle
+# highlight; the delete icon stays faint until its row is hovered.
+st.markdown("""<style>
+[class*="st-key-conversation-"] [data-testid="stHorizontalBlock"] { gap: 0.25rem; }
+[class*="st-key-open-"] button {
+    justify-content: flex-start; min-height: 2.25rem; padding: 0.25rem 0.6rem;
+    border: none; background: transparent; box-shadow: none;
+}
+[class*="st-key-open-"] button > div { min-width: 0; width: 100%; }
+[class*="st-key-open-"] button p {
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; font-size: 0.95rem;
+}
+[class*="st-key-open-"] button:hover { background: rgba(49, 51, 63, 0.08); color: inherit; }
+[class*="st-key-open-"] button[kind="primary"] { background: rgba(49, 51, 63, 0.12); color: inherit; font-weight: 600; }
+[class*="st-key-ask-delete-"] button {
+    border: none; background: transparent; min-height: 2.25rem; padding: 0.25rem; opacity: 0.25;
+}
+[class*="st-key-conversation-"]:hover [class*="st-key-ask-delete-"] button { opacity: 0.8; }
+</style>""", unsafe_allow_html=True)
 st.title("⚖️ RoadLawQA")
 st.caption("Hỏi đáp luật giao thông Việt Nam · Nguồn luật tại ngày 22/09/2026")
 busy = st.session_state.pending is not None
@@ -99,9 +119,10 @@ elif conversations:
     st.sidebar.caption("Gần đây")
     for conversation in conversations:
         with st.sidebar.container(key=f"conversation-{conversation['id']}"):
-            name, menu = st.columns([6, 1], vertical_alignment="center")
+            name, menu = st.columns([7, 1], vertical_alignment="center")
             name.button(conversation["title"], key=f"open-{conversation['id']}", on_click=open_conversation,
                         args=(conversation["id"],), disabled=busy, use_container_width=True,
+                        help=conversation["title"],
                         type="primary" if conversation["id"] == current_conversation() else "secondary")
             # Keyed confirmation: unlike a popover, its open state follows the
             # conversation id, not its position, when the list changes.

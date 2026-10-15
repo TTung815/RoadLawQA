@@ -103,7 +103,7 @@ def test_greeting_renders_and_is_stored_as_follow_up_history(backend, monkeypatc
 
 def test_new_chat_keeps_old_chat_in_sidebar_and_reload_reopens_it(backend):
     app = AppTest.from_file(APP).run()
-    assert not app.chat_message and "luật giao thông đường bộ Việt Nam" in app.markdown[0].value
+    assert not app.chat_message and any("luật giao thông đường bộ Việt Nam" in m.value for m in app.markdown)
     suggestion = app.button(key="starter-0").label
     app.button(key="starter-0").click().run()
     first = opened(app)
