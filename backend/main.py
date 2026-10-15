@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.api.v1.health import router as health_router
 from backend.api.v1.retrieval import router as retrieval_router
 from backend.api.v1.answer import router as answer_router
+from backend.api.v1.conversations import router as conversations_router
 import asyncio
 from contextlib import asynccontextmanager, suppress
 
@@ -62,6 +63,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router, prefix="/api/v1")
     app.include_router(retrieval_router, prefix="/api/v1")
     app.include_router(answer_router, prefix="/api/v1")
+    app.include_router(conversations_router, prefix="/api/v1")
 
     @app.exception_handler(PipelineError)
     async def pipeline_error(request, exc):

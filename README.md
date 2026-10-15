@@ -12,6 +12,7 @@ cập nhật pháp luật theo thời gian thực.
 
 - Hỏi về quy tắc giao thông, mức phạt và tình huống có điều kiện trong corpus.
 - Hiểu câu hỏi tiếp nối, trả lời lời chào/câu hỏi cách dùng và giới hạn chủ đề.
+- Lưu nhiều cuộc trò chuyện (SQLite): mở lại chat cũ từ thanh bên, giữ chat đang mở khi tải lại trang.
 - Viết lại truy vấn tìm nguồn ngay trong lượt router khi cần; giữ câu hỏi
   độc lập để sinh và kiểm chứng đáp án.
 - Trích dẫn văn bản, Điều/Khoản/Điểm cùng nội dung nguồn có xuống dòng.

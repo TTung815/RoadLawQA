@@ -54,6 +54,7 @@ Các biến chính:
 | `RERANKER_DEVICE=auto` | Chọn CUDA, rồi MPS, rồi CPU khi khả dụng |
 | `ROADLAWQA_API_URL=http://127.0.0.1:8000` | Địa chỉ API mà Streamlit gọi |
 | `WARMUP_ON_STARTUP=true` | Nạp index, embedding và reranker chạy nền khi API khởi động; `false` để nạp khi có câu hỏi đầu tiên |
+| `CHAT_DB_PATH` | File SQLite lưu hội thoại; mặc định `outputs/chat/conversations.sqlite3` (không đưa vào Git) |
 
 `RERANKER_DEVICE=mps` yêu cầu GPU MPS thực sự khả dụng, lỗi rõ ràng nếu không.
 Lần gọi đầu tải model/kết nối database nên có thể lâu hơn các lượt đã warm-up.

@@ -150,6 +150,9 @@ lưu API key hoặc request thô tới provider.
 | --- | --- |
 | `POST /api/v1/answer` | Toàn chatbot, nhận query/history/top-k |
 | `GET /api/v1/ready` | Model/index đã nạp chưa và trạng thái warm-up; không tự nạp |
+| `GET/POST /api/v1/conversations` | Liệt kê (mới nhất trước) / tạo cuộc trò chuyện |
+| `GET/PATCH/DELETE /api/v1/conversations/{id}` | Mở kèm tin nhắn và kết quả đã lưu / đổi tên / xóa |
+| `POST /api/v1/conversations/{id}/messages` | Gửi tin nhắn: API đọc lịch sử đã lưu, chạy chatbot, lưu câu hỏi và trả lời |
 | `POST /api/v1/retrieve/inspect` | Truy xuất câu độc lập, không LLM/router; history bị từ chối |
 | `POST /api/v1/retrieve` | Retrieval với contextualization khi có lịch sử |
 | `POST /api/v1/retrieve/evidence` | Retrieval đầy đủ của chatbot: hybrid/rerank và tra dẫn chiếu, không sinh đáp án |

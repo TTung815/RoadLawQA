@@ -47,6 +47,7 @@ class LLMSettings(AppSettings):
         "structural_expansion_enabled": "STRUCTURAL_EXPANSION_ENABLED",
         "warmup_on_startup": "WARMUP_ON_STARTUP",
         "router_reasoning_effort": "ROUTER_REASONING_EFFORT",
+        "chat_db_path": "CHAT_DB_PATH",
     }
     gemini_api_key: Optional[str] = None
     gemini_api_keys: list[str] = Field(default_factory=list)
@@ -66,6 +67,8 @@ class LLMSettings(AppSettings):
     # can use less reasoning than generation/verification. None reuses
     # openai_reasoning_effort.
     router_reasoning_effort: Optional[Literal["none", "low", "medium", "high", "xhigh", "max"]] = "low"
+    # SQLite file for saved conversations (git-ignored by default).
+    chat_db_path: Path = PROJECT_ROOT / "outputs/chat/conversations.sqlite3"
 
     @property
     def model_name(self) -> str:
