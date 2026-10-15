@@ -9,17 +9,12 @@ from pathlib import Path
 import time
 from typing import Callable, Sequence
 
-from evaluation import current_law_dataset as corpus
-from evaluation import reviewed_current_law_dataset as legacy
-from evaluation import reviewed_development_dataset as development
+from evaluation import gold_support as corpus
 from evaluation import revised_current_law_dataset as revised
 from evaluation.core_schema import Question, RunPlan, RunSettings, unique_records
 from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST, verify_frozen_snapshot
 from evaluation.snapshot import digest
 from ingestion.legal_registry import PROJECT_ROOT, file_digest, read_json
-
-
-PROTOCOL = PROJECT_ROOT / "docs/BENCHMARK_CORE_EVALUATION.md"
 
 
 def write_new(path: Path, value) -> None:
@@ -34,7 +29,7 @@ def code_hashes() -> dict[str, str]:
              for p in (PROJECT_ROOT / base).glob("*.py")]
     paths += [PROJECT_ROOT / "evaluation" / name for name in
               ("core_schema.py", "core_runtime.py", "core_runner.py", "core_scoring.py", "module_scoring.py", "legacy_probe.py", "llm_preflight.py", "diagnose.py", "revised_current_law_dataset.py")]
-    paths += [PROTOCOL, PROJECT_ROOT / "ai/diagnostics.py", PROJECT_ROOT / "evaluation/snapshot.py"]
+    paths += [PROJECT_ROOT / "evaluation/gold_support.py", PROJECT_ROOT / "ai/diagnostics.py", PROJECT_ROOT / "evaluation/snapshot.py"]
     paths += [PROJECT_ROOT / name for name in ("configs/settings.py", "backend/dependencies/retrieval.py",
                                               "backend/dependencies/answer.py", "ingestion/structured_corpus.py",
                                               "ingestion/structured_index.py", "ingestion/legal_dependency.py")]
@@ -80,16 +75,6 @@ def questions_for(suite: str, private_questions: Path | None = None, *, owner_re
         cases = revised.load_cases()
         questions = [Question(id=c.id, current_query=c.query, chat_history=c.chat_history) for c in cases]
         return questions, file_digest(revised.DEFAULT_DIR / "manifest.json"), revised.DATASET_ID
-    if suite == "legacy":
-        cases = legacy.require_reviewed_scoring()
-        questions = [Question(id=c.id, current_query=c.query, chat_history=c.chat_history) for c in cases]
-        return questions, file_digest(legacy.DEFAULT_DIR / "manifest.json"), legacy.DATASET_ID
-    if suite == "development":
-        cases = development.load_cases()
-        questions = [Question(id=c.id, current_query=c.parent_case.query, chat_history=c.parent_case.chat_history,
-                              mode=c.parent_case.stage_probe.mode,
-                              evidence_batches=c.parent_case.stage_probe.evidence_batches) for c in cases]
-        return questions, file_digest(development.DEFAULT_DIR / "manifest.json"), development.DATASET_ID
     raise ValueError("unknown suite")
 
 
@@ -272,7 +257,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     lock = actions.add_parser("settings")
     lock.add_argument("--output", type=Path, required=True)
     prepare = actions.add_parser("prepare")
-    prepare.add_argument("--suite", choices=["reviewed", "legacy", "development", "held_out"], required=True)
+    prepare.add_argument("--suite", choices=["reviewed", "held_out"], required=True)
     prepare.add_argument("--output", type=Path, required=True)
     prepare.add_argument("--settings", type=Path)
     prepare.add_argument("--questions", type=Path)

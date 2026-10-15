@@ -168,6 +168,6 @@ async def test_explicit_frozen_backend_also_bounds_and_deduplicates_expansion():
 
 def test_existing_question_focus_is_not_displaced_by_a_generic_rewrite():
     from evaluation.core_runner import questions_for
-    query = next(q.current_query for q in questions_for("legacy")[0] if q.id == "current_law_049")
+    query = next(q.current_query for q in questions_for("reviewed")[0] if q.id == "current_law_049")
     rewrite = "Quy định về tuân thủ tốc độ tối đa cho phép khi vượt xe container trên quốc lộ"
     assert checked_expansion(query, rewrite) == (None, "existing_question_focus")

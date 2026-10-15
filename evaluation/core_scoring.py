@@ -8,10 +8,7 @@ import json
 from pathlib import Path
 from typing import Sequence
 
-from evaluation import current_law_dataset as corpus
-from evaluation import phase3_design as design
-from evaluation import reviewed_current_law_dataset as legacy
-from evaluation import reviewed_development_dataset as development
+from evaluation import gold_support as corpus
 from evaluation import revised_current_law_dataset as revised
 from evaluation.core_runner import verify_run, write_new
 from evaluation.core_schema import SemanticReview, SimpleGold, unique_records
@@ -33,16 +30,8 @@ def load_gold(plan, private_gold: Path | None = None) -> dict:
                 file_digest(revised.DEFAULT_DIR / "manifest.json") != plan.dataset_binding):
             raise ValueError("run/gold version mismatch")
         result = {c.id: gold_view(c.gold) for c in cases}
-    elif plan.suite == "legacy":
-        cases = legacy.require_reviewed_scoring()
-        if file_digest(legacy.DEFAULT_DIR / "manifest.json") != plan.dataset_binding:
-            raise ValueError("run/gold version mismatch")
-        result = {c.id: gold_view(c.gold) for c in cases}
     else:
-        cases = development.load_cases()
-        if file_digest(development.DEFAULT_DIR / "manifest.json") != plan.dataset_binding:
-            raise ValueError("run/gold version mismatch")
-        result = {c.id: {**gold_view(c.gold), "stage": c.parent_case.stage_probe} for c in cases}
+        raise ValueError("only the reviewed benchmark and held-out suites are scored")
     if set(result) != {q.id for q in plan.questions}:
         raise ValueError("gold must match every planned ID exactly")
     return result
@@ -96,7 +85,7 @@ def deterministic_checks(record: dict, item: dict, chunks: dict, aliases: dict) 
     if gold is not None:
         supported = [f for f in gold.required_facets if f.required and f.support_state == "positive_support"]
         proxy = type("GoldView", (), {"gold": gold})()
-        missing = set(design.missing_facets(proxy, list(available)))
+        missing = set(corpus.missing_facets(proxy, list(available)))
         checks["evidence_completeness"] = rate(sum(f.id not in missing for f in supported), len(supported))
         if gold.expected_coverage in {"sufficient", "insufficient"} and retrieval.get("grade") is not None:
             checks["coverage_grade_matches"] = retrieval["grade"]["sufficient"] == (not missing)

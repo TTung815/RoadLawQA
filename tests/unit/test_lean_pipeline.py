@@ -106,7 +106,7 @@ async def test_unnecessary_clarification_is_repaired_on_same_facts_and_evidence(
     import json
     from pathlib import Path
     cases = [json.loads(line) for line in Path(
-        'evaluation/datasets/current_law_20260922_reviewed_v1/cases.jsonl'
+        'evaluation/datasets/current_law_20260922_reviewed_v2/cases.jsonl'
     ).read_text().splitlines()]
     question = next(c['query'] for c in cases if c['id'] == 'current_law_007')
     first = {**draft('Nếu xe có nhiều hàng ghế thì trẻ không ngồi cùng hàng ghế người lái.'),

@@ -11,21 +11,14 @@ from ai.agent.evidence import evidence_payload
 from ai.retrieval.structured import map_unit
 from ingestion import legal_dependency as dependency
 from ingestion.legal_registry import file_digest, read_json
-from ingestion.structured_corpus import BASE_BUNDLE, load_bundle
+from ingestion.structured_corpus import load_bundle
 
 
-def test_new_bundle_preserves_core_content_and_blocked_sources():
-    base = load_bundle(BASE_BUNDLE)['chunks']
+def test_bundle_keeps_four_dependency_units_and_ten_blocked_sources():
     current = load_bundle()['chunks']
-    by_id = {u['id']: u for u in current}
-    for previous in base:
-        unit = copy.deepcopy(by_id[previous['id']])
-        unit['metadata']['corpus_id'] = previous['metadata']['corpus_id']
-        assert unit == previous
-    extra = [u for u in current if u['id'] not in {x['id'] for x in base}]
-    assert len(extra) == 4
+    assert sum(u['metadata']['document_id'] == '90-vbhn-vpqh-2026' for u in current) == 4
     assert sum(not u['metadata']['publication_eligible'] for u in current) == 10
-    assert len({u['id'] for u in current}) == len(current)
+    assert len({u['id'] for u in current}) == len(current) == 1759
 
 
 def test_partial_dependency_keeps_precise_citations_context_and_scope():
@@ -103,20 +96,3 @@ def test_modified_source_fails_checksum(local_dependency):
     p.write_text(p.read_text() + '\nchanged')
     with pytest.raises(ValueError, match='checksum mismatch'):
         dependency.load_dependency(local_dependency)
-
-
-def test_vectors_reused_only_for_exact_text_and_embedding_configuration(monkeypatch):
-    from types import SimpleNamespace
-    from ingestion import structured_index as index
-    from ingestion import shadow_index
-    monkeypatch.setattr(index, 'read_json', lambda _: {'collection': 'Base', 'embedding': {'revision': 'locked'}})
-    monkeypatch.setattr(index, 'verify_index', lambda *args: {})
-    monkeypatch.setattr(shadow_index, 'export_collection', lambda _: ([
-        {'properties': {'chunk_id': 'same', 'embedding_text': 'original'}, 'vectors': {'default': [0.1]}},
-        {'properties': {'chunk_id': 'changed', 'embedding_text': 'original'}, 'vectors': {'default': [0.2]}},
-    ], {}))
-    client = SimpleNamespace(collections=SimpleNamespace(get=lambda _: object()))
-    units = [{'id': 'same', 'embedding_text': 'original'}, {'id': 'changed', 'embedding_text': 'new'}]
-    assert index.reusable_vectors(client, units, {'revision': 'locked'}) == {'same': [0.1]}
-    with pytest.raises(ValueError, match='embedding configuration differs'):
-        index.reusable_vectors(client, units, {'revision': 'different'})

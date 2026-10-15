@@ -129,7 +129,7 @@ class GradeProvider(LLMProvider):
 
 @pytest.mark.asyncio
 async def test_replay_accumulates_all_batches_without_full_corpus_search():
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunks = read_json(corpus.DEFAULT_OUTPUT)["chunks"][:2]
     provider = GradeProvider()
     runtime = CoreRuntime(provider, chunks, settings())
@@ -142,7 +142,7 @@ async def test_replay_accumulates_all_batches_without_full_corpus_search():
 
 @pytest.mark.asyncio
 async def test_neighborhood_lookup_preserves_publication_metadata():
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunk = next(c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"] if not c["publication_eligible"])
     runtime = CoreRuntime(GradeProvider(), [chunk], settings())
     found = await runtime.fetch_article(chunk["law"], chunk["article_no"])
@@ -228,7 +228,7 @@ def test_quantiles_and_zero_denominator_are_explicit():
 
 
 def test_valid_citation_and_reviewer_support_are_separate(tmp_path):
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunk = read_json(corpus.DEFAULT_OUTPUT)["chunks"][0]
     retrieved = map_chunk(chunk).model_dump(mode="json")
     output = {"status": "answered", "retrieval": {"chunks": [retrieved]}, "answer": {"claims": [
@@ -249,7 +249,7 @@ def test_valid_citation_and_reviewer_support_are_separate(tmp_path):
 
 
 def test_citation_same_id_but_wrong_source_text_fails():
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunk = read_json(corpus.DEFAULT_OUTPUT)["chunks"][0]
     retrieved = map_chunk(chunk).model_dump(mode="json")
     retrieved["text"] = "wrong text"
@@ -261,7 +261,7 @@ def test_citation_same_id_but_wrong_source_text_fails():
 
 
 def test_blocked_citation_is_detected_even_if_locator_is_valid():
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunk = next(c for c in read_json(corpus.DEFAULT_OUTPUT)["chunks"] if not c["publication_eligible"])
     retrieved = map_chunk(chunk).model_dump(mode="json")
     output = {"retrieval": {"chunks": [retrieved]}, "answer": {"claims": [
@@ -284,7 +284,7 @@ def test_review_packet_is_create_only_and_has_pending_not_fake_scores(tmp_path):
 
 @pytest.mark.parametrize('status', ['partial_answer', 'needs_clarification'])
 def test_partial_responses_are_neither_full_answers_nor_silent_refusals(tmp_path, status):
-    from evaluation import current_law_dataset as corpus
+    from evaluation import gold_support as corpus
     chunk = next(c for c in read_json(corpus.DEFAULT_OUTPUT)['chunks'] if c['publication_eligible'])
     retrieved = map_chunk(chunk).model_dump(mode='json')
     output = {'status': status, 'retrieval': {'chunks': [retrieved]},

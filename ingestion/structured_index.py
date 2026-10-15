@@ -10,11 +10,10 @@ import uuid
 
 from evaluation.snapshot import digest
 from ingestion.legal_registry import PROJECT_ROOT, file_digest, read_json
-from ingestion.structured_corpus import BASE_BUNDLE, DEFAULT_BUNDLE, VERSION, load_bundle
+from ingestion.structured_corpus import DEFAULT_BUNDLE, VERSION, load_bundle
 
 COLLECTION = "LawStructured20260922V2"
 DEFAULT_INDEX = PROJECT_ROOT / "outputs/structured-law-v2"
-BASE_INDEX = PROJECT_ROOT / "outputs/structured-law-v1"
 
 
 def object_id(identity: str, version: str = VERSION) -> str:
@@ -71,20 +70,6 @@ def verify_index(collection, directory: Path = DEFAULT_INDEX, bundle_dir: Path =
     return receipt
 
 
-def reusable_vectors(client, units: list[dict], embedding: dict) -> dict[str, list[float]]:
-    """Reuse only vectors from a verified immutable index with identical model/text."""
-    from ingestion.shadow_index import export_collection
-    base_receipt = read_json(BASE_INDEX / "index.json")
-    base = client.collections.get(base_receipt["collection"])
-    verify_index(base, BASE_INDEX, BASE_BUNDLE)
-    if base_receipt["embedding"] != embedding:
-        raise ValueError("base embedding configuration differs; cannot reuse vectors")
-    records, _ = export_collection(base)
-    by_id = {r["properties"]["chunk_id"]: r for r in records}
-    return {u["id"]: by_id[u["id"]]["vectors"]["default"] for u in units
-            if u["id"] in by_id and by_id[u["id"]]["properties"]["embedding_text"] == u["embedding_text"]}
-
-
 def build_index(host: str = "localhost", port: int = 8080, grpc_port: int = 50051) -> dict:
     from ingestion.shadow_index import connect_local, load_embedder, model_provenance, production_state
     from evaluation.current_law_snapshot import DEFAULT_SNAPSHOT_MANIFEST
@@ -107,12 +92,10 @@ def build_index(host: str = "localhost", port: int = 8080, grpc_port: int = 5005
         if provenance["revision"] != manifest["embedding_revision"] or provenance["dimensions"] != 768:
             raise ValueError("embedding model does not match corpus tokenizer")
         units = corpus["chunks"]
-        vectors_by_id = reusable_vectors(client, units, provenance)
-        reused_count = len(vectors_by_id)
-        missing = [u for u in units if u["id"] not in vectors_by_id]
+        vectors_by_id = {}
         # Encode before creating the collection: model failures leave no partial index.
-        for start in range(0, len(missing), 16):
-            batch = missing[start:start + 16]
+        for start in range(0, len(units), 16):
+            batch = units[start:start + 16]
             vectors = embedder.encode([u["embedding_text"] for u in batch], normalize_embeddings=True,
                                       batch_size=4, show_progress_bar=False)
             vectors_by_id.update({u["id"]: v.tolist() for u, v in zip(batch, vectors, strict=True)})
@@ -128,8 +111,6 @@ def build_index(host: str = "localhost", port: int = 8080, grpc_port: int = 5005
         receipt = {"version": VERSION, "collection": COLLECTION,
                    "corpus_sha256": file_digest(DEFAULT_BUNDLE / "chunks.json"), "embedding": provenance,
                    "fingerprint": fingerprint(collection, units), "chunks": len(units),
-                   "reused_vectors": reused_count, "new_vectors": len(missing),
-                   "base_index_sha256": file_digest(BASE_INDEX / "index.json"),
                    "original_collection_unchanged": production_state(client) == old_state}
         if not receipt["original_collection_unchanged"]:
             raise ValueError("original collection changed during build")

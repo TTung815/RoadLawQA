@@ -174,7 +174,7 @@ def test_new_plans_lock_the_serving_selection_and_batch_settings(monkeypatch):
 async def test_age_condition_survives_vehicle_owner_distraction_within_budget(units):
     from evaluation.core_runner import questions_for
     from ai.retrieval.structured import age_penalty_focus
-    query = next(q.current_query for q in questions_for('legacy')[0] if q.id == 'current_law_043')
+    query = next(q.current_query for q in questions_for('reviewed')[0] if q.id == 'current_law_043')
     target = next(u for u in units if '90-vbhn-vpqh-2026-d11-k5' in u['metadata']['source_processed_ids'])
     unrelated = [u for u in units if u['metadata']['document_id'].startswith('nd168')][:30]
     focus = age_penalty_focus(query)

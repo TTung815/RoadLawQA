@@ -1,4 +1,4 @@
-"""Load owner-approved v2 labels without changing the frozen v1 contracts."""
+"""Load and verify the owner-approved v2 labels of the 50-question benchmark."""
 
 from __future__ import annotations
 
@@ -9,8 +9,7 @@ from typing import Literal, Sequence
 
 from pydantic import Field, model_validator
 
-from evaluation import current_law_dataset as corpus
-from evaluation import reviewed_current_law_dataset as parent
+from evaluation import gold_support as corpus
 from evaluation.dataset_schema import GoldLabels, LabelModel, Message, SHA256, Text
 from evaluation.snapshot import digest
 from ingestion.legal_dependency import load_dependency
@@ -21,6 +20,10 @@ from ingestion.structured_corpus import load_bundle
 DATASET_ID = "current_law_20260922_reviewed_v2"
 DEFAULT_DIR = PROJECT_ROOT / "evaluation/datasets" / DATASET_ID
 ARTIFACTS = {"cases.jsonl", "REVIEWED.md", "review_decisions.json", "case.schema.json", "README.md"}
+# The v1 parent labels were removed from the repository on 2026-10-15. The
+# manifest keeps their recorded hashes as provenance; they are not re-read.
+RETIRED_INPUTS = {"evaluation/datasets/current_law_20260922_reviewed_v1/manifest.json",
+                  "evaluation/datasets/current_law_20260922_reviewed_v1/cases.jsonl"}
 ResponseStatus = Literal["answered", "partial_answer", "needs_clarification", "insufficient_evidence"]
 
 
@@ -77,14 +80,14 @@ def load_cases(directory: Path = DEFAULT_DIR) -> list[RevisedCase]:
         if file_digest(directory / name) != expected:
             raise ValueError(f"v2 artifact changed: {name}")
     for name, expected in manifest["inputs"].items():
-        if file_digest(PROJECT_ROOT / name) != expected:
+        if name not in RETIRED_INPUTS and file_digest(PROJECT_ROOT / name) != expected:
             raise ValueError(f"v2 source binding changed: {name}")
-    parents = {c.id: c for c in parent.require_reviewed_scoring()}
     cases = [RevisedCase.model_validate_json(line) for line in (directory / "cases.jsonl").read_text().splitlines()]
-    if len(cases) != 50 or {c.id for c in cases} != set(parents):
-        raise ValueError("v2 must preserve the 50 parent case IDs exactly once")
+    ids = {c.id for c in cases}
+    if len(cases) != 50 or len(ids) != 50:
+        raise ValueError("v2 must contain 50 unique case IDs")
     decisions = read_json(directory / "review_decisions.json")
-    if len(decisions) != 50 or {d["case_id"] for d in decisions} != set(parents):
+    if len(decisions) != 50 or {d["case_id"] for d in decisions} != ids:
         raise ValueError("v2 needs one review decision per case")
     decisions = {d["case_id"]: d for d in decisions}
     chunks = source_chunks()
@@ -92,16 +95,9 @@ def load_cases(directory: Path = DEFAULT_DIR) -> list[RevisedCase]:
                    if u["metadata"]["publication_eligible"] and u["metadata"]["active_at_cutoff"]
                    for pid in u["metadata"]["source_processed_ids"]}
     for case in cases:
-        original = parents[case.id]
-        decision = decisions[case.id]
-        if case.parent_case_sha256 != digest(original.model_dump(mode="json")):
-            raise ValueError("v2 parent case binding changed")
-        if decision["case_sha256"] != digest(case.model_dump(mode="json")):
+        # The approved decision hash freezes each case, including query and gold.
+        if decisions[case.id]["case_sha256"] != digest(case.model_dump(mode="json")):
             raise ValueError("v2 case differs from approved decision")
-        if case.query_type != original.query_type or case.chat_history != original.chat_history:
-            raise ValueError("v2 review cannot change question type or history")
-        if (case.gold.temporal_basis, case.gold.as_of_date) != (original.gold.temporal_basis, original.gold.as_of_date):
-            raise ValueError("v2 review cannot change temporal provenance")
         if case.gold.review.status != "approved":
             raise ValueError("unapproved v2 case")
         for group in case.gold.evidence_groups:

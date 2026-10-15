@@ -22,8 +22,6 @@ from ingestion.current_law_corpus import (
 from ingestion.legal_registry import PROJECT_ROOT, file_digest, read_json
 
 VERSION = "structured-law-20260922-v2"
-BASE_VERSION = "structured-law-20260922-v1"
-BASE_BUNDLE = PROJECT_ROOT / "data/processed/structured-law-v1"
 DEFAULT_BUNDLE = PROJECT_ROOT / "data/processed/structured-law-v2"
 EMBEDDING_MODEL = "Alibaba-NLP/gte-multilingual-base"
 EMBEDDING_REVISION = "9bbca17d9273fd0d03d5725c7a4b0f6b45142062"
@@ -223,7 +221,7 @@ def attach_references(units: list[dict]) -> None:
 
 def load_bundle(directory: Path = DEFAULT_BUNDLE) -> dict:
     manifest = read_json(directory / "manifest.json")
-    if manifest["version"] not in {BASE_VERSION, VERSION} or file_digest(directory / "chunks.json") != manifest["corpus_sha256"]:
+    if manifest["version"] != VERSION or file_digest(directory / "chunks.json") != manifest["corpus_sha256"]:
         raise ValueError("structured corpus checksum/version mismatch")
     for name, expected in manifest["inputs"].items():
         if file_digest(PROJECT_ROOT / name) != expected:
@@ -236,7 +234,7 @@ def load_bundle(directory: Path = DEFAULT_BUNDLE) -> dict:
 
 
 def build_bundle(directory: Path = DEFAULT_BUNDLE) -> dict:
-    from evaluation.current_law_dataset import load_snapshot_context
+    from evaluation.gold_support import load_snapshot_context
     from transformers import AutoTokenizer
     _, source = load_snapshot_context()
     rows = sorted(source.values(), key=lambda r: r["ordinal"])

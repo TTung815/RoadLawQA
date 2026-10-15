@@ -135,8 +135,7 @@ Kiểm checksum corpus/dataset khi đã có bộ tài nguyên provenance:
 
 ```bash
 .venv/bin/python -m evaluation.current_law_snapshot --verify
-.venv/bin/python -m evaluation.reviewed_current_law_dataset verify
-.venv/bin/python -m evaluation.reviewed_development_dataset verify
+.venv/bin/python -m evaluation.revised_current_law_dataset verify
 ```
 
 Nếu gặp lỗi thiếu bundle, collection, model hoặc checksum, đọc tên tài nguyên

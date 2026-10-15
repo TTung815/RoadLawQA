@@ -55,7 +55,7 @@ async def test_observed_multi_topic_sources_survive_top_five(live_retriever, cas
     # Reuse query-only inputs. Duplicating the literal queries in test code
     # changes the historical overlap inventory bound by frozen dataset audits.
     from evaluation.core_runner import questions_for
-    questions, _, _ = questions_for("legacy")
+    questions, _, _ = questions_for("reviewed")
     question = next(q for q in questions if q.id == case_id)
     results = await live_retriever.search(question.current_query, top_k=5)
     included = {source for chunk in results for source in chunk.metadata["source_processed_ids"]}
@@ -68,7 +68,7 @@ async def test_observed_multi_topic_sources_survive_top_five(live_retriever, cas
 async def test_age_dependency_support_and_explicit_exclusion_are_retrievable(live_retriever):
     from evaluation.core_runner import questions_for
     from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-    questions, _, _ = questions_for('legacy')
+    questions, _, _ = questions_for('reviewed')
     question = next(q for q in questions if q.id == 'current_law_043')
     # Serving default top 10: the age facet now shares slots with the question
     # facet (observed 019), so five slots cannot hold both age sources.
@@ -109,7 +109,7 @@ async def test_colloquial_signal_violation_recovers_sanctions(live_retriever, qu
 async def test_observed_router_rewrites_preserve_multi_topic_and_age_sources(live_retriever, case_id, rewrite, required):
     from evaluation.core_runner import questions_for
     from ai.retrieval.neighborhood import LegalNeighborhoodExpander
-    query = next(q.current_query for q in questions_for("legacy")[0] if q.id == case_id)
+    query = next(q.current_query for q in questions_for("reviewed")[0] if q.id == case_id)
     results = await live_retriever.search(query, retrieval_query=rewrite)
     expansion = await LegalNeighborhoodExpander(live_retriever.fetch_article).expand_references(results)
     included = {source for chunk in [*results, *expansion.chunks]

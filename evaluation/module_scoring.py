@@ -11,7 +11,7 @@ from statistics import mean
 
 from evaluation.core_runner import verify_run, write_new
 from evaluation.core_scoring import load_gold, quantile
-from evaluation.phase3_design import missing_facets
+from evaluation.gold_support import missing_facets
 from ingestion.legal_registry import file_digest
 from ingestion.structured_corpus import DEFAULT_BUNDLE, load_bundle
 

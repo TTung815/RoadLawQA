@@ -1,9 +1,0 @@
-{
-  "benchmark_c0_c4_ready": false,
-  "dataset_id": "current_law_20260922_development_reviewed_v1",
-  "development_gold_ready": true,
-  "frozen": true,
-  "frozen_on": "2026-10-12",
-  "manifest_sha256": "b5752d81840c0683543a93043e63a1403b8e7ae131a9ea60363030bf142b80de",
-  "owner_review_sha256": "00963501dc406b6ae002166bcfc3a87eb60e4e7cd026ecc4a879f0b420bd9e89"
-}

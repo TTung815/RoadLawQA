@@ -72,8 +72,7 @@ Không ingest một văn bản khác chỉ vì benchmark cũ dẫn nó. Dependen
 4. rủi ro tạo false completeness khi ingest một phần;
 5. quyết định include/exclude và người duyệt.
 
-Luật Xử lý vi phạm hành chính đã được owner duyệt bổ sung ngày 14/10/2026
-sau [hồ sơ review](LEGAL_DEPENDENCY_AGE_REVIEW_2026_10_14.md). Chỉ nhập điểm a
+Luật Xử lý vi phạm hành chính được bổ sung có review ngày 14/10/2026. Chỉ nhập điểm a
 khoản 1 Điều 5, khoản 5 Điều 11, Điều 22 và khoản 3 Điều 134 từ bản hợp nhất
 90/VBHN-VPQH năm 2026. Registry/review bổ sung nằm tại
 `data/legal_sources/administrative-age-v1/`, nguồn tại

@@ -227,8 +227,8 @@ async def test_inspection_endpoint_needs_no_provider_and_sanitizes_errors(corpus
 
 def test_scorer_maps_merged_unit_to_frozen_gold_only_for_canonical_content(corpus):
     from evaluation.core_scoring import deterministic_checks, gold_view
-    from evaluation.reviewed_current_law_dataset import require_reviewed_scoring
-    case = next(c for c in require_reviewed_scoring() if c.id == 'current_law_015')
+    from evaluation.revised_current_law_dataset import load_cases
+    case = next(c for c in load_cases() if c.id == 'current_law_015')
     unit = next(u for u in corpus if u['metadata']['document_id'] == '49-vbhn-vpqh'
                 and u['metadata']['article_no'] == '8' and u['metadata']['clause_no'] == '1')
     chunk = map_unit(unit).model_dump(mode='json')

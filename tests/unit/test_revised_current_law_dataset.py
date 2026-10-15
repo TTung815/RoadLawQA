@@ -9,7 +9,7 @@ from evaluation import core_runner as runner
 from evaluation import core_scoring as scoring
 from evaluation import revised_current_law_dataset as dataset
 from evaluation.core_schema import Question, RunPlan, RunSettings, SemanticReview
-from evaluation.phase3_design import missing_facets
+from evaluation.gold_support import missing_facets
 from evaluation.snapshot import digest
 from ingestion.legal_registry import file_digest
 

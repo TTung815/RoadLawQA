@@ -8,14 +8,9 @@ Nguồn xuất hiện trong top-k hoặc trạng thái `answered` không tự ch
 
 | Bộ | Nội dung | Mục đích |
 | --- | --- | --- |
-| Reviewed 50 | 50 câu đã biết, gold/citation và điều kiện chấm | Đánh giá RAG trên nguồn đã review |
-| Development 54 | 12 QA, 7 coverage, 1 rewrite và 34 guard | Kiểm từng hành vi; không phải 54 câu end-to-end |
-| Held-out 9 | Giữ riêng ngoài workspace | Chỉ mở sau khi chốt cấu hình, không dùng tuning |
+| Reviewed 50 | 50 câu, đáp án tham chiếu, ý bắt buộc, nguồn căn cứ và điều kiện chấm | Đánh giá retrieval và end-to-end |
 
-[Bản đồ dataset và provenance](../evaluation/README.md).
-Tên suite `reviewed` trỏ tới **reviewed 50 v2 hiện hành**; `legacy` giữ nhãn
-reviewed v1 cho lịch sử, không chạy ứng dụng V1. Các bộ draft/history và năm protocol là dependency checksum, không
-xóa chỉ vì tên có chữ draft hoặc phiên bản cũ.
+Suite `reviewed` trỏ tới bộ v2 hiện hành. [Cấu trúc dữ liệu đánh giá](../evaluation/README.md).
 
 Evaluator pháp luật chạy `AnswerService`/`LeanRetrievalService`, không qua
 `ChatService`/`ConversationRouter`. Nó có contextualization khi có lịch sử,
@@ -124,11 +119,8 @@ Plan khóa code/settings, dataset, corpus và index receipt; không chứa key.
 Preflight kiểm gọi text và schema. Nếu đổi code/model/settings, tạo plan mới
 thay vì dùng receipt cũ. Khi thiếu bảng giá đã xác minh, chi phí ghi null.
 
-Kiểm riêng retrieval, không gọi LLM/router:
-
-```bash
-.venv/bin/python -m evaluation.retrieval_demo --output outputs/evaluation/retrieval-demo-next
-```
+Kiểm riêng retrieval, không gọi LLM/router: dùng `evaluation.retrieval_ablation`
+ở mục "Ablation và chấm end-to-end".
 
 ## Chẩn đoán và chạy bộ câu hỏi
 
@@ -165,11 +157,7 @@ hỏi rõ hoặc trả lời một phần phù hợp yêu cầu và dữ kiện 
 được cho phép không tự tạo điểm pass: vẫn cần đủ mọi facet bắt buộc, citation
 đúng và được nguồn hỗ trợ, công bố an toàn. Facet bổ sung không tính vào mẫu
 số completeness, nhưng nếu model nói thêm sai thì vẫn chấm sai nội dung.
-Rubric này chỉ áp dụng suite `reviewed`, không đổi điểm lịch sử của v1.
+Rubric này áp dụng cho suite `reviewed`.
 Giữ exception/timeout trong tổng số câu; không loại bỏ trường hợp lỗi để tăng
 điểm. Chấm tương đương về nghĩa, đồng thời kiểm chủ thể, điều kiện, con số,
 hiệu lực và nguồn hỗ trợ. Nếu gold có vấn đề, ghi nhận riêng thay vì sửa bản frozen.
-
-Development dùng `prepare --suite development`. Held-out chỉ dùng sau khi
-chốt cấu hình; runner nhận file câu hỏi riêng, scorer mới nhận gold. Xem
-`python -m evaluation.core_runner prepare --help` để biết tham số nhập bộ riêng.
