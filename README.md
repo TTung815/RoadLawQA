@@ -47,9 +47,18 @@ flowchart TD
 
 ## Chạy demo
 
-Các lệnh dưới đây dành cho **workspace đã có database/index và model cache**.
-Máy mới xem [hướng dẫn thiết lập và tài nguyên cần bàn giao](docs/SETUP.md).
-Chỉ clone repository chưa đủ để chạy toàn bộ demo.
+**Máy mới (Docker):** tạo `.env` từ [.env.example](.env.example) và điền API
+key, rồi chuẩn bị model/index một lần và chạy cả hệ thống
+([chi tiết](docs/SETUP.md#máy-mới-chạy-bằng-docker)):
+
+```bash
+docker compose --env-file .env -f docker/docker-compose.yml run --rm bootstrap
+docker compose --env-file .env -f docker/docker-compose.yml up -d --build
+```
+
+Mở `http://localhost:8501`. Trong Docker, model chạy bằng CPU.
+
+**Môi trường phát triển (`.venv`)**, khi đã có index và model cache:
 
 ```bash
 .venv/bin/python -m pip install -r requirements.txt
@@ -73,6 +82,9 @@ rồi “Xe máy”. Với câu hỏi pháp luật, mở phần nguồn để đ
 Trong thanh bên, mở **Dành cho nhà phát triển** để bật **Kiểm tra truy xuất**.
 Chế độ này không gọi LLM/router, nên không đại diện toàn bộ
 luồng chatbot có xử lý lịch sử và query expansion.
+
+Trên máy đã có index, Docker chỉ cần lệnh `up` ở trên
+([Chạy bằng Docker](docs/SETUP.md#chạy-bằng-docker)).
 
 ## Dữ liệu và đánh giá
 

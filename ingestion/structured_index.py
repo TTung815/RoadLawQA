@@ -80,13 +80,15 @@ def build_index(host: str = "localhost", port: int = 8080, grpc_port: int = 5005
     try:
         old_state = production_state(client)
         snapshot = read_json(DEFAULT_SNAPSHOT_MANIFEST)
-        if old_state != snapshot["production"]["state"]:
+        # A clean database has no original collection to protect; one that
+        # exists (the development database) must match its recorded state.
+        if old_state["exists"] and old_state != snapshot["production"]["state"]:
             raise ValueError("original collection differs from recorded state")
         # No delete/rebuild API: an existing new collection must have a valid receipt.
         if client.collections.exists(COLLECTION):
             return verify_index(client.collections.get(COLLECTION))
-        if DEFAULT_INDEX.exists():
-            raise FileExistsError("index output exists without the collection")
+        if (DEFAULT_INDEX / "index.json").exists():
+            raise FileExistsError("index receipt exists without the collection")
         embedder = load_embedder()
         provenance = model_provenance(embedder)
         if provenance["revision"] != manifest["embedding_revision"] or provenance["dimensions"] != 768:
@@ -114,7 +116,8 @@ def build_index(host: str = "localhost", port: int = 8080, grpc_port: int = 5005
                    "original_collection_unchanged": production_state(client) == old_state}
         if not receipt["original_collection_unchanged"]:
             raise ValueError("original collection changed during build")
-        DEFAULT_INDEX.mkdir(parents=True)
+        # The directory may already exist empty (a Docker bind mount).
+        DEFAULT_INDEX.mkdir(parents=True, exist_ok=True)
         (DEFAULT_INDEX / "index.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n")
         return receipt
     finally:

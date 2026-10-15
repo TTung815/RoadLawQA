@@ -4,6 +4,43 @@ Chạy lệnh từ repository root. Cần Python 3.11+, Docker để chạy Weav
 model cache và API key của provider được chọn. Không cần API key để kiểm
 health hoặc truy xuất độc lập sau khi đã có tài nguyên local.
 
+## Máy mới: chạy bằng Docker
+
+Chỉ cần Docker (Docker Desktop trên Mac/Windows) và API key OpenAI hoặc Gemini.
+
+1. Clone repository rồi tạo `.env` từ file mẫu, điền `OPENAI_API_KEY` (hoặc
+   key Gemini, xem [biến môi trường](#môi-trường-python-và-provider)):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Chuẩn bị dữ liệu một lần: tải model embedding/reranker (khoảng 2,7 GB) đúng
+   revision đã khóa vào `~/.cache/huggingface/hub`, rồi embedding 1.759 đơn vị
+   luật trong `data/processed/structured-law-v2/` và nạp vào Weaviate. Mất
+   khoảng 4 phút trên CPU sau khi tải model xong.
+
+   ```bash
+   docker compose --env-file .env -f docker/docker-compose.yml run --rm bootstrap
+   ```
+
+   Kết thúc bằng `{"collection": "LawStructured20260922V2", "chunks": 1759}` và
+   receipt `outputs/structured-law-v2/index.json`. Chạy lại lệnh này an toàn:
+   model đã có không tải lại, index đã có chỉ được kiểm tra, không dựng lại.
+
+3. Chạy Weaviate, API và UI:
+
+   ```bash
+   docker compose --env-file .env -f docker/docker-compose.yml up -d --build
+   ```
+
+4. Mở `http://localhost:8501`. Khi `curl http://127.0.0.1:8000/api/v1/ready`
+   trả `"warmup": "done"` (khoảng 20 giây) thì model đã nạp xong.
+
+Index dựng theo cách này đã được kiểm trên Weaviate trống: cùng 1.759 object và
+thuộc tính, vector lệch tối đa 3,6×10⁻⁷ so với index dùng cho kết quả đánh giá.
+Chi tiết container ở [Chạy bằng Docker](#chạy-bằng-docker).
+
 ## Tài nguyên trong và ngoài Git
 
 | Tài nguyên | Trong Git? | Mục đích |
@@ -18,15 +55,12 @@ health hoặc truy xuất độc lập sau khi đã có tài nguyên local.
 | `outputs/current-law-shadow-2026-09-22/` và `bm25_index.pkl` ở root | Không | Tài nguyên snapshot/provenance mà bước kiểm corpus frozen cần |
 | Kết quả evaluation/diagnostics | Không | Đáp án, trace, plan và receipt của từng lượt |
 
-**Clone repo chưa đủ để chạy demo đầy đủ.** Cách đã kiểm là dùng workspace
-có sẵn hoặc khôi phục bộ tài nguyên cùng phiên bản từ máy phát triển. Hiện
-chưa có gói bootstrap độc lập đã kiểm trên database trống hoặc bản phát hành
-artifact tải công khai.
-
-Builder `ingestion.structured_index` giữ các kiểm tra provenance và tái dùng
-vector từ index v1; nó không phải lệnh cài đặt một bước trên máy sạch. Không
-chạy builder để sửa lỗi thiếu receipt của database đang có. Cần bộ receipt,
-collection và corpus khớp nhau; dữ liệu không khớp sẽ bị từ chối.
+Database, receipt và model cache được tạo lại bằng
+[`ingestion.bootstrap`](../ingestion/bootstrap.py) (bước 2 ở trên). Bootstrap
+chỉ dựng index khi Weaviate chưa có collection; collection đã có phải khớp
+receipt, nếu không sẽ bị từ chối. Không xóa database hoặc receipt để ép dựng
+lại. Snapshot provenance (`outputs/current-law-shadow-2026-09-22/`,
+`bm25_index.pkl`) chỉ cần cho bước kiểm corpus frozen, không cần để chạy demo.
 
 ## Môi trường Python và provider
 
@@ -98,6 +132,37 @@ curl http://127.0.0.1:8000/api/v1/health
 Health không tải model, provider hoặc database; `ok` không bảo đảm truy xuất
 đã sẵn sàng. Trong thanh bên, mở **Dành cho nhà phát triển** rồi bật
 **Kiểm tra truy xuất** để kiểm index/model mà không gọi LLM.
+
+## Chạy bằng Docker
+
+Thay cho hai terminal ở trên, Compose chạy cả ba service: `weaviate`
+(database), `api` (FastAPI + retrieval) và `ui` (Streamlit); service
+`bootstrap` chỉ chạy khi gọi `run` (máy mới, xem đầu trang). Image không chứa
+model, key hay index; chúng được gắn vào lúc chạy.
+
+```bash
+docker compose --env-file .env -f docker/docker-compose.yml up -d --build
+```
+
+Luôn giữ `--env-file .env`: nó cung cấp `WEAVIATE_CLUSTER_HOSTNAME` của
+database đã lưu; thiếu cờ này Compose sẽ tạo lại Weaviate với hostname khác và
+không mở được index. Dừng bằng `docker compose -f docker/docker-compose.yml
+stop` (không dùng `down -v`, lệnh đó xóa volume).
+
+| Thành phần | Cách đưa vào container |
+| --- | --- |
+| Code và `data/` | Copy vào image `api` ([Dockerfile](../Dockerfile), target `api`) |
+| UI | Image `ui` riêng, chỉ Streamlit + httpx ([frontend/requirements.txt](../frontend/requirements.txt)) |
+| `.env` | `env_file` lúc chạy, không copy vào image ([.dockerignore](../.dockerignore)) |
+| Model cache | Gắn chỉ đọc từ `~/.cache/huggingface/hub` (đổi bằng `HF_HUB_CACHE_DIR`) |
+| Receipt index | Gắn chỉ đọc từ `outputs/structured-law-v2/` |
+| Hội thoại đã lưu | Volume `docker_chat_data`, tách khỏi file SQLite khi chạy bằng `.venv` |
+
+Container dùng CPU cho embedding và reranker vì Docker trên Mac không truy cập
+GPU MPS, nên chậm hơn chạy trực tiếp; demo trên Mac vẫn nên dùng `.venv`.
+API và UI chỉ mở ở `127.0.0.1` (cổng 8000 và 8501), nên dừng bản `.venv` trước
+khi chạy Docker. Xem log bằng
+`docker compose -f docker/docker-compose.yml logs -f api`.
 
 ## Thử hội thoại
 

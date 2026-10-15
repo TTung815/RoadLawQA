@@ -1,0 +1,22 @@
+# Keep secrets, local environments and generated state out of the images.
+.env
+.env.*
+!.env.example
+.git
+.venv
+venv
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+**/.DS_Store
+.claude
+AGENTS.md
+
+# Mounted at run time instead (index receipt, saved chats) or not needed to serve.
+outputs
+bm25_index.pkl
+docs
+tests
+docker

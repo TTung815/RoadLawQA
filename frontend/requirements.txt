@@ -1,0 +1,4 @@
+# The Streamlit client only talks HTTP to the API (used by the Docker `ui` image).
+python-dotenv==1.0.0
+streamlit==1.41.1
+httpx==0.27.0

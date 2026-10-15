@@ -33,7 +33,7 @@ database khi cần; `/api/v1/health` không tải tài nguyên. `LLMProvider` v�
 | Thiết bị và batching | [devices.py](../ai/retrieval/devices.py), [reranking.py](../ai/retrieval/reranking.py) |
 | API | [main.py](../backend/main.py), [api/v1/](../backend/api/v1/), [dependencies/](../backend/dependencies/), [conversations.py](../backend/services/conversations.py) (SQLite) |
 | Giao diện | [app.py](../frontend/app.py) (bố cục), [client.py](../frontend/client.py) (HTTP), [state.py](../frontend/state.py) (trạng thái), [views.py](../frontend/views.py) (hiển thị) |
-| Nguồn cấu trúc và index | [structured_corpus.py](../ingestion/structured_corpus.py), [structured_index.py](../ingestion/structured_index.py) |
+| Nguồn cấu trúc và index | [structured_corpus.py](../ingestion/structured_corpus.py), [structured_index.py](../ingestion/structured_index.py), [bootstrap.py](../ingestion/bootstrap.py) (máy mới: tải model, dựng index) |
 
 ## Hội thoại và query expansion
 
