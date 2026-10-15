@@ -137,7 +137,9 @@ ngân sách riêng, nên logical calls không bằng mọi HTTP request thực t
 `retrieval_query` ghi expansion đã chấp nhận; `retrieval_queries` ghi câu hỏi
 độc lập và expansion. `ranked_chunk_ids` là top-k sau rerank, `chunks` thêm các
 nguồn tra dẫn chiếu, mô tả trong `structural_expansion`. Trace native ghi view
-thực tế kể cả facet. `routing_ms` gồm xử lý lịch sử và expansion.
+thực tế kể cả facet. `routing_ms` gồm xử lý lịch sử và expansion. Router dùng
+reasoning `low` (`ROUTER_REASONING_EFFORT`): trên 10 lượt probe, phân loại và câu
+hỏi viết lại giống `medium` nhưng nhanh hơn khoảng 0,9s; `none` làm hỏng câu hỏi tiếp.
 
 API trả lỗi đã lọc. Diagnostics offline có thể giữ draft để debug, nhưng không
 lưu API key hoặc request thô tới provider.

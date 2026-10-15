@@ -68,3 +68,23 @@ def test_backend_dependencies_use_shared_factory(isolated_config, monkeypatch):
         retrieval.get_retrieval_service.cache_clear()
         retrieval.get_lean_retrieval_service.cache_clear()
         answer.get_answer_service.cache_clear()
+
+
+@pytest.mark.parametrize("router_effort, expected", [(None, "medium"), ("low", "low"), ("none", "none")])
+def test_router_uses_its_own_reasoning_effort_without_changing_answer_stages(monkeypatch, router_effort, expected):
+    from backend.dependencies.answer import router_settings
+    from configs.settings import LLMSettings
+    settings = LLMSettings(llm_provider="openai", openai_api_key="fake", openai_reasoning_effort="medium",
+                           router_reasoning_effort=router_effort)
+    assert router_settings(settings).openai_reasoning_effort == expected
+    # Generation and verification keep the shared setting.
+    assert settings.openai_reasoning_effort == "medium"
+
+
+def test_router_effort_defaults_to_low_and_is_ignored_for_gemini(monkeypatch):
+    from backend.dependencies.answer import router_settings
+    from configs.settings import LLMSettings
+    monkeypatch.delenv("ROUTER_REASONING_EFFORT", raising=False)
+    assert LLMSettings(llm_provider="openai", openai_api_key="fake").router_reasoning_effort == "low"
+    gemini = LLMSettings(llm_provider="gemini", gemini_api_key="fake")
+    assert router_settings(gemini) is gemini

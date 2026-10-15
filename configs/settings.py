@@ -46,6 +46,7 @@ class LLMSettings(AppSettings):
         "llm_max_transient_retries": "LLM_MAX_TRANSIENT_RETRIES",
         "structural_expansion_enabled": "STRUCTURAL_EXPANSION_ENABLED",
         "warmup_on_startup": "WARMUP_ON_STARTUP",
+        "router_reasoning_effort": "ROUTER_REASONING_EFFORT",
     }
     gemini_api_key: Optional[str] = None
     gemini_api_keys: list[str] = Field(default_factory=list)
@@ -61,6 +62,10 @@ class LLMSettings(AppSettings):
     structural_expansion_enabled: bool = True
     # Load retrieval models/index in the background when the API starts.
     warmup_on_startup: bool = True
+    # OpenAI only: the router classifies intent and rewrites the query, so it
+    # can use less reasoning than generation/verification. None reuses
+    # openai_reasoning_effort.
+    router_reasoning_effort: Optional[Literal["none", "low", "medium", "high", "xhigh", "max"]] = "low"
 
     @property
     def model_name(self) -> str:

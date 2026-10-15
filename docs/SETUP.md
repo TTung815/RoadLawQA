@@ -47,6 +47,7 @@ Các biến chính:
 | Biến | Vai trò |
 | --- | --- |
 | `LLM_PROVIDER`, `LLM_MODEL_NAME` | Provider và model cho router/generation/verification |
+| `OPENAI_REASONING_EFFORT=medium`, `ROUTER_REASONING_EFFORT=low` | Mức reasoning của generation/verification và riêng của router |
 | `OPENAI_API_KEY` hoặc `GEMINI_API_KEY`/`GEMINI_API_KEYS` | Xác thực provider tương ứng |
 | `RETRIEVAL_BACKEND=structured` | Index cấu trúc hiện hành |
 | `EMBEDDING_DEVICE=cpu` | Thiết bị cho embedding query |

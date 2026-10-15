@@ -16,9 +16,16 @@ def get_chat_service() -> ChatService:
     return ChatService(get_answer_service, get_conversation_router)
 
 
+def router_settings(settings: LLMSettings) -> LLMSettings:
+    """Router-specific reasoning effort; generation/verification keep theirs."""
+    if settings.llm_provider != "openai" or settings.router_reasoning_effort is None:
+        return settings
+    return settings.model_copy(update={"openai_reasoning_effort": settings.router_reasoning_effort})
+
+
 @lru_cache(maxsize=1)
 def get_conversation_router() -> ConversationRouter:
-    return ConversationRouter(create_provider(LLMSettings()))
+    return ConversationRouter(create_provider(router_settings(LLMSettings())))
 
 
 @lru_cache(maxsize=1)
