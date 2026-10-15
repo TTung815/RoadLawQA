@@ -11,3 +11,8 @@ class HealthResponse(BaseModel):
     app: str = "VietLaw-Agent"
     version: str = "2.0.0"
 
+
+class ReadinessResponse(BaseModel):
+    """Whether serving retrieval resources are loaded; reading it loads nothing."""
+    retrieval_loaded: bool
+    warmup: str = Field(description="not_started, disabled, running, done or failed")

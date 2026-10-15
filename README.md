@@ -63,6 +63,8 @@ Trong terminal thứ hai, tại repository root:
 ```
 
 Mở `http://localhost:8501`; API docs tại `http://127.0.0.1:8000/docs`.
+Khi API khởi động, index và model được nạp chạy nền (khoảng 15 giây trên Mac M3);
+`GET /api/v1/ready` trả `"warmup": "done"` khi đã sẵn sàng.
 Cấu hình provider/key trong `.env` theo [.env.example](.env.example).
 
 Có thể thử lần lượt “Chào bạn”, “Hiện nay, vượt đèn đỏ phạt bao nhiêu tiền?”,

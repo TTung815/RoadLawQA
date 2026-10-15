@@ -45,6 +45,7 @@ class LLMSettings(AppSettings):
         "llm_request_timeout_seconds": "LLM_REQUEST_TIMEOUT_SECONDS",
         "llm_max_transient_retries": "LLM_MAX_TRANSIENT_RETRIES",
         "structural_expansion_enabled": "STRUCTURAL_EXPANSION_ENABLED",
+        "warmup_on_startup": "WARMUP_ON_STARTUP",
     }
     gemini_api_key: Optional[str] = None
     gemini_api_keys: list[str] = Field(default_factory=list)
@@ -58,6 +59,8 @@ class LLMSettings(AppSettings):
     llm_max_transient_retries: int = Field(default=2, ge=0, le=5)
     # Compatibility setting for old experiments; serving always searches once.
     structural_expansion_enabled: bool = True
+    # Load retrieval models/index in the background when the API starts.
+    warmup_on_startup: bool = True
 
     @property
     def model_name(self) -> str:

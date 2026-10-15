@@ -52,6 +52,7 @@ Các biến chính:
 | `EMBEDDING_DEVICE=cpu` | Thiết bị cho embedding query |
 | `RERANKER_DEVICE=auto` | Chọn CUDA, rồi MPS, rồi CPU khi khả dụng |
 | `ROADLAWQA_API_URL=http://127.0.0.1:8000` | Địa chỉ API mà Streamlit gọi |
+| `WARMUP_ON_STARTUP=true` | Nạp index, embedding và reranker chạy nền khi API khởi động; `false` để nạp khi có câu hỏi đầu tiên |
 
 `RERANKER_DEVICE=mps` yêu cầu GPU MPS thực sự khả dụng, lỗi rõ ràng nếu không.
 Lần gọi đầu tải model/kết nối database nên có thể lâu hơn các lượt đã warm-up.

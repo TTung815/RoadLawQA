@@ -147,6 +147,7 @@ lưu API key hoặc request thô tới provider.
 | Endpoint | Mục đích |
 | --- | --- |
 | `POST /api/v1/answer` | Toàn chatbot, nhận query/history/top-k |
+| `GET /api/v1/ready` | Model/index đã nạp chưa và trạng thái warm-up; không tự nạp |
 | `POST /api/v1/retrieve/inspect` | Truy xuất câu độc lập, không LLM/router; history bị từ chối |
 | `POST /api/v1/retrieve` | Retrieval với contextualization khi có lịch sử |
 | `POST /api/v1/retrieve/evidence` | Retrieval đầy đủ của chatbot: hybrid/rerank và tra dẫn chiếu, không sinh đáp án |

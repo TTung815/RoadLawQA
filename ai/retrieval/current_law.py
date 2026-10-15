@@ -47,6 +47,11 @@ class LazyCurrentLawRetriever(Retriever):
         return await retriever.search(query, top_k, **options)
 
     @property
+    def loaded(self) -> bool:
+        # Readiness must not initialize resources as a side effect.
+        return self._retriever is not None
+
+    @property
     def runtime_devices(self) -> dict[str, str]:
         # Inspection must not initialize resources as a side effect.
         return dict(getattr(self._retriever, "runtime_devices", {}))
