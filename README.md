@@ -7,6 +7,12 @@ một phần, hỏi lại hoặc nêu rõ giới hạn thay vì đoán.
 
 Dữ liệu pháp luật có hiệu lực tại **22/09/2026**.
 
+## Demo
+
+![RoadLawQA chatbot](docs/assets/image_roadlawQA.png)
+
+[Xem video demo](https://drive.google.com/file/d/1X5vsNSwPVNFz49zCkHirMjxQVk6xQpHN/view)
+
 ## Legal Sources
 
 | Văn bản | Nội dung |
